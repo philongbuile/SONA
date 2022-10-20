@@ -34,11 +34,11 @@ export class Patient {
 
     // array of case id
     @Property()
-    public Cases: string[];
+    public Cases: Case[];
 
 
     @Property()
-    public AuthorizedDoctors: string[];
+    public AuthorizedDoctors: Doctor[];
 
 }
 

@@ -7,7 +7,7 @@ import * as FabricCAServices from 'fabric-ca-client';
 import { Contract, Gateway, GatewayOptions, HsmOptions, HsmX509Provider, Wallets } from 'fabric-network';
 import * as fs from 'fs';
 import * as path from 'path';
-import { buildCCPOrg1, prettyJSONString } from './utils//AppUtil';
+import { buildCCPOrg1, prettyJSONString } from './utils/AppUtil';
 import { enrollUserToWallet, registerUser, UserToEnroll, UserToRegister } from './utils/CAUtil';
 
 const walletPath = path.join(__dirname, 'wallet');
