@@ -3,7 +3,9 @@
  */
 
 import {AssetTransferContract} from './assetTransfer';
+import {CaseContract} from './caseContract'
 
 export {AssetTransferContract} from './assetTransfer';
+export {CaseContract} from './caseContract'
 
-export const contracts: any[] = [AssetTransferContract];
+export const contracts: any[] = [AssetTransferContract, CaseContract ];

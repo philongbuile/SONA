@@ -10,7 +10,7 @@ let assert = sinon.assert;
 chai.use(sinonChai);
 
 describe('Asset Transfer Basic Tests', () => {
-    let transactionContext, chaincodeStub, asset;
+    let transactionContext, chaincodeStub, asset, patient, cases;
     beforeEach(() => {
         transactionContext = new Context();
 
@@ -53,6 +53,14 @@ describe('Asset Transfer Basic Tests', () => {
 
             return Promise.resolve(internalGetStateByRange());
         });
+        cases =[
+            {
+                ID : '2',
+                TestResult : 'Success',
+                Diagnosis: 'Allergic Rhinitis',
+                Treatment: 'Use medicine'
+            },
+        ]
 
         asset = {
             ID: '1',
@@ -62,8 +70,19 @@ describe('Asset Transfer Basic Tests', () => {
             Address: '43/2 abc street',
             DoB: '11/2',
             Gender: 'female',
-            Cases: ['1'],
+            Cases: [],
             AuthorizedDoctors: ['Doctor1', 'Doctor2']
+        }
+        patient ={
+            ID: '2', 
+            FullName: 'Bui Le Phi Long',
+            Username: 'philong123',
+            Phone: '0969120322',
+            Address: '12 xyz Street',
+            DoB: '12/03/2001',
+            Gender: 'male',
+            Cases: [cases[0]],
+            AuthorizedDoctors:['Doctor1']
         }
     });
 

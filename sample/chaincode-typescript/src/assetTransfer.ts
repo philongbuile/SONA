@@ -6,12 +6,34 @@ import {Context, Contract, Info, Returns, Transaction} from 'fabric-contract-api
 import stringify from 'json-stringify-deterministic';
 import sortKeysRecursive from 'sort-keys-recursive';
 import {Patient} from './asset';
+import {Case} from './asset';
 
 @Info({title: 'AssetTransfer', description: 'Smart contract for trading assets'})
 export class AssetTransferContract extends Contract {
 
     @Transaction()
     public async InitLedger(ctx: Context): Promise<void> {
+
+        const cases: Case[] = [
+            {
+                ID : '2',
+                TestResult : 'Success',
+                Diagnosis: 'Allergic Rhinitis',
+                Treatment: 'Use medicine'
+            },
+            
+        ];
+
+        for (const med_case of cases) {
+            med_case.docType = 'medical case';
+            // example of how to write to world state deterministically
+            // use convetion of alphabetic order
+            // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
+            // when retrieving data, in any lang, the order of data will be the same and consequently also the corresonding hash
+            await ctx.stub.putState(med_case.ID, Buffer.from(stringify(sortKeysRecursive(med_case))));
+            console.info(`Medical Case of Patient ${med_case.ID} is initialized`);
+        }
+
         const patients: Patient[] = [
             {
                 ID: '1',
@@ -21,8 +43,19 @@ export class AssetTransferContract extends Contract {
                 Address: '43/2 abc street',
                 DoB: '11/2',
                 Gender: 'female',
-                Cases: ['1'],
+                Cases: [],
                 AuthorizedDoctors: ['Doctor1', 'Doctor2']
+            },
+            {
+                ID: '2', 
+                FullName: 'Bui Le Phi Long',
+                Username: 'philong123',
+                Phone: '0969120322',
+                Address: '12 xyz Street',
+                DoB: '12/03/2001',
+                Gender: 'male',
+                Cases: [cases[0]],
+                AuthorizedDoctors:['Doctor1']
             }
         ];
 
@@ -39,7 +72,7 @@ export class AssetTransferContract extends Contract {
 
     // CreateAsset issues a new asset to the world state with given details.
     @Transaction()
-    public async CreateAsset(ctx: Context, id: string, fullname: string, username: string, phone: string, address: string, dob: string, gender: string, cases: string[], authorized_doctors: string[]): Promise<void> {
+    public async CreateAsset(ctx: Context, id: string, fullname: string, username: string, phone: string, address: string, dob: string, gender: string, cases: Case[], authorized_doctors: string[]): Promise<void> {
         const exists = await this.AssetExists(ctx,id);
         if (exists) {
             throw new Error(`The asset ${id} already exists`);
