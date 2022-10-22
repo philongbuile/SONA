@@ -16,7 +16,7 @@ export class AssetTransferContract extends Contract {
 
         const cases: Case[] = [
             {
-                ID : '2',
+                Case_ID : '2',
                 TestResult : 'Success',
                 Diagnosis: 'Allergic Rhinitis',
                 Treatment: 'Use medicine'
@@ -30,8 +30,8 @@ export class AssetTransferContract extends Contract {
             // use convetion of alphabetic order
             // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
             // when retrieving data, in any lang, the order of data will be the same and consequently also the corresonding hash
-            await ctx.stub.putState(med_case.ID, Buffer.from(stringify(sortKeysRecursive(med_case))));
-            console.info(`Medical Case of Patient ${med_case.ID} is initialized`);
+            await ctx.stub.putState(med_case.Case_ID, Buffer.from(stringify(sortKeysRecursive(med_case))));
+            console.info(`Medical Case of Patient ${med_case.Case_ID} is initialized`);
         }
 
         const patients: Patient[] = [
@@ -44,7 +44,8 @@ export class AssetTransferContract extends Contract {
                 DoB: '11/2',
                 Gender: 'female',
                 Cases: [],
-                AuthorizedDoctors: ['Doctor1', 'Doctor2']
+                AuthorizedDoctors: ['Doctor1', 'Doctor2'],
+                Records: [],
             },
             {
                 ID: '2', 
@@ -55,7 +56,8 @@ export class AssetTransferContract extends Contract {
                 DoB: '12/03/2001',
                 Gender: 'male',
                 Cases: [cases[0]],
-                AuthorizedDoctors:['Doctor1']
+                AuthorizedDoctors:['Doctor1'],
+                Records:[],
             }
         ];
 

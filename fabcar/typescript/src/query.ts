@@ -45,16 +45,18 @@ async function main() {
         const result = await caseContract.evaluateTransaction('ReadCase','2');
         console.log(`Transaction has been evaluated, cases of Patient 2 are : ${result}`);
 
-        const result1 = await caseContract.evaluateTransaction('ReadCase','1');
-        console.log(`Transaction has been evaluated, cases of patient 1  are: ${result1}`);
+        // const result1 = await caseContract.evaluateTransaction('ReadCase','1');
+        // console.log(`Transaction has been evaluated, cases of patient 1  are: ${result1}`);
 
         // const result3 = await caseContract.evaluateTransaction('ReadCase','2');
         // console.log(`Transaction has been evaluated, result is: ${result3}`);
+        const result2 = await caseContract.evaluateTransaction('ReadRecord','2');
+        console.log(`Transaction has been evaluated, cases of Patient 2 are : ${result2}`);
 
 
 
-        const result2 = await patientContract.evaluateTransaction('ReadAsset','1');
-        console.log(`Transaction has been evaluated, Patient 1 info and med case: ${result2}`);
+        // 
+        
         
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);

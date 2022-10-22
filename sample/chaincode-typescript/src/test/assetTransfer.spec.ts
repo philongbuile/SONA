@@ -11,7 +11,7 @@ let assert = sinon.assert;
 chai.use(sinonChai);
 
 describe('Asset Transfer Basic Tests', () => {
-    let transactionContext, chaincodeStub, asset, patient, cases;
+    let transactionContext, chaincodeStub, asset, patient, cases, records;
     beforeEach(() => {
         transactionContext = new Context();
 
@@ -62,6 +62,17 @@ describe('Asset Transfer Basic Tests', () => {
                 Treatment: 'Use medicine'
             },
         ]
+        records=[
+            {
+                docType: 'UsageRecord',
+                Patient_ID: '2',
+                Record_ID: '1',
+                Operation: 'diagnosise',
+                Role: 'doctor', 
+                OperatorName: 'Doctor1',
+                Time: new Date().toLocaleString()
+            }
+        ]
 
         asset = {
             ID: '1',
@@ -83,7 +94,8 @@ describe('Asset Transfer Basic Tests', () => {
             DoB: '12/03/2001',
             Gender: 'male',
             Cases: [cases[0]],
-            AuthorizedDoctors:['Doctor1']
+            AuthorizedDoctors:['Doctor1'],
+            Records: [records[0]]
         }
     });
 
@@ -199,13 +211,71 @@ describe('Asset Transfer Basic Tests', () => {
             await caseContract.InitCaseLedger(transactionContext);
             //await caseContract.InitCaseLedger(transactionContext);
             //const result = await patientContract.ReadAsset(transactionContext,'2');
-            await caseContract.CreateCase(transactionContext,'1','Success','Allergic Rhinitis','Use Medicine');
+            //await caseContract.CreateCase(transactionContext,'1','Success','Allergic Rhinitis','Use Medicine');
             await caseContract.CreateCase(transactionContext,'1','Success','Allergic Rhinitis','Use Medicine');
             const result = await patientContract.ReadAsset(transactionContext,'1')
             //console.log()
-            let ret = JSON.parse(await chaincodeStub.getState(1));
-            
+            let patientObject = JSON.parse(await chaincodeStub.getState(1));
+            let ret = JSON.stringify(patientObject).toString();
             expect(ret).toEqual(result);
+        });
+    });
+
+    // Test Create Record
+    describe('Test Read record created by readcase', () => {
+        // ID : '2',
+        //         TestResult : 'Success',
+        //         Diagnosis: 'Allergic Rhinitis',
+        //         Treatment: 'Use medicine'
+            
+
+        it('should return success', async () => {
+            let caseContract = new CaseContract();
+            let patientContract = new AssetTransferContract();
+            await caseContract.InitCaseLedger(transactionContext);
+            //await caseContract.InitCaseLedger(transactionContext);
+            //const result = await patientContract.ReadAsset(transactionContext,'2');
+            // await caseContract.CreateCase(transactionContext,'1','Success','Allergic Rhinitis','Use Medicine');
+            // await caseContract.CreateCase(transactionContext,'1','Success','Allergic Rhinitis','Use Medicine');
+            
+            await caseContract.ReadCase(transactionContext,'2');
+            let result = await caseContract.ReadRecord(transactionContext,'2');
+            //console.log()
+
+            
+            //let ret = JSON.parse(await chaincodeStub.getState(2));
+            let ret = JSON.stringify(records[0]);
+            // let ret ={
+            //     "Address": "12 xyz Street", "AuthorizedDoctors": ["Doctor1"], "Cases": [{"Diagnosis": "Allergic Rhinitis", "ID": "2", "TestResult": "Success", "Treatment": "Use medicine", "docType": "medical case"}], "DoB": "12/03/2001", "FullName": "Bui Le Phi Long", "Gender": "male", "ID": "2", "Phone": "0969120322", "Records": [{"Operation": "diagnosise", "OperatorName": "Doctor1", "Patient_ID": "2", "Record_ID": "1", "Roles": "doctor", "Time": "10/22/2022, 10:44:12 AM", "docType": "UsageRecord"}], "Username": "philong123", "docType": "patient"
+            // }
+            expect(ret).toEqual(result);
+        });
+    });
+
+    describe('Test CreateRecord', () => {
+        // ID : '2',
+        //         TestResult : 'Success',
+        //         Diagnosis: 'Allergic Rhinitis',
+        //         Treatment: 'Use medicine'
+            
+
+        it('should return success on CreateRecord', async () => {
+            let caseContract = new CaseContract();
+            let patientContract = new AssetTransferContract();
+            await caseContract.InitCaseLedger(transactionContext);
+            //await caseContract.InitCaseLedger(transactionContext);
+            //const result = await patientContract.ReadAsset(transactionContext,'2');
+            // await caseContract.CreateCase(transactionContext,'1','Success','Allergic Rhinitis','Use Medicine');
+            // await caseContract.CreateCase(transactionContext,'1','Success','Allergic Rhinitis','Use Medicine');
+            
+            await caseContract.CreateRecord(transactionContext,'2','1','diagnosise','doctor','Doctor1',new Date().toLocaleString());
+            const result = await patientContract.ReadAsset(transactionContext,'2');
+            //console.log()
+            let ret = JSON.parse(await chaincodeStub.getState(2));
+            // let ret ={
+            //     "Address": "12 xyz Street", "AuthorizedDoctors": ["Doctor1"], "Cases": [{"Diagnosis": "Allergic Rhinitis", "ID": "2", "TestResult": "Success", "Treatment": "Use medicine", "docType": "medical case"}], "DoB": "12/03/2001", "FullName": "Bui Le Phi Long", "Gender": "male", "ID": "2", "Phone": "0969120322", "Records": [{"Operation": "diagnosise", "OperatorName": "Doctor1", "Patient_ID": "2", "Record_ID": "1", "Roles": "doctor", "Time": "10/22/2022, 10:44:12 AM", "docType": "UsageRecord"}], "Username": "philong123", "docType": "patient"
+            // }
+            expect(ret).toEqual(result.toString());
         });
     });
 
