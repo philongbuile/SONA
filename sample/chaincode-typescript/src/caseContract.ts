@@ -83,9 +83,10 @@ export class CaseContract extends Contract {
             Diagnosis: diagnosis,
             Treatment: treatment
         };
+        const case_id = uuidv4();
         const Case_object : Case = {
             docType:'Case',
-            Case_ID: uuidv4(),
+            Case_ID: case_id,
             Examinations :[Examination_object],
         };
 
@@ -99,7 +100,8 @@ export class CaseContract extends Contract {
         // for medical info
         await ctx.stub.putState(patientObject.MedicalInfo.ID,Buffer.from(stringify(sortKeysRecursive(patientObject.MedicalInfo))))
 
-        // const usageRecordContract = new UsageRecordContract();
+        const usageRecordContract = new UsageRecordContract();
+        await usageRecordContract.CreateRecord(ctx,patient_username,case_id,patientObject.MedicalInfo.ID,'Create Case','doctor',operator_username);
 
     }
 
@@ -167,7 +169,7 @@ export class CaseContract extends Contract {
         const usagerecordContract = new UsageRecordContract();
         await usagerecordContract.CreateRecord(ctx,patient_username,case_id,MedicalInfo_Object.ID,'update case','doctor',operator_username);
 
-        // const usageRecordContract = new UsageRecordContract();
+
 
     }
 
