@@ -9,6 +9,8 @@ import {Case, Examination, MedicalInfo} from './asset';
 import {v4 as uuid} from 'uuid';
 import { CaseContract } from './caseContract';
 import { PatientContract } from './PatientContract';
+import { OperatorContract } from './MedicalOperator_Contract';
+import { UsageRecordContract } from './UsageRecordContract';
 
 
 @Info({title: 'MedicalInfo', description: 'Smart contract for trading MedicalInfos'})
@@ -95,18 +97,31 @@ export class MedicalInfoContract extends Contract {
 
     // ReadMedicalInfo returns the MedicalInfo stored in the world state with given id.
     @Transaction(false)
-    public async ReadMedicalInfo(ctx: Context, id: string): Promise<string> {
+    private async ReadMedicalInfo(ctx: Context, id: string): Promise<string> {
 
         const MedicalInfoJSON = await ctx.stub.getState(id); // get the MedicalInfo from chaincode state
         if (!MedicalInfoJSON || MedicalInfoJSON.length === 0) {
             throw new Error(`The MedicalInfo ${id} does not exist`);
         }
 
-        // generate record 
-        // medical info id
+        return MedicalInfoJSON.toString();
+    }
+
+    @Transaction(false)
+    private async QueryMedicalInfo(ctx: Context, id: string, operator_username: string): Promise<string> {
+
+        const MedicalInfoJSON = await ctx.stub.getState(id); // get the MedicalInfo from chaincode state
+        if (!MedicalInfoJSON || MedicalInfoJSON.length === 0) {
+            throw new Error(`The MedicalInfo ${id} does not exist`);
+        }
+
+         // create usage record
+         let recordContract = new UsageRecordContract();
+         await recordContract.CreateRecord(ctx, undefined , id, 'read', operator_username);
 
         return MedicalInfoJSON.toString();
     }
+
 
     // UpdateMedicalInfo updates an existing MedicalInfo in the world state with provided parameters.
     // type of updates: 
@@ -125,7 +140,7 @@ export class MedicalInfoContract extends Contract {
         const current_info = JSON.parse(await this.ReadMedicalInfo(ctx, id));
 
         const caseContract = new CaseContract();
-        const new_case = caseContract.CreateCase(ctx, test_result, diagnosis, treatment);
+        const new_case = await caseContract.CreateCase(ctx, test_result, diagnosis, treatment);
         const new_info = current_info.Cases.push(new_case);
 
 
@@ -133,11 +148,15 @@ export class MedicalInfoContract extends Contract {
 
         await ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(new_info))));
 
+        // create usage record
+        let recordContract = new UsageRecordContract();
+        await recordContract.CreateRecord(ctx, new_case.Case_ID, id, 'write', operator_username);
+
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
     }
 
     @Transaction()
-    public async AppendCase(ctx: Context, id: string, case_id: string, test_result: string, diagnosis: string, treatment: string,  operator_username: string, patient_username: string): Promise<void> {
+    public async AppendCase(ctx: Context, info_id: string, case_id: string, test_result: string, diagnosis: string, treatment: string,  operator_username: string, patient_username: string): Promise<void> {
 
         // check if the operator has right to append to case
         const isAuthorized = new PatientContract().IsAuthorized(ctx, patient_username, operator_username);
@@ -149,12 +168,12 @@ export class MedicalInfoContract extends Contract {
 
         // use CaseContract to call function updateCase
         const caseContract = new CaseContract();
-        const new_case = caseContract.UpdateCase(ctx,case_id, test_result, diagnosis, treatment);
+        const new_case = await caseContract.UpdateCase(ctx,case_id, test_result, diagnosis, treatment);
 
+        // create usage record
+        let recordContract = new UsageRecordContract();
+        await recordContract.CreateRecord(ctx, case_id, info_id, 'write', operator_username);
 
-
-        // use operator username to get their info - role
-        // use that info to creat usage record
     }
 
 

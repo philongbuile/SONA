@@ -67,9 +67,6 @@ export class Operator {
   public docType?: string;
 
   @Property()
-  public ID: string;
-
-  @Property()
   public Username: string;
 
   @Property()

@@ -7,51 +7,93 @@ import {Context, Contract, Info, Returns, Transaction} from 'fabric-contract-api
 import stringify from 'json-stringify-deterministic';
 import sortKeysRecursive from 'sort-keys-recursive';
 import { v4 as uuidv4 } from 'uuid';
-import {Patient} from './asset';
-import {Case} from './asset';
-import {UsageRecord} from './asset';
-import {AssetTransferContract} from './assetTransfer'
+import {Patient, Case, UsageRecord} from './asset';
+import { OperatorContract } from './MedicalOperator_Contract';
+
+// import {AssetTransferContract} from './assetTransfer'
 
 @Info({title: 'UsageRecordContract', description: 'Smart contract for creating Usage Record'})
 export class UsageRecordContract extends Contract {
 
 
+
+    @Transaction()
+    public async InitLedger(ctx: Context): Promise<void> {
+
+
+        console.log('calling init function of patient contract')
+        // first creat the medicalInfo for that patient 
+        // then add it to the patient info
+        const patients: Patient[] = [];
+
+        for (const patient of patients) {
+            patient.docType = 'patient';
+            // example of how to write to world state deterministically
+            // use convetion of alphabetic order
+            // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
+            // when retrieving data, in any lang, the order of data will be the same and consequently also the corresonding hash
+            await ctx.stub.putState(patient.Username, Buffer.from(stringify(sortKeysRecursive(patient))));
+            console.info(`Patient ${patient.Username} initialized`);
+        }
+    }
+
+
+
     // temp function for create Record when query Case in Medical Info
     // create an object record then push it in to the Records array corresponding to the patient
     @Transaction()
-    public async CreateRecord(ctx: Context, patient_username: string, case_id: string, medicalinfo_id: string ,operation: string, roles: string ,operator_name: string): Promise<void>{
+    public async CreateRecord(ctx: Context, case_id: string, medicalinfo_id: string ,operation: string,operator_username): Promise<void>{
+        
+        const id = uuidv4();
+
+        let operatorContract = new OperatorContract();
+        const operatorString = await operatorContract.QueryOperator(ctx, operator_username);
+        const operator = JSON.parse(operatorString);
+
+        
         const record ={
             docType: 'UsageRecord',
             Case_ID: case_id,
             MedicalInfo_ID: medicalinfo_id,
-            Record_ID: uuidv4(),
+            Record_ID: id,
             Operation: operation,
-            Roles: roles,
-            OperatorName: operator_name,
+            Roles: operator.Role,
+            OperatorName: operator.username,
             Time : new Date().toLocaleString()
         }
-        const patientUint8 = await ctx.stub.getState(patient_username);
-        const patientJSON =  Buffer.from(patientUint8).toString('utf8');
-        // // convert json to object
-        const patientObject = JSON.parse(patientJSON);
-        // push record into the records array
-        patientObject.Records.push(record);
-        // update world state
-        return await ctx.stub.putState(patient_username, Buffer.from(stringify(sortKeysRecursive(patientObject))));
+        // const patientUint8 = await ctx.stub.getState(patient_username);
+        // const patientJSON =  Buffer.from(patientUint8).toString('utf8');
+        // // // convert json to object
+        // const patientObject = JSON.parse(patientJSON);
+        // // push record into the records array
+        // patientObject.Records.push(record);
+        // // update world state
+
+
+        return await ctx.stub.putState(record.Record_ID, Buffer.from(stringify(sortKeysRecursive(record))));
 
     }
 
     // Read Record function called by Patient 
     // return all the records for all times his/her case or information has been used
     @Transaction()
-    public async ReadRecord(ctx:Context, patient_username:string) : Promise<string>{
-        const patientUint8 = await ctx.stub.getState(patient_username); 
+    public async ReadRecord(ctx:Context, record_id: string) : Promise<string>{
+        const patientUint8 = await ctx.stub.getState(record_id); 
         const patientJSON = Buffer.from(patientUint8).toString('utf8');
         const patientObject= JSON.parse(patientJSON);
 
         const patientRecordsJSON = JSON.stringify(patientObject.Records);
         return patientRecordsJSON.toString();
     }
+
+    @Transaction()
+    public async QueryRecords(ctx:Context, medical_info_id) : Promise<string>{
+        // query all the usage records of the medical_info specified
+
+        return '';
+    }
+
+    
 
 
     

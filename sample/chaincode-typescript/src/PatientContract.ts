@@ -8,6 +8,8 @@ import sortKeysRecursive from 'sort-keys-recursive';
 import {Patient, MedicalInfo} from './asset';
 import {Case} from './asset';
 import { MedicalInfoContract } from './MedicalInfo_Contract';
+import { OperatorContract } from './MedicalOperator_Contract';
+import { UsageRecordContract } from './UsageRecordContract';
 
 @Info({title: 'AssetTransfer', description: 'Smart contract for trading assets'})
 export class PatientContract extends Contract {
@@ -142,7 +144,7 @@ export class PatientContract extends Contract {
 
     @Transaction(false)
     @Returns('boolean')
-    public async PatientQuery(ctx: Context, patient_username: string, doctor_username: string): Promise<string> {
+    public async QueryPatient(ctx: Context, patient_username: string, doctor_username: string): Promise<string> {
 
         const isAuthorized = await this.IsAuthorized(ctx, patient_username, doctor_username);
 
@@ -151,7 +153,11 @@ export class PatientContract extends Contract {
         }
 
         const patient = await this.ReadPatient(ctx, patient_username);
+        const patient_obj = JSON.parse(patient);
 
         // create usage record
+        let recordContract = new UsageRecordContract();
+        recordContract.CreateRecord(ctx, undefined, patient_obj.Medical_Info.ID, 'read', doctor_username);
+
         return patient;    }
 }
