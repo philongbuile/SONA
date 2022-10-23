@@ -2,10 +2,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {AssetTransferContract} from './assetTransfer';
+import {AssetTransferContract} from './PatientContract';
 import {CaseContract} from './caseContract'
 
-export {AssetTransferContract} from './assetTransfer';
+export {AssetTransferContract} from './PatientContract';
 export {CaseContract} from './caseContract'
 
 export const contracts: any[] = [AssetTransferContract, CaseContract ];
