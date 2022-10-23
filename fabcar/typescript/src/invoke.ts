@@ -45,13 +45,26 @@ async function main() {
         await patientContract.submitTransaction('InitLedger');
         console.log(`Transaction has been submitted`);
         // await caseContract.submitTransaction('InitCaseLedger');
-        await caseContract.submitTransaction('CreateCase','1','success','allergic','use medicine');
-        console.log(`Transaction has been submitted`);
 
-        await caseContract.submitTransaction('CreateCase','2','success','flu','hide from project and team meeting');
-        console.log(`Transaction has been submitted`);
-        await caseContract.submitTransaction('CreateCase','2','failed','handsome','no treatment yet');
-        console.log(`Transaction has been submitted`);
+        // await caseContract.submitTransaction('CreateCase','1','success','allergic','use medicine');
+        // console.log(`Transaction has been submitted`);
+
+        await caseContract.submitTransaction('CreateCase','2','Doctor1','case1','success','flu','hide from project and team meeting');
+        console.log(`Case Created`);
+
+        
+
+        // await caseContract.submitTransaction('CreateCase','2','failed','handsome','no treatment yet');
+        // console.log(`Transaction has been submitted`);
+
+
+        const result = await caseContract.submitTransaction('ReadCase','2');
+        console.log(`Transaction has been evaluated, cases of Patient 2 are : ${result}`);
+        const operator_readcase = await caseContract.submitTransaction('OperatorReadCase','2','Doctor1','read');
+        console.log(`Transaction has been evaluated, cases of Patient 2 are : ${operator_readcase}`);
+
+        const patientReadRecord = await caseContract.submitTransaction('ReadRecord','2');
+        console.log(`Transaction has been evaluated, usage records of Patient 2 are : ${patientReadRecord}`);
 
 
         // Disconnect from the gateway.

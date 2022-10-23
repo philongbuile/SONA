@@ -40,6 +40,9 @@ export class Patient {
     @Property()
     public AuthorizedDoctors: string[];
 
+    @Property()
+    public Records: UsageRecord[];
+
     
 
 }
@@ -51,7 +54,7 @@ export class Case {
   public docType?: string;
 
   @Property()
-  public ID: string;
+  public Case_ID: string;
 
   @Property()
   public TestResult: string;
@@ -88,6 +91,7 @@ export class Doctor {
 
   @Property()
   public Specification: string;
+  
 
 }
 
@@ -99,7 +103,10 @@ export class UsageRecord {
   public docType?: string;
 
   @Property()
-  public ID: string;
+  public Case_ID: string;
+
+  @Property()
+  public Record_ID: string;
 
   @Property()
   public Operation: string;
@@ -111,7 +118,7 @@ export class UsageRecord {
   public OperatorName: string;
 
   @Property()
-  public Time: Date;
+  public Time: string;
 
 }
 
