@@ -14,7 +14,6 @@ import {AssetTransferContract} from './assetTransfer'
 export class UsageRecordContract extends Contract {
 
 
-    // temp function for create Record when query Case in Medical Info
     // create an object record then push it in to the Records array corresponding to the patient
     @Transaction()
     public async CreateRecord(ctx: Context, patient_username: string, case_id: string, medicalinfo_id: string ,record_id: string,operation: string, roles: string ,operator_name: string): Promise<void>{
