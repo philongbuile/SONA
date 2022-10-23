@@ -72,11 +72,13 @@ export class PatientContract extends Contract {
         }
 
 
-        const isAuthorized = this.IsAuthorized(ctx, username, operator_username);
+        // we cannot check IsAuthorize when creating patient 
+        // CAUSE THERE'S NO PATIENT EXISTS TO CHECK FOR THAT !!!!!!!!!
+        // const isAuthorized = this.IsAuthorized(ctx, username, operator_username);
 
-        if (!isAuthorized) {
-            throw Error('Permission Denied');
-        }
+        // if (!isAuthorized) {
+        //     throw Error('Permission Denied');
+        // }
 
         const medical_info = await new MedicalInfoContract().CreateMedicalInfo(ctx, []);
 
@@ -123,10 +125,10 @@ export class PatientContract extends Contract {
     @Returns('boolean')
     public async IsAuthorized(ctx: Context, patient_username: string, doctor_username: string): Promise<boolean> {
 
-        const exists = await this.AssetExists(ctx, patient_username);
+        const exists = await this.AssetExists(ctx, doctor_username);
 
         if (!exists) {
-            throw new Error(`The asset ${patient_username} does not exist`);
+            throw new Error(`The asset ${doctor_username} does not exist`);
         }
         const assetString = await this.ReadPatient(ctx, patient_username);
         const asset = JSON.parse(assetString);
@@ -160,4 +162,27 @@ export class PatientContract extends Contract {
         recordContract.CreateRecord(ctx, undefined, patient_obj.Medical_Info.ID, 'read', doctor_username);
 
         return patient;    }
+
+    @Transaction(false)
+    @Returns('string')
+    public async GetAll(ctx: Context): Promise<string> {
+        const allResults = [];
+        // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
+        const iterator = await ctx.stub.getStateByRange('', '');
+        let result = await iterator.next();
+        while (!result.done) {
+            const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
+            let MedicalInfo;
+            try {
+                MedicalInfo = JSON.parse(strValue);
+            } catch (err) {
+                console.log(err);
+                MedicalInfo = strValue;
+            }
+            allResults.push(MedicalInfo);
+            result = await iterator.next();
+        }
+        return JSON.stringify(allResults);
+    }
+
 }

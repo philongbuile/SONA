@@ -42,7 +42,7 @@ export class UsageRecordContract extends Contract {
     // temp function for create Record when query Case in Medical Info
     // create an object record then push it in to the Records array corresponding to the patient
     @Transaction()
-    public async CreateRecord(ctx: Context, case_id: string, medicalinfo_id: string ,operation: string,operator_username): Promise<void>{
+    public async CreateRecord(ctx: Context, case_id: string, medicalinfo_id: string ,operation: string,operator_username: string): Promise<void>{
         
         const id = uuidv4();
 
@@ -76,18 +76,40 @@ export class UsageRecordContract extends Contract {
 
     // Read Record function called by Patient 
     // return all the records for all times his/her case or information has been used
-    @Transaction()
-    public async ReadRecord(ctx:Context, record_id: string) : Promise<string>{
-        const patientUint8 = await ctx.stub.getState(record_id); 
-        const patientJSON = Buffer.from(patientUint8).toString('utf8');
-        const patientObject= JSON.parse(patientJSON);
+    // @Transaction()
+    // public async ReadRecord(ctx:Context, record_id: string) : Promise<string>{
+    //     const patientUint8 = await ctx.stub.getState(record_id); 
+    //     const patientJSON = Buffer.from(patientUint8).toString('utf8');
+    //     const patientObject= JSON.parse(patientJSON);
 
-        const patientRecordsJSON = JSON.stringify(patientObject.Records);
-        return patientRecordsJSON.toString();
+    //     const patientRecordsJSON = JSON.stringify(patientObject.Records);
+    //     return patientRecordsJSON.toString();
+    // }
+
+    @Transaction(false)
+    @Returns('string')
+    public async GetAll(ctx: Context): Promise<string> {
+        const allResults = [];
+        // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
+        const iterator = await ctx.stub.getStateByRange('', '');
+        let result = await iterator.next();
+        while (!result.done) {
+            const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
+            let MedicalInfo;
+            try {
+                MedicalInfo = JSON.parse(strValue);
+            } catch (err) {
+                console.log(err);
+                MedicalInfo = strValue;
+            }
+            allResults.push(MedicalInfo);
+            result = await iterator.next();
+        }
+        return JSON.stringify(allResults);
     }
 
     @Transaction()
-    public async QueryRecords(ctx:Context, medical_info_id) : Promise<string>{
+    public async QueryRecords(ctx:Context, medical_info_id: string) : Promise<string>{
         // query all the usage records of the medical_info specified
 
         return '';

@@ -8,11 +8,13 @@ const { ChaincodeStub } = require('fabric-shim');
 import {PatientContract} from '../src/PatientContract';
 import {CaseContract} from '../src/caseContract';
 import {MedicalInfoContract} from '../src/MedicalInfo_Contract'
+import { Operator } from '../src/asset';
+import { OperatorContract } from '../src/MedicalOperator_Contract';
 let assert = sinon.assert;
 chai.use(sinonChai);
 
 describe('Asset Transfer Basic Tests', () => {
-    let transactionContext, chaincodeStub, case1, patient1, medical1;
+    let transactionContext, chaincodeStub, case1, patient1, medical1, operator1;
     beforeEach(() => {
         transactionContext = new Context();
 
@@ -96,6 +98,13 @@ describe('Asset Transfer Basic Tests', () => {
 
         };
 
+
+        operator1 = {
+            docType: 'operator',
+            Username: 'Doctor1',
+            Role: 'doctor'
+        }
+
         
         
     });
@@ -163,6 +172,9 @@ describe('Asset Transfer Basic Tests', () => {
     });
 
 
+
+
+
     describe('Test Creat Case', () => {
         // it('should return error on InitLedger', async () => {
         //     chaincodeStub.putState.rejects('failed inserting key');
@@ -184,26 +196,33 @@ describe('Asset Transfer Basic Tests', () => {
         });
     });
 
-    // describe('Test CreateAsset', () => {
+    // describe('Test CreatePatient', () => {
     //     it('should return error on CreateAsset', async () => {
     //         chaincodeStub.putState.rejects('failed inserting key');
 
     //         let Patient = new PatientContract();
+
+    //         let operator = new OperatorContract();
+            
+    //         await operator.CreateOperator(transactionContext,operator1.Username, operator1.Role)
     //         try {
-    //             await Patient.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
-    //             assert.fail('CreateAsset should have failed');
+    //             await Patient.CreatePatient(transactionContext,patient1.FullName, patient1.Username, patient1.Phone, patient1.Address, patient1.DoB, patient1.Gender, patient1.AuthorizedDoctors, operator1.Username);
+    //             assert.fail('Createpatient1 should have failed');
     //         } catch(err) {
-    //             expect(err.name).toEqual('failed inserting key');
+    //             expect(err.message).toEqual('failed inserting key');
     //         }
     //     });
 
-    //     it('should return success on CreateAsset', async () => {
+    //     it('should return success on Createpatient1', async () => {
     //         let Patient = new PatientContract();
+    //         let operator = new OperatorContract();
+            
+    //         await operator.CreateOperator(transactionContext,operator1.Username, operator1.Role)
 
-    //         await Patient.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
+    //         await Patient.CreatePatient(transactionContext,patient1.FullName, patient1.Username, patient1.Phone, patient1.Address, patient1.DoB, patient1.Gender,patient1.AuthorizedDoctors, operator1.Username);
 
-    //         let ret = JSON.parse((await chaincodeStub.getState(asset.ID)).toString());
-    //         expect(ret).toEqual(asset);
+    //         let ret = JSON.parse((await chaincodeStub.getState(patient1.Username)).toString());
+    //         expect(ret).toEqual(patient1);
     //     });
     // });
 
@@ -243,29 +262,28 @@ describe('Asset Transfer Basic Tests', () => {
     //     });
     // });
 
-    // describe('Test ReadAsset', () => {
-    //     it('should return error on ReadAsset', async () => {
-    //         let Patient = new PatientContract();
-    //         await Patient.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
+    describe('Test QueryPatient', () => {
+        it('should return error on ReadAsset', async () => {
+            let Patient = new PatientContract();
+            await Patient.CreatePatient(transactionContext, patient1.FullName, patient1.Username, patient1.Phone, patient1.Address, patient1.DoB, patient1.Gender,patient1.AuthorizedDoctors, operator1.Username);
 
-    //         try {
-    //             await Patient.ReadAsset(transactionContext, 'asset2');
-    //             assert.fail('ReadAsset should have failed');
-    //         } catch (err) {
-    //             expect(err.message).toEqual('The asset asset2 does not exist');
-    //         }
-    //     });
+            try {
+                await Patient.QueryPatient(transactionContext, patient1.Username, operator1.Username);
+                assert.fail('Readpatient1 should have failed');
+            } catch (err) {
+                expect(err.message).toEqual('The patient1 patient12 does not exist');
+            }
+        });
 
-    //     it('should return success on ReadAsset', async () => {
-    //         let Patient = new PatientContract();
-    //         await Patient.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
+        it('should return success on ReadAsset', async () => {
+            let Patient = new PatientContract();
+            await Patient.CreatePatient(transactionContext,patient1.FullName, patient1.Username, patient1.Phone, patient1.Address, patient1.DoB, patient1.Gender, patient1.AuthorizedDoctors, operator1.Username);
+            let ret = JSON.parse(await chaincodeStub.getState(patient1.Username));
+            expect(ret).toEqual(patient1);
+        });
+    });
 
-    //         let ret = JSON.parse(await chaincodeStub.getState(asset.ID));
-    //         expect(ret).toEqual(asset);
-    //     });
-    // });
-
-    // describe('Test DeleteAsset', () => {
+    // describe('Test DeletePatient', () => {
     //     it('should return error on DeleteAsset', async () => {
     //         let Patient = new PatientContract();
     //         await Patient.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);

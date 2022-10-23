@@ -24,7 +24,7 @@ export class MedicalInfoContract extends Contract {
                 ID: 'medical1',
                 Cases: [
                     {
-                        Case_ID: 'case1',
+                    Case_ID: 'case1',
                     Examinations: [
                         {
                             TestResult : 'Success',
@@ -103,12 +103,11 @@ export class MedicalInfoContract extends Contract {
         if (!MedicalInfoJSON || MedicalInfoJSON.length === 0) {
             throw new Error(`The MedicalInfo ${id} does not exist`);
         }
-
         return MedicalInfoJSON.toString();
     }
 
     @Transaction(false)
-    private async QueryMedicalInfo(ctx: Context, id: string, operator_username: string): Promise<string> {
+    public async QueryMedicalInfo(ctx: Context, id: string, operator_username: string): Promise<string> {
 
         const MedicalInfoJSON = await ctx.stub.getState(id); // get the MedicalInfo from chaincode state
         if (!MedicalInfoJSON || MedicalInfoJSON.length === 0) {
@@ -123,11 +122,27 @@ export class MedicalInfoContract extends Contract {
     }
 
 
+    private CreateCase(testresult: string, diagnosis: string, treatment: string): Case {
+        const new_examination : Examination = {
+            TestResult: testresult,
+            Diagnosis: diagnosis,
+            Treatment: treatment
+        };
+        const case_id = uuid();
+        const Case_object : Case = {
+            docType:'case',
+            Case_ID: case_id,
+            Examinations :[new_examination],
+        };
+        return Case_object;
+    }
+
+
     // UpdateMedicalInfo updates an existing MedicalInfo in the world state with provided parameters.
     // type of updates: 
     //      add a new case
     @Transaction()
-    public async AddCase(ctx: Context, id: string, test_result: string, diagnosis: string, treatment: string, operator_username: string, patient_username: string): Promise<void> {
+    public async AddCase(ctx: Context, info_id: string, test_result: string, diagnosis: string, treatment: string, operator_username: string, patient_username: string): Promise<void> {
 
 
         const isAuthorized = new PatientContract().IsAuthorized(ctx, patient_username, operator_username);
@@ -135,23 +150,20 @@ export class MedicalInfoContract extends Contract {
         if (!isAuthorized) {
             throw Error('Permission Denied');
         }
-        // get the current cases array
-        // add new case to it
-        const current_info = JSON.parse(await this.ReadMedicalInfo(ctx, id));
+   
+        const current_info = JSON.parse(await this.ReadMedicalInfo(ctx, info_id));
 
-        const caseContract = new CaseContract();
-        const new_case = await caseContract.CreateCase(ctx, test_result, diagnosis, treatment);
+        const new_case = this.CreateCase(test_result, diagnosis, treatment);
         const new_info = current_info.Cases.push(new_case);
 
 
         // // overwriting original MedicalInfo with new MedicalInfo
 
-        await ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(new_info))));
+        await ctx.stub.putState(info_id, Buffer.from(stringify(sortKeysRecursive(new_info))));
 
         // create usage record
         let recordContract = new UsageRecordContract();
-        await recordContract.CreateRecord(ctx, new_case.Case_ID, id, 'write', operator_username);
-
+        await recordContract.CreateRecord(ctx, new_case.Case_ID, info_id, 'write', operator_username);
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
     }
 
@@ -164,11 +176,15 @@ export class MedicalInfoContract extends Contract {
         if (!isAuthorized) {
             throw Error('Permission Denied');
         }
+        
+        // const new_case = await caseContract.UpdateCase(ctx,case_id, test_result, diagnosis, treatment);
 
-
-        // use CaseContract to call function updateCase
-        const caseContract = new CaseContract();
-        const new_case = await caseContract.UpdateCase(ctx,case_id, test_result, diagnosis, treatment);
+        // create examination
+        const examination_object : Examination = {
+            TestResult: test_result,
+            Diagnosis: diagnosis,
+            Treatment: treatment
+        };
 
         // create usage record
         let recordContract = new UsageRecordContract();
@@ -177,7 +193,10 @@ export class MedicalInfoContract extends Contract {
     }
 
 
-    // MedicalInfoExists returns true when MedicalInfo with given ID exists in world state.
+    
+
+
+    // // MedicalInfoExists returns true when MedicalInfo with given ID exists in world state.
     @Transaction(false)
     @Returns('boolean')
     public async MedicalInfoExists(ctx: Context, id: string): Promise<boolean> {
@@ -209,34 +228,34 @@ export class MedicalInfoContract extends Contract {
     }
 
 
-    @Transaction(false)
-    @Returns('string')
-    public async QueryByKeyWord(ctx: Context, keywords: string[]): Promise<string> {
-        const allResults = [];
-        // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
-        const iterator = await ctx.stub.getStateByRange('', '');
-        let result = await iterator.next();
-        while (!result.done) {
-            const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
-            let MedicalInfo;
+    // @Transaction(false)
+    // @Returns('string')
+    // public async QueryByKeyWord(ctx: Context, keywords: string[]): Promise<string> {
+    //     const allResults = [];
+    //     // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
+    //     const iterator = await ctx.stub.getStateByRange('', '');
+    //     let result = await iterator.next();
+    //     while (!result.done) {
+    //         const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
+    //         let MedicalInfo;
 
-            // check if the medical info string contains keyword
-            const keyword = keywords.join();
-            const keywordExists = strValue.toLowerCase().includes(keyword.toLowerCase());
+    //         // check if the medical info string contains keyword
+    //         const keyword = keywords.join();
+    //         const keywordExists = strValue.toLowerCase().includes(keyword.toLowerCase());
 
-            if (keywordExists) {
-                try {
-                    MedicalInfo = JSON.parse(strValue);
-                } catch (err) {
-                    console.log(err);
-                    MedicalInfo = strValue;
-                }
-                allResults.push(MedicalInfo);
-            }
+    //         if (keywordExists) {
+    //             try {
+    //                 MedicalInfo = JSON.parse(strValue);
+    //             } catch (err) {
+    //                 console.log(err);
+    //                 MedicalInfo = strValue;
+    //             }
+    //             allResults.push(MedicalInfo);
+    //         }
             
-            result = await iterator.next();
-        }
-        return JSON.stringify(allResults);
-    }
+    //         result = await iterator.next();
+    //     }
+    //     return JSON.stringify(allResults);
+    // }
 
 }

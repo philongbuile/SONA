@@ -16,14 +16,14 @@ export class OperatorContract extends Contract {
     @Transaction()
     public async InitLedger(ctx: Context): Promise<void> {
         const operators: Operator[]=[
-            // {
-            //     Username: 'Doctor1',
-            //     Role: 'doctor'
-            // },
-            // {
-            //     Username: 'Researcher1',
-            //     Role: 'researcher'
-            // }
+            {
+                Username: 'Doctor1',
+                Role: 'doctor'
+            },
+            {
+                Username: 'Researcher1',
+                Role: 'researcher'
+            }
         ];
         for (const operator of operators) {
             operator.docType = 'operator';
@@ -37,7 +37,7 @@ export class OperatorContract extends Contract {
 
 
         const operator = {
-            docType: 'usage-record',
+            docType: 'operator',
             Username: username,
             Role: role
         };
