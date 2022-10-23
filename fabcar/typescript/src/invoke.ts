@@ -49,7 +49,7 @@ async function main() {
         // await caseContract.submitTransaction('CreateCase','1','success','allergic','use medicine');
         // console.log(`Transaction has been submitted`);
 
-        await caseContract.submitTransaction('CreateCase','2','Doctor1','case1','success','flu','hide from project and team meeting');
+        await caseContract.submitTransaction('CreateCase','2','Doctor1','case1','success','flu','using medicine');
         console.log(`Case Created`);
 
         

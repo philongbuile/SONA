@@ -245,9 +245,7 @@ describe('Asset Transfer Basic Tests', () => {
             
             //let ret = JSON.parse(await chaincodeStub.getState(2));
             let ret = JSON.stringify(records[0]);
-            // let ret ={
-            //     "Address": "12 xyz Street", "AuthorizedDoctors": ["Doctor1"], "Cases": [{"Diagnosis": "Allergic Rhinitis", "ID": "2", "TestResult": "Success", "Treatment": "Use medicine", "docType": "medical case"}], "DoB": "12/03/2001", "FullName": "Bui Le Phi Long", "Gender": "male", "ID": "2", "Phone": "0969120322", "Records": [{"Operation": "diagnosise", "OperatorName": "Doctor1", "Patient_ID": "2", "Record_ID": "1", "Roles": "doctor", "Time": "10/22/2022, 10:44:12 AM", "docType": "UsageRecord"}], "Username": "philong123", "docType": "patient"
-            // }
+            
             expect(ret).toEqual(result);
         });
     });
@@ -268,7 +266,7 @@ describe('Asset Transfer Basic Tests', () => {
             // await caseContract.CreateCase(transactionContext,'1','Success','Allergic Rhinitis','Use Medicine');
             // await caseContract.CreateCase(transactionContext,'1','Success','Allergic Rhinitis','Use Medicine');
             
-            await caseContract.CreateRecord(transactionContext,'2','1','diagnosise','doctor','Doctor1',new Date().toLocaleString());
+            await caseContract.CreateRecord(transactionContext,'2','Case1','Record1','create record','doctor','Doctor1',new Date().toLocaleString());
             const result = await patientContract.ReadAsset(transactionContext,'2');
             //console.log()
             let ret = JSON.parse(await chaincodeStub.getState(2));
@@ -278,6 +276,38 @@ describe('Asset Transfer Basic Tests', () => {
             expect(ret).toEqual(result.toString());
         });
     });
+
+
+
+    describe('Test CreateRecord by Operator creating case', () => {
+        // ID : '2',
+        //         TestResult : 'Success',
+        //         Diagnosis: 'Allergic Rhinitis',
+        //         Treatment: 'Use medicine'
+            
+
+        it('should return success on CreateRecord', async () => {
+            let caseContract = new CaseContract();
+            let patientContract = new AssetTransferContract();
+            await caseContract.InitCaseLedger(transactionContext);
+            //await caseContract.InitCaseLedger(transactionContext);
+            //const result = await patientContract.ReadAsset(transactionContext,'2');
+            // await caseContract.CreateCase(transactionContext,'1','Success','Allergic Rhinitis','Use Medicine');
+            // await caseContract.CreateCase(transactionContext,'1','Success','Allergic Rhinitis','Use Medicine');
+            
+            
+            //await caseContract.CreateRecord(transactionContext,'2','Case1','Record1','diagnosise','doctor','Doctor1',new Date().toLocaleString());
+            await caseContract.CreateCase(transactionContext,'1','Doctor1','Case1','success','flu','use medicines');
+            //await caseContract.ReadCase(transactionContext,'1');
+            const result = await patientContract.ReadAsset(transactionContext,'1');
+            //console.log()
+            let ret = JSON.parse(await chaincodeStub.getState(1));
+            expect(ret).toEqual(result.toString());
+        });
+    });
+
+
+
 
     // describe('Test DeleteAsset', () => {
     //     it('should return error on DeleteAsset', async () => {

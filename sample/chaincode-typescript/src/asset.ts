@@ -149,6 +149,3 @@ export class UsageRecord {
   public Time: string;
 
 }
-
-
-
