@@ -5,7 +5,7 @@ const chai = require('chai');
 
 const { Context } = require('fabric-contract-api');
 const { ChaincodeStub } = require('fabric-shim');
-import {AssetTransferContract} from '../src/assetTransfer';
+import {AssetTransferContract} from '../src/PatientContract';
 let assert = sinon.assert;
 chai.use(sinonChai);
 
