@@ -129,7 +129,7 @@ export class CaseContract extends Contract {
         //     Case_ID: id,
         //     Examinations: [examination]     
         // };
-        ctx.stub.putState(case_id, Buffer.from(stringify(sortKeysRecursive(Case_object))));
+        await ctx.stub.putState(case_id, Buffer.from(stringify(sortKeysRecursive(Case_object))));
         return Case_object;
     }
 
