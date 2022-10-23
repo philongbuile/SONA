@@ -11,6 +11,8 @@ export class Patient {
   @Property()
     public docType?: string;
 
+    // this is not the id of the patient
+    // but the id of the medical info
     @Property()
     public ID: string;
 
@@ -32,10 +34,8 @@ export class Patient {
     @Property()
     public Gender: string;
 
-    // array of case id
     @Property()
-    public Cases: Case[];
-
+    public MedicalInfo: MedicalInfo;
 
     @Property()
     public AuthorizedDoctors: string[];
@@ -48,11 +48,10 @@ export class Patient {
 }
 
 @Object()
-export class Case {
+export class Examination {
 
-  @Property()
-  public docType?: string;
-
+  // the examination contains the case id
+  // of the case it belongs to
   @Property()
   public Case_ID: string;
 
@@ -68,8 +67,25 @@ export class Case {
 }
 
 
+
 @Object()
-export class Doctor {
+export class Case {
+
+  @Property()
+  public docType?: string;
+
+  @Property()
+  public Case_ID: string;
+
+  @Property()
+  public Examinations: Examination[];
+
+}
+
+
+
+@Object()
+export class MedicalInfo {
 
   @Property()
   public docType?: string;
@@ -78,20 +94,26 @@ export class Doctor {
   public ID: string;
 
   @Property()
-  public FullName: string;
+  public Cases: Case[];
+
+}
+
+
+
+@Object()
+export class Operator {
+
+  @Property()
+  public docType?: string;
+
+  @Property()
+  public ID: string;
 
   @Property()
   public Username: string;
 
   @Property()
-  public DoB: string;
-
-  @Property()
-  public Gender: string;
-
-  @Property()
-  public Specification: string;
-  
+  public Role: string;
 
 }
 
@@ -102,18 +124,29 @@ export class UsageRecord {
   @Property()
   public docType?: string;
 
+  // case_id will be undefined if the operation is query
   @Property()
-  public Case_ID: string;
+  public Case_ID?: string;
+
+  @Property()
+  public MedicalInfo_ID: string;
 
   @Property()
   public Record_ID: string;
 
+  // operation can be:
+  //    append (append to an existing case - by calling updateCase())
+  //    add (add a new case to medicalinfo - by calling createCase())
+  //    read (query medical record - by calling QueryMedicalInfo())
+
   @Property()
   public Operation: string;
 
+  // get this from Operator info
   @Property()
   public Roles: string;
 
+  // get this from Operator info
   @Property()
   public OperatorName: string;
 
