@@ -5,7 +5,7 @@ const chai = require('chai');
 
 const { Context } = require('fabric-contract-api');
 const { ChaincodeStub } = require('fabric-shim');
-import {AssetTransferContract} from '../src/PatientContract';
+import {PatientContract} from '../src/PatientContract';
 let assert = sinon.assert;
 chai.use(sinonChai);
 
@@ -89,9 +89,9 @@ describe('Asset Transfer Basic Tests', () => {
     describe('Test InitLedger', () => {
         it('should return error on InitLedger', async () => {
             chaincodeStub.putState.rejects('failed inserting key');
-            let assetTransfer = new AssetTransferContract();
+            let Patient = new PatientContract();
             try {
-                await assetTransfer.InitLedger(transactionContext);
+                await Patient.InitLedger(transactionContext);
                 assert.fail('InitLedger should have failed');
             } catch (err) {
                 expect(err.name).toEqual('failed inserting key');
@@ -99,8 +99,8 @@ describe('Asset Transfer Basic Tests', () => {
         });
 
         it('should return success on InitLedger', async () => {
-            let assetTransfer = new AssetTransferContract();
-            await assetTransfer.InitLedger(transactionContext);
+            let Patient = new PatientContract();
+            await Patient.InitLedger(transactionContext);
             let ret = JSON.parse((await chaincodeStub.getState('1')).toString());
             expect(ret).toEqual(Object.assign({docType: 'patient'}, asset));
         });
@@ -110,9 +110,9 @@ describe('Asset Transfer Basic Tests', () => {
         it('should return error on CreateAsset', async () => {
             chaincodeStub.putState.rejects('failed inserting key');
 
-            let assetTransfer = new AssetTransferContract();
+            let Patient = new PatientContract();
             try {
-                await assetTransfer.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
+                await Patient.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
                 assert.fail('CreateAsset should have failed');
             } catch(err) {
                 expect(err.name).toEqual('failed inserting key');
@@ -120,9 +120,9 @@ describe('Asset Transfer Basic Tests', () => {
         });
 
         it('should return success on CreateAsset', async () => {
-            let assetTransfer = new AssetTransferContract();
+            let Patient = new PatientContract();
 
-            await assetTransfer.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
+            await Patient.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
 
             let ret = JSON.parse((await chaincodeStub.getState(asset.ID)).toString());
             expect(ret).toEqual(asset);
@@ -133,11 +133,11 @@ describe('Asset Transfer Basic Tests', () => {
 
     // describe('Test UpdateAsset', () => {
     //     it('should return error on UpdateAsset', async () => {
-    //         let assetTransfer = new AssetTransferContract();
-    //         await assetTransfer.CreateAsset(transactionContext,  asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
+    //         let Patient = new PatientContract();
+    //         await Patient.CreateAsset(transactionContext,  asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
 
     //         try {
-    //             await assetTransfer.UpdateAsset(transactionContext, '1', 'Peter', 'peter123', '0032', '23/44 sssf', '11/7', 'female', ['1'], ['doctor1']);
+    //             await Patient.UpdateAsset(transactionContext, '1', 'Peter', 'peter123', '0032', '23/44 sssf', '11/7', 'female', ['1'], ['doctor1']);
     //             assert.fail('UpdateAsset should have failed');
     //         } catch (err) {
     //             expect(err.message).toEqual('The asset 1 does not exist');
@@ -145,10 +145,10 @@ describe('Asset Transfer Basic Tests', () => {
     //     });
 
     //     it('should return success on UpdateAsset', async () => {
-    //         let assetTransfer = new AssetTransferContract();
-    //         await assetTransfer.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
+    //         let Patient = new PatientContract();
+    //         await Patient.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
 
-    //         await assetTransfer.UpdateAsset(transactionContext, '1', 'Peter', 'peter123', '0032', '23/44 sssf', '11/7', 'female', ['1'], ['doctor1']);
+    //         await Patient.UpdateAsset(transactionContext, '1', 'Peter', 'peter123', '0032', '23/44 sssf', '11/7', 'female', ['1'], ['doctor1']);
     //         let ret = JSON.parse(await chaincodeStub.getState(asset.ID));
     //         let expected = {
     //             ID: '1',
@@ -167,11 +167,11 @@ describe('Asset Transfer Basic Tests', () => {
 
     // describe('Test ReadAsset', () => {
     //     it('should return error on ReadAsset', async () => {
-    //         let assetTransfer = new AssetTransferContract();
-    //         await assetTransfer.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
+    //         let Patient = new PatientContract();
+    //         await Patient.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
 
     //         try {
-    //             await assetTransfer.ReadAsset(transactionContext, 'asset2');
+    //             await Patient.ReadAsset(transactionContext, 'asset2');
     //             assert.fail('ReadAsset should have failed');
     //         } catch (err) {
     //             expect(err.message).toEqual('The asset asset2 does not exist');
@@ -179,8 +179,8 @@ describe('Asset Transfer Basic Tests', () => {
     //     });
 
     //     it('should return success on ReadAsset', async () => {
-    //         let assetTransfer = new AssetTransferContract();
-    //         await assetTransfer.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
+    //         let Patient = new PatientContract();
+    //         await Patient.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
 
     //         let ret = JSON.parse(await chaincodeStub.getState(asset.ID));
     //         expect(ret).toEqual(asset);
@@ -189,11 +189,11 @@ describe('Asset Transfer Basic Tests', () => {
 
     // describe('Test DeleteAsset', () => {
     //     it('should return error on DeleteAsset', async () => {
-    //         let assetTransfer = new AssetTransferContract();
-    //         await assetTransfer.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
+    //         let Patient = new PatientContract();
+    //         await Patient.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
 
     //         try {
-    //             await assetTransfer.DeleteAsset(transactionContext, 'asset2');
+    //             await Patient.DeleteAsset(transactionContext, 'asset2');
     //             assert.fail('DeleteAsset should have failed');
     //         } catch (err) {
     //             expect(err.message).toEqual('The asset asset2 does not exist');
@@ -201,10 +201,10 @@ describe('Asset Transfer Basic Tests', () => {
     //     });
 
     //     it('should return success on DeleteAsset', async () => {
-    //         let assetTransfer = new AssetTransferContract();
-    //         await assetTransfer.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
+    //         let Patient = new PatientContract();
+    //         await Patient.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
 
-    //         await assetTransfer.DeleteAsset(transactionContext, asset.ID);
+    //         await Patient.DeleteAsset(transactionContext, asset.ID);
     //         let ret = await chaincodeStub.getState(asset.ID);
     //         expect(ret).toEqual(undefined);
     //     });
@@ -212,11 +212,11 @@ describe('Asset Transfer Basic Tests', () => {
 
     // describe('Test TransferAsset', () => {
     //     it('should return error on TransferAsset', async () => {
-    //         let assetTransfer = new AssetTransfer();
-    //         await assetTransfer.CreateAsset(transactionContext, asset.ID, asset.Color, asset.Size, asset.Owner, asset.AppraisedValue);
+    //         let Patient = new Patient();
+    //         await Patient.CreateAsset(transactionContext, asset.ID, asset.Color, asset.Size, asset.Owner, asset.AppraisedValue);
 
     //         try {
-    //             await assetTransfer.TransferAsset(transactionContext, 'asset2', 'Me');
+    //             await Patient.TransferAsset(transactionContext, 'asset2', 'Me');
     //             assert.fail('DeleteAsset should have failed');
     //         } catch (err) {
     //             expect(err.message).toEqual('The asset asset2 does not exist');
@@ -224,10 +224,10 @@ describe('Asset Transfer Basic Tests', () => {
     //     });
 
     //     it('should return success on TransferAsset', async () => {
-    //         let assetTransfer = new AssetTransfer();
-    //         await assetTransfer.CreateAsset(transactionContext, asset.ID, asset.Color, asset.Size, asset.Owner, asset.AppraisedValue);
+    //         let Patient = new Patient();
+    //         await Patient.CreateAsset(transactionContext, asset.ID, asset.Color, asset.Size, asset.Owner, asset.AppraisedValue);
 
-    //         await assetTransfer.TransferAsset(transactionContext, asset.ID, 'Me');
+    //         await Patient.TransferAsset(transactionContext, asset.ID, 'Me');
     //         let ret = JSON.parse((await chaincodeStub.getState(asset.ID)).toString());
     //         expect(ret).toEqual(Object.assign({}, asset, {Owner: 'Me'}));
     //     });
@@ -235,13 +235,13 @@ describe('Asset Transfer Basic Tests', () => {
 
     // describe('Test GetAllAssets', () => {
     //     it('should return success on GetAllAssets', async () => {
-    //         let assetTransfer = new AssetTransferContract();
+    //         let Patient = new PatientContract();
 
-    //         await assetTransfer.CreateAsset(transactionContext, '1', 'Peter', 'peter123', '0032', '23/44 sssf', '11/7', 'female', ['1'], ['doctor1']);
-    //         await assetTransfer.CreateAsset(transactionContext, '2', 'Peter', 'peter123', '0032', '23/44 sssf', '11/7', 'female', ['1'], ['doctor1']);
+    //         await Patient.CreateAsset(transactionContext, '1', 'Peter', 'peter123', '0032', '23/44 sssf', '11/7', 'female', ['1'], ['doctor1']);
+    //         await Patient.CreateAsset(transactionContext, '2', 'Peter', 'peter123', '0032', '23/44 sssf', '11/7', 'female', ['1'], ['doctor1']);
          
 
-    //         let ret = await assetTransfer.GetAllAssets(transactionContext);
+    //         let ret = await Patient.GetAllAssets(transactionContext);
     //         ret = JSON.parse(ret);
     //         expect(ret.length).toEqual(4);
 
@@ -255,7 +255,7 @@ describe('Asset Transfer Basic Tests', () => {
     //     });
 
     //     it('should return success on GetAllAssets for non JSON value', async () => {
-    //         let assetTransfer = new AssetTransferContract();
+    //         let Patient = new PatientContract();
 
     //         chaincodeStub.putState.onFirstCall().callsFake((key, value) => {
     //             if (!chaincodeStub.states) {
@@ -264,12 +264,12 @@ describe('Asset Transfer Basic Tests', () => {
     //             chaincodeStub.states[key] = 'non-json-value';
     //         });
 
-    //         await assetTransfer.CreateAsset(transactionContext, '1', 'Peter', 'peter123', '0032', '23/44 sssf', '11/7', 'female', ['1'], ['doctor1']);
-    //         // await assetTransfer.CreateAsset(transactionContext, 'asset2', 'orange', 10, 'Paul', 200);
-    //         // await assetTransfer.CreateAsset(transactionContext, 'asset3', 'red', 15, 'Troy', 300);
-    //         // await assetTransfer.CreateAsset(transactionContext, 'asset4', 'pink', 20, 'Van', 400);
+    //         await Patient.CreateAsset(transactionContext, '1', 'Peter', 'peter123', '0032', '23/44 sssf', '11/7', 'female', ['1'], ['doctor1']);
+    //         // await Patient.CreateAsset(transactionContext, 'asset2', 'orange', 10, 'Paul', 200);
+    //         // await Patient.CreateAsset(transactionContext, 'asset3', 'red', 15, 'Troy', 300);
+    //         // await Patient.CreateAsset(transactionContext, 'asset4', 'pink', 20, 'Van', 400);
 
-    //         let ret = await assetTransfer.GetAllAssets(transactionContext);
+    //         let ret = await Patient.GetAllAssets(transactionContext);
     //         ret = JSON.parse(ret);
     //         expect(ret.length).toEqual(1);
 
@@ -288,10 +288,10 @@ describe('Asset Transfer Basic Tests', () => {
     describe('Test query patient data', () => {
         it('should return error on query from unauthorized doctor', async () => {
 
-            let assetTransfer = new AssetTransferContract();
-            await assetTransfer.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
+            let Patient = new PatientContract();
+            await Patient.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
             try {
-                await assetTransfer.PatientQuery(transactionContext, asset.ID, 'doctor3');
+                await Patient.PatientQuery(transactionContext, asset.ID, 'doctor3');
                 assert.fail('query should be permission denied');
             } catch (err) {
                 expect(err.message).toEqual(`permission denied to query ${asset.ID} info`);
@@ -299,9 +299,9 @@ describe('Asset Transfer Basic Tests', () => {
         });
 
         it('should query sucessful from authorized doctor', async () => {
-            let assetTransfer = new AssetTransferContract();
-            await assetTransfer.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
-            let ret =  await assetTransfer.PatientQuery(transactionContext, asset.ID, 'Doctor1');
+            let Patient = new PatientContract();
+            await Patient.CreateAsset(transactionContext, asset.ID, asset.FullName, asset.Username, asset.Phone, asset.Address, asset.DoB, asset.Gender, asset.Cases, asset.AuthorizedDoctors);
+            let ret =  await Patient.PatientQuery(transactionContext, asset.ID, 'Doctor1');
             expect(JSON.parse(ret)).toEqual(asset);
 });
     });

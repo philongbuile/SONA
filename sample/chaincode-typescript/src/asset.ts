@@ -11,11 +11,6 @@ export class Patient {
   @Property()
     public docType?: string;
 
-    // this is not the id of the patient
-    // but the id of the medical info
-    @Property()
-    public ID: string;
-
     @Property()
     public FullName: string;
 
@@ -53,7 +48,7 @@ export class Examination {
   // the examination contains the case id
   // of the case it belongs to
   @Property()
-  public Case_ID: string;
+  public docType?: string;
 
   @Property()
   public TestResult: string;

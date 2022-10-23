@@ -9,13 +9,58 @@ import {Case, MedicalInfo} from './asset';
 import {v4 as uuid} from 'uuid';
 
 
-@Info({title: 'MedicalInfoTransfer', description: 'Smart contract for trading MedicalInfos'})
-export class MedicalInfoTransferContract extends Contract {
+@Info({title: 'MedicalInfo', description: 'Smart contract for trading MedicalInfos'})
+export class MedicalInfoContract extends Contract {
 
     @Transaction()
     public async InitLedger(ctx: Context): Promise<void> {
         
-        const medical_infos: MedicalInfo[] = [];
+        const medical_infos: MedicalInfo[] = [
+            {
+                ID: 'medical1',
+                Cases: [
+                    {
+                        Case_ID: 'case1',
+                    Examinations: [
+                    {
+                        TestResult: '',
+                        Diagnosis: '',
+                        Treatment: '',
+
+                    },
+                    {
+                        TestResult: '',
+                        Diagnosis: '',
+                        Treatment: '',
+
+                    }
+                ]}]
+            },
+            {
+                ID: 'medical2',
+                Cases: [
+                    {
+                        Case_ID: 'case2',
+                    Examinations: [
+                    {
+                        TestResult: '',
+                        Diagnosis: '',
+                        Treatment: '',
+
+                    },
+                    {
+                        TestResult: '',
+                        Diagnosis: '',
+                        Treatment: '',
+
+                    }
+                ]}]
+            }
+
+            
+        ];
+
+        console.log('calling init function of medical info')
         for (const MedicalInfo of medical_infos) {
             MedicalInfo.docType = 'medical_info';
             // example of how to write to world state deterministically
@@ -29,7 +74,7 @@ export class MedicalInfoTransferContract extends Contract {
 
     // CreateMedicalInfo issues a new MedicalInfo to the world state with given details.
     @Transaction()
-    public async CreateMedicalInfo(ctx: Context,cases: Case[]): Promise<void> {
+    public async CreateMedicalInfo(ctx: Context,cases: Case[]): Promise<MedicalInfo> {
 
 
         // generate uuid for medical record
@@ -39,12 +84,14 @@ export class MedicalInfoTransferContract extends Contract {
         if (exists) {
             throw new Error(`The MedicalInfo ${id} already exists`);
         }
-        const MedicalInfo = {
+        const medicalInfo: MedicalInfo  = {
             ID: id,
             Cases: cases
         };
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-        await ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(MedicalInfo))));
+        await ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(medicalInfo))));
+        return medicalInfo;
+
     }
 
     // ReadMedicalInfo returns the MedicalInfo stored in the world state with given id.
@@ -54,6 +101,10 @@ export class MedicalInfoTransferContract extends Contract {
         if (!MedicalInfoJSON || MedicalInfoJSON.length === 0) {
             throw new Error(`The MedicalInfo ${id} does not exist`);
         }
+
+        // generate record 
+        // medical info id
+
         return MedicalInfoJSON.toString();
     }
 

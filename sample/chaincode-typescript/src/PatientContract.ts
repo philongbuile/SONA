@@ -7,6 +7,7 @@ import stringify from 'json-stringify-deterministic';
 import sortKeysRecursive from 'sort-keys-recursive';
 import {Patient, MedicalInfo} from './asset';
 import {Case} from './asset';
+import { MedicalInfoContract } from './MedicalInfo_Contract';
 
 @Info({title: 'AssetTransfer', description: 'Smart contract for trading assets'})
 export class PatientContract extends Contract {
@@ -15,20 +16,23 @@ export class PatientContract extends Contract {
     public async InitLedger(ctx: Context): Promise<void> {
 
 
-        const medical1 = new MedicalInfo();
-        const medical1_id = medical1.ID;
-        const medical2 = new MedicalInfo();
-        const medical2_id = medical2.ID;
-
+        console.log('calling init function of patient contract')
         // first creat the medicalInfo for that patient 
         // then add it to the patient info
-        
+        let medical1 = new MedicalInfo();
+        medical1.ID = '1';
+        let medical2 = new MedicalInfo();;
+        medical2.ID = '2';
+
+        // const medical1 = await new MedicalInfoContract().CreateMedicalInfo(ctx, [] );
+        // const medical1_id = medical1.ID;
+        // const medical2 = await new MedicalInfoContract().CreateMedicalInfo(ctx, [] );
+        // const medical2_id = medical2.ID;
 
 
 
         const patients: Patient[] = [
             {
-                ID: medical1_id,
                 FullName: 'Cam Tu',
                 Username: 'camtu123',
                 Phone: '0095', 
@@ -40,7 +44,6 @@ export class PatientContract extends Contract {
                 Records: [],
             },
             {
-                ID: medical2_id, 
                 FullName: 'Bui Le Phi Long',
                 Username: 'philong123',
                 Phone: '0969120322',
@@ -59,21 +62,20 @@ export class PatientContract extends Contract {
             // use convetion of alphabetic order
             // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
             // when retrieving data, in any lang, the order of data will be the same and consequently also the corresonding hash
-            await ctx.stub.putState(patient.ID, Buffer.from(stringify(sortKeysRecursive(patient))));
-            console.info(`Patient ${patient.ID} initialized`);
+            await ctx.stub.putState(patient.Username, Buffer.from(stringify(sortKeysRecursive(patient))));
+            console.info(`Patient ${patient.Username} initialized`);
         }
     }
 
     // CreateAsset issues a new asset to the world state with given details.
     @Transaction()
-    public async CreateAsset(ctx: Context, id: string, fullname: string, username: string, phone: string, address: string, dob: string, gender: string, medical_info: MedicalInfo, authorized_doctors: string[]): Promise<void> {
+    public async CreateAsset(ctx: Context,fullname: string, username: string, phone: string, address: string, dob: string, gender: string, medical_info: MedicalInfo, authorized_doctors: string[]): Promise<void> {
         const exists = await this.AssetExists(ctx,username);
         if (exists) {
             throw new Error(`The asset ${username} already exists`);
         }
 
         const patient = {
-            ID: id,
             FullName: fullname,
             Username: username,
             Phone: phone,
