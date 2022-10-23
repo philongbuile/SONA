@@ -52,8 +52,6 @@ export class Examination {
 
   // the examination contains the case id
   // of the case it belongs to
-  @Property()
-  public Case_ID: string;
 
   @Property()
   public TestResult: string;
@@ -154,6 +152,3 @@ export class UsageRecord {
   public Time: string;
 
 }
-
-
-

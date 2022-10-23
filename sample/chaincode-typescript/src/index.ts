@@ -4,8 +4,11 @@
 
 import {AssetTransferContract} from './assetTransfer';
 import {CaseContract} from './caseContract'
+import { UsageRecordContract } from './UsageRecordContract';
 
 export {AssetTransferContract} from './assetTransfer';
-export {CaseContract} from './caseContract'
+export {CaseContract} from './caseContract';
+export {UsageRecordContract} from './UsageRecordContract'
 
-export const contracts: any[] = [AssetTransferContract, CaseContract ];
+
+export const contracts: any[] = [AssetTransferContract, CaseContract,UsageRecordContract ];
