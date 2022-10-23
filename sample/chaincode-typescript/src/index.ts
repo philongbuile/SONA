@@ -8,18 +8,18 @@ import {MedicalInfoContract} from './MedicalInfo_Contract'
 
 
 
+
 export {PatientContract} from './PatientContract';
-export {CaseContract} from './caseContract'
+export {CaseContract} from './caseContract';
 export {MedicalInfoContract} from './MedicalInfo_Contract'
 
 
-// export const contracts: any[] = [CaseContract];
 // import { UsageRecordContract } from './UsageRecordContract';
-// import {MedicalOperatorContract} from './MedicalOperator_Contract';
+import {MedicalOperatorContract} from './MedicalOperator_Contract';
 
-// export {AssetTransferContract} from './assetTransfer';
-// export {CaseContract} from './caseContract';
 // export {UsageRecordContract} from './UsageRecordContract'
 
 
-// export const contracts: any[] = [AssetTransferContract, CaseContract,UsageRecordContract,MedicalOperatorContract ];
+
+
+export const contracts: any[] = [CaseContract, PatientContract, MedicalInfoContract];

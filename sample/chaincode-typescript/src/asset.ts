@@ -5,42 +5,7 @@
 import {Object, Property} from 'fabric-contract-api';
 
 
-@Object() 
-export class Patient {
 
-  @Property()
-    public docType?: string;
-
-    @Property()
-    public FullName: string;
-
-    @Property()
-    public Username: string;
-
-    @Property()
-    public Phone: string;
-
-    @Property()
-    public Address: string;
-
-    @Property()
-    public DoB: string;
-
-    @Property()
-    public Gender: string;
-
-    @Property()
-    public MedicalInfo: MedicalInfo;
-
-    @Property()
-    public AuthorizedDoctors: string[];
-
-    @Property()
-    public Records: UsageRecord[];
-
-    
-
-}
 
 @Object()
 export class Examination {
@@ -147,5 +112,44 @@ export class UsageRecord {
 
   @Property()
   public Time: string;
+
+}
+
+
+
+@Object() 
+export class Patient {
+
+  @Property()
+    public docType?: string;
+
+    @Property()
+    public FullName: string;
+
+    @Property()
+    public Username: string;
+
+    @Property()
+    public Phone: string;
+
+    @Property()
+    public Address: string;
+
+    @Property()
+    public DoB: string;
+
+    @Property()
+    public Gender: string;
+
+    @Property()
+    public Medical_Info: MedicalInfo;
+
+    @Property()
+    public AuthorizedDoctors: string[];
+
+    @Property()
+    public Records: UsageRecord[];
+
+    
 
 }

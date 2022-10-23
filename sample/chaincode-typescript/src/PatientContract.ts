@@ -19,15 +19,9 @@ export class PatientContract extends Contract {
         console.log('calling init function of patient contract')
         // first creat the medicalInfo for that patient 
         // then add it to the patient info
-        let medical1 = new MedicalInfo();
-        medical1.ID = '1';
-        let medical2 = new MedicalInfo();;
-        medical2.ID = '2';
 
-        // const medical1 = await new MedicalInfoContract().CreateMedicalInfo(ctx, [] );
-        // const medical1_id = medical1.ID;
-        // const medical2 = await new MedicalInfoContract().CreateMedicalInfo(ctx, [] );
-        // const medical2_id = medical2.ID;
+        const medical1 = await new MedicalInfoContract().CreateMedicalInfo(ctx, [] );
+        const medical2 = await new MedicalInfoContract().CreateMedicalInfo(ctx, [] );
 
 
 
@@ -39,7 +33,7 @@ export class PatientContract extends Contract {
                 Address: '43/2 abc street',
                 DoB: '11/2',
                 Gender: 'female',
-                MedicalInfo: medical1,
+                Medical_Info: medical1,
                 AuthorizedDoctors: ['Doctor1', 'Doctor2'],
                 Records: [],
             },
@@ -50,7 +44,7 @@ export class PatientContract extends Contract {
                 Address: '12 xyz Street',
                 DoB: '12/03/2001',
                 Gender: 'male',
-                MedicalInfo: medical2,
+                Medical_Info: medical2,
                 AuthorizedDoctors:['Doctor1'],
                 Records:[],
             }
@@ -69,11 +63,21 @@ export class PatientContract extends Contract {
 
     // CreateAsset issues a new asset to the world state with given details.
     @Transaction()
-    public async CreateAsset(ctx: Context,fullname: string, username: string, phone: string, address: string, dob: string, gender: string, medical_info: MedicalInfo, authorized_doctors: string[]): Promise<void> {
+    public async CreatePatient(ctx: Context,fullname: string, username: string, phone: string, address: string, dob: string, gender: string, authorized_doctors: string[], operator_username: string): Promise<void> {
         const exists = await this.AssetExists(ctx,username);
         if (exists) {
             throw new Error(`The asset ${username} already exists`);
         }
+
+
+        const isAuthorized = this.IsAuthorized(ctx, username, operator_username);
+
+        if (!isAuthorized) {
+            throw Error('Permission Denied');
+        }
+
+        const medical_info = await new MedicalInfoContract().CreateMedicalInfo(ctx, []);
+
 
         const patient = {
             FullName: fullname,
@@ -95,7 +99,7 @@ export class PatientContract extends Contract {
     // ReadAsset returns the asset stored in the world state with given id.
     // Read patient record given patient name
     @Transaction(false)
-    public async ReadPatient(ctx: Context, username: string): Promise<string> {
+    private async ReadPatient(ctx: Context, username: string): Promise<string> {
         const assetJSON = await ctx.stub.getState(username); // get the asset from chaincode state
         if (!assetJSON || assetJSON.length === 0) {
             throw new Error(`The asset ${username} does not exist`);
@@ -103,46 +107,11 @@ export class PatientContract extends Contract {
         return assetJSON.toString();
     }
 
-    // can use this function for patient to update 
-    // their profile infomation
-    // // UpdateAsset updates an existing asset in the world state with provided parameters.
-    // @Transaction()
-    // public async UpdateAsset(ctx: Context, id: string, fullname: string, username: string, phone: string, address: string, dob: string, gender: string, cases: string[], authorized_doctors: string[]): Promise<void> {
-    //     const exists = await this.AssetExists(ctx, id);
-    //     if (!exists) {
-    //         throw new Error(`The asset ${id} does not exist`);
-    //     }
-
-    //     // overwriting original asset with new asset
-    //     const updatedAsset = {
-    //         ID: id,
-    //         FullName: fullname,
-    //         Username: username,
-    //         Phone: phone,
-    //         Address: address,
-    //         DoB: dob,
-    //         Gender: gender,
-    //         Cases: cases,
-    //         AuthorizedDoctors: authorized_doctors
-    //     };
-    //     // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-    //     return ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(updatedAsset))));
-    // }
-
-    // // DeleteAsset deletes an given asset from the world state.
-    // @Transaction()
-    // public async DeleteAsset(ctx: Context, id: string): Promise<void> {
-    //     const exists = await this.AssetExists(ctx, id);
-    //     if (!exists) {
-    //         throw new Error(`The asset ${id} does not exist`);
-    //     }
-    //     return ctx.stub.deleteState(id);
-    // }
 
     // AssetExists returns true when asset with given ID exists in world state.
     @Transaction(false)
     @Returns('boolean')
-    public async AssetExists(ctx: Context, username: string): Promise<boolean> {
+    private async AssetExists(ctx: Context, username: string): Promise<boolean> {
         const assetJSON = await ctx.stub.getState(username);
         return assetJSON && assetJSON.length > 0;
     }

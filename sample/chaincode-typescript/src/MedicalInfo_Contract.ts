@@ -5,8 +5,10 @@
 import {Context, Contract, Info, Returns, Transaction} from 'fabric-contract-api';
 import stringify from 'json-stringify-deterministic';
 import sortKeysRecursive from 'sort-keys-recursive';
-import {Case, MedicalInfo} from './asset';
+import {Case, Examination, MedicalInfo} from './asset';
 import {v4 as uuid} from 'uuid';
+import { CaseContract } from './caseContract';
+import { PatientContract } from './PatientContract';
 
 
 @Info({title: 'MedicalInfo', description: 'Smart contract for trading MedicalInfos'})
@@ -22,18 +24,12 @@ export class MedicalInfoContract extends Contract {
                     {
                         Case_ID: 'case1',
                     Examinations: [
-                    {
-                        TestResult: '',
-                        Diagnosis: '',
-                        Treatment: '',
-
-                    },
-                    {
-                        TestResult: '',
-                        Diagnosis: '',
-                        Treatment: '',
-
-                    }
+                        {
+                            TestResult : 'Success',
+                            Diagnosis: 'Allergic Rhinitis',
+                            Treatment: 'Use medicine'
+    
+                        }
                 ]}]
             },
             {
@@ -73,9 +69,10 @@ export class MedicalInfoContract extends Contract {
     }
 
     // CreateMedicalInfo issues a new MedicalInfo to the world state with given details.
+    // patient_username: needed to check whether operator has right to create 
+    // medical info for that patient.
     @Transaction()
     public async CreateMedicalInfo(ctx: Context,cases: Case[]): Promise<MedicalInfo> {
-
 
         // generate uuid for medical record
         const id = uuid();
@@ -88,6 +85,8 @@ export class MedicalInfoContract extends Contract {
             ID: id,
             Cases: cases
         };
+
+        // add this medical info to patient object
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
         await ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(medicalInfo))));
         return medicalInfo;
@@ -97,6 +96,7 @@ export class MedicalInfoContract extends Contract {
     // ReadMedicalInfo returns the MedicalInfo stored in the world state with given id.
     @Transaction(false)
     public async ReadMedicalInfo(ctx: Context, id: string): Promise<string> {
+
         const MedicalInfoJSON = await ctx.stub.getState(id); // get the MedicalInfo from chaincode state
         if (!MedicalInfoJSON || MedicalInfoJSON.length === 0) {
             throw new Error(`The MedicalInfo ${id} does not exist`);
@@ -112,23 +112,49 @@ export class MedicalInfoContract extends Contract {
     // type of updates: 
     //      add a new case
     @Transaction()
-    public async UpdateMedicalInfo(ctx: Context, id: string, new_case: Case): Promise<void> {
+    public async AddCase(ctx: Context, id: string, test_result: string, diagnosis: string, treatment: string, operator_username: string, patient_username: string): Promise<void> {
 
+
+        const isAuthorized = new PatientContract().IsAuthorized(ctx, patient_username, operator_username);
+
+        if (!isAuthorized) {
+            throw Error('Permission Denied');
+        }
         // get the current cases array
         // add new case to it
-        const current_cases = JSON.parse(await this.ReadMedicalInfo(ctx, id));
+        const current_info = JSON.parse(await this.ReadMedicalInfo(ctx, id));
 
-        const new_cases = current_cases.push(new_case);
+        const caseContract = new CaseContract();
+        const new_case = caseContract.CreateCase(ctx, test_result, diagnosis, treatment);
+        const new_info = current_info.Cases.push(new_case);
 
 
-        // overwriting original MedicalInfo with new MedicalInfo
-        const updatedMedicalInfo = {
-            docType: 'medical_info',
-            ID: id,
-            Cases: new_cases
-        };
+        // // overwriting original MedicalInfo with new MedicalInfo
+
+        await ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(new_info))));
+
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-        return ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(updatedMedicalInfo))));
+    }
+
+    @Transaction()
+    public async AppendCase(ctx: Context, id: string, case_id: string, test_result: string, diagnosis: string, treatment: string,  operator_username: string, patient_username: string): Promise<void> {
+
+        // check if the operator has right to append to case
+        const isAuthorized = new PatientContract().IsAuthorized(ctx, patient_username, operator_username);
+
+        if (!isAuthorized) {
+            throw Error('Permission Denied');
+        }
+
+
+        // use CaseContract to call function updateCase
+        const caseContract = new CaseContract();
+        const new_case = caseContract.UpdateCase(ctx,case_id, test_result, diagnosis, treatment);
+
+
+
+        // use operator username to get their info - role
+        // use that info to creat usage record
     }
 
 
