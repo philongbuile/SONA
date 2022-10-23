@@ -11,7 +11,6 @@
     "scripts": {
         "lint": "tslint -c tslint.json 'src/**/*.ts'",
         "pretest": "npm run lint",
-  
         "start": "set -x && fabric-chaincode-node start",
         "build": "tsc",
         "build:watch": "tsc -w",
@@ -31,7 +30,8 @@
         "fabric-contract-api": "^2.4.0",
         "fabric-shim": "^2.4.0",
         "json-stringify-deterministic": "^1.0.1",
-        "sort-keys-recursive": "^2.1.2"
+        "sort-keys-recursive": "^2.1.2",
+        "uuid": "^9.0.0"
     },
     "devDependencies": {
         "@types/chai": "^4.1.7",
