@@ -10,7 +10,6 @@ import {Case} from './asset';
 import { MedicalInfoContract } from './MedicalInfo_Contract';
 import { OperatorContract } from './MedicalOperator_Contract';
 import { UsageRecordContract } from './UsageRecordContract';
-
 @Info({title: 'AssetTransfer', description: 'Smart contract for trading assets'})
 export class PatientContract extends Contract {
 
@@ -21,9 +20,8 @@ export class PatientContract extends Contract {
         console.log('calling init function of patient contract')
         // first creat the medicalInfo for that patient 
         // then add it to the patient info
-
-        const medical1 = await new MedicalInfoContract().CreateMedicalInfo(ctx, [] );
-        const medical2 = await new MedicalInfoContract().CreateMedicalInfo(ctx, [] );
+        const medical1 = await new MedicalInfoContract().CreateMedicalInfo(ctx , 'patient1000');
+        const medical2 = await new MedicalInfoContract().CreateMedicalInfo(ctx, 'patient1001');
 
 
 
@@ -35,9 +33,8 @@ export class PatientContract extends Contract {
                 Address: '43/2 abc street',
                 DoB: '11/2',
                 Gender: 'female',
-                Medical_Info: medical1,
+                MedicalInfo_ID: medical1.ID,
                 AuthorizedDoctors: ['Doctor1', 'Doctor2'],
-                Records: [],
             },
             {
                 FullName: 'Bui Le Phi Long',
@@ -46,9 +43,8 @@ export class PatientContract extends Contract {
                 Address: '12 xyz Street',
                 DoB: '12/03/2001',
                 Gender: 'male',
-                Medical_Info: medical2,
+                MedicalInfo_ID: medical2.ID,
                 AuthorizedDoctors:['Doctor1'],
-                Records:[],
             }
         ];
 
@@ -65,7 +61,7 @@ export class PatientContract extends Contract {
 
     // CreateAsset issues a new asset to the world state with given details.
     @Transaction()
-    public async CreatePatient(ctx: Context,fullname: string, username: string, phone: string, address: string, dob: string, gender: string, authorized_doctors: string[], operator_username: string): Promise<void> {
+    public async CreatePatient(ctx: Context,fullname: string, username: string, medinfo_id: string, phone: string, address: string, dob: string, gender: string, authorized_doctors: string[], operator_username: string): Promise<void> {
         const exists = await this.AssetExists(ctx,username);
         if (exists) {
             throw new Error(`The asset ${username} already exists`);
@@ -80,7 +76,7 @@ export class PatientContract extends Contract {
         //     throw Error('Permission Denied');
         // }
 
-        const medical_info = await new MedicalInfoContract().CreateMedicalInfo(ctx, []);
+       
 
 
         const patient = {
@@ -90,7 +86,7 @@ export class PatientContract extends Contract {
             Address: address,
             DoB: dob,
             Gender: gender,
-            MedicalInfo: medical_info,
+            MedicalInfo: medinfo_id,
             AuthorizedDoctors: authorized_doctors
             
         };
@@ -144,9 +140,11 @@ export class PatientContract extends Contract {
         return doctor_authorized;
     }
 
+    // doctor call this funciton
+    // return a patient from world state provided patient_username and doctor_username
     @Transaction(false)
     @Returns('boolean')
-    public async QueryPatient(ctx: Context, patient_username: string, doctor_username: string): Promise<string> {
+    public async doctorQuery(ctx: Context, patient_username: string, doctor_username: string, record_id: string, time: string): Promise<string> {
 
         const isAuthorized = await this.IsAuthorized(ctx, patient_username, doctor_username);
 
@@ -159,9 +157,19 @@ export class PatientContract extends Contract {
 
         // create usage record
         let recordContract = new UsageRecordContract();
-        recordContract.CreateRecord(ctx, undefined, patient_obj.Medical_Info.ID, 'read', doctor_username);
+        recordContract.CreateRecord(ctx, record_id ,undefined, patient_obj.Medical_Info.ID, 'read', doctor_username, time);
 
-        return patient;    }
+        return patient;    
+    }
+
+    @Transaction(false)
+    public async patientQuery(ctx: Context, username: string): Promise<string> {
+        const assetJSON = await ctx.stub.getState(username); // get the asset from chaincode state
+        if (!assetJSON || assetJSON.length === 0) {
+            throw new Error(`The asset ${username} does not exist`);
+        }
+        return assetJSON.toString();
+    }
 
     @Transaction(false)
     @Returns('string')

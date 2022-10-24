@@ -2,12 +2,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 // Deterministic JSON.stringify()
-import { V4MAPPED } from 'dns';
+
 import {Context, Contract, Info, Returns, Transaction} from 'fabric-contract-api';
 import stringify from 'json-stringify-deterministic';
 import sortKeysRecursive from 'sort-keys-recursive';
-import { v4 as uuidv4 } from 'uuid';
-import {Patient, Case, UsageRecord} from './asset';
+
+import {Patient, Case, UsageRecord, Operator} from './asset';
 import { OperatorContract } from './MedicalOperator_Contract';
 
 // import {AssetTransferContract} from './assetTransfer'
@@ -72,23 +72,28 @@ export class UsageRecordContract extends Contract {
     // temp function for create Record when query Case in Medical Info
     // create an object record then push it in to the Records array corresponding to the patient
     @Transaction()
-    public async CreateRecord(ctx: Context, case_id: string, medicalinfo_id: string ,operation: string,operator_username: string): Promise<void>{
+    public async CreateRecord(ctx: Context,record_id: string ,case_id: string, medicalinfo_id: string ,operation: string,operator_username: string, time: string): Promise<void>{
+        
         
 
         let operatorContract = new OperatorContract();
-        const operatorString = await operatorContract.QueryOperator(ctx, operator_username);
-        const operator = JSON.parse(operatorString);
+        const operator = await operatorContract.QueryOperator(ctx,operator_username)
+
 
         
         const record ={
             docType: 'UsageRecord',
             Case_ID: case_id,
             MedicalInfo_ID: medicalinfo_id,
+<<<<<<< HEAD
             Record_ID: 'record3',
+=======
+            Record_ID: record_id,
+>>>>>>> b7baba95988467316addc6770dd16e0e2d4f3766
             Operation: operation,
             Roles: operator.Role,
-            OperatorName: operator.username,
-            Time : new Date().toLocaleString()
+            OperatorName: operator.Username,
+            Time : time
         }
         // const patientUint8 = await ctx.stub.getState(patient_username);
         // const patientJSON =  Buffer.from(patientUint8).toString('utf8');
@@ -104,8 +109,8 @@ export class UsageRecordContract extends Contract {
     // Read Record function called by Patient 
     // return all the records for all times his/her case or information has been used
     // @Transaction()
-    // public async ReadRecord(ctx:Context, record_id: string) : Promise<string>{
-    //     const patientUint8 = await ctx.stub.getState(record_id); 
+    // public async ReadRecord(ctx:Context, patient_id: string) : Promise<string>{
+    //     const patientUint8 = await ctx.stub.getState(patient_id); 
     //     const patientJSON = Buffer.from(patientUint8).toString('utf8');
     //     const patientObject= JSON.parse(patientJSON);
 
@@ -113,6 +118,7 @@ export class UsageRecordContract extends Contract {
     //     return patientRecordsJSON.toString();
     // }
 
+<<<<<<< HEAD
     @Transaction(false)
     @Returns('string')
     public async GetAll(ctx: Context): Promise<string> {
@@ -146,10 +152,39 @@ export class UsageRecordContract extends Contract {
         }
         return JSON.stringify(allResults);
     }
+=======
+
+
+
+
+    // modify
+    // @Transaction(false)
+    // @Returns('string')
+    // public async GetAll(ctx: Context): Promise<string> {
+    //     const allResults = [];
+    //     // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
+    //     const iterator = await ctx.stub.getStateByRange('', '');
+    //     let result = await iterator.next();
+    //     while (!result.done) {
+    //         const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
+    //         let MedicalInfo;
+    //         try {
+    //             MedicalInfo = JSON.parse(strValue);
+    //         } catch (err) {
+    //             console.log(err);
+    //             MedicalInfo = strValue;
+    //         }
+    //         allResults.push(MedicalInfo);
+    //         result = await iterator.next();
+    //     }
+    //     return JSON.stringify(allResults);
+    // }
+>>>>>>> b7baba95988467316addc6770dd16e0e2d4f3766
 
     @Transaction()
     public async QueryRecords(ctx:Context, medical_info_id: string) : Promise<string>{
         // query all the usage records of the medical_info specified
+<<<<<<< HEAD
         const allResults = [];
         // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
         let selector = {
@@ -178,6 +213,9 @@ export class UsageRecordContract extends Contract {
         return JSON.stringify(allResults);
 
         return '';
+=======
+        return ''; 
+>>>>>>> b7baba95988467316addc6770dd16e0e2d4f3766
     }
 
     

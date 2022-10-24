@@ -6,7 +6,7 @@
 import {Context, Contract, Info, Returns, Transaction} from 'fabric-contract-api';
 import stringify from 'json-stringify-deterministic';
 import sortKeysRecursive from 'sort-keys-recursive';
-import { v4 as uuidv4 } from 'uuid';
+
 import {UsageRecord, Operator, Case} from './asset';
 import {CaseContract} from './caseContract'
 
@@ -47,7 +47,7 @@ export class OperatorContract extends Contract {
 
 
     @Transaction()
-    public async QueryOperator(ctx: Context, username: string): Promise<string> {
+    public async QueryOperator(ctx: Context, username: string): Promise<Operator> {
 
         const assetJSON = await ctx.stub.getState(username);
         let isExists =  assetJSON && assetJSON.length > 0;
@@ -56,7 +56,11 @@ export class OperatorContract extends Contract {
             throw Error('Operator does not exist');
         }
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-        return await ctx.stub.getState(username).toString();
+        
+        const operatorStringUInt8 = await ctx.stub.getState(username);
+        const operatorString = Buffer.from(operatorStringUInt8).toString('utf8')
+       const operatorObject = JSON.parse(operatorString);
+       return operatorObject;
     }
 
 

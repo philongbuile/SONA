@@ -139,13 +139,12 @@ export class Patient {
     public Gender: string;
 
     @Property()
-    public Medical_Info: MedicalInfo;
+    public MedicalInfo_ID: string; // change to MedIn_ID 
 
     @Property()
     public AuthorizedDoctors: string[];
 
-    @Property()
-    public Records: UsageRecord[];
+    
 
     
 
