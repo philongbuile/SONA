@@ -125,25 +125,55 @@ async function main() {
             let result;
 
 
-            console.log('\n--> Evaluate Transaction: Create patient 32562 ');
-            result = await patient.submitTransaction('CreatePatient', 'tu cam', 'tucam525', 'medid362', '2463','cat street', '44/3', 'female', 'Doctor1');
+            // console.log('\n--> Evaluate Transaction: Create patient 32562 ');
+            // result = await patient.submitTransaction('CreatePatient', 'tu cam', 'tucam525', 'medid362', '2463','cat street', '44/3', 'female', 'Doctor1');
+            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+
+            
+
+    
+
+            
+
+            console.log('\n--> Evaluate Transaction: Authorized Doctor2 for username tucam525');
+            result = await patient.submitTransaction('AuthorizeOperator', 'tucam525', 'Doctor1');
             console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
-            console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');
-            result = await medical.evaluateTransaction('GetAll');
+            console.log('\n--> Evaluate Transaction: Authorized Doctor2 for username tucam525');
+            result = await patient.evaluateTransaction('patientQuery', 'tucam525');
             console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
-            console.log('\n--> Evaluate Transaction: Query MedicalInfos have diabete and cancer');
-            result = await medical.evaluateTransaction('QueryByKeyWord', k1 );
+
+            console.log('\n--> Evaluate Transaction: Revoke Authorized Doctor2 for username tucam525');
+            result = await patient.submitTransaction('RevokeOperator', 'tucam525', 'Doctor1');
             console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
-            console.log('\n--> Evaluate Transaction: Query MedicalInfos have diabete');
-            result = await medical.evaluateTransaction('QueryByKeyWord', k2 );
+            console.log('\n--> Evaluate Transaction: Authorized Doctor2 for username tucam525');
+            result = await patient.evaluateTransaction('patientQuery', 'tucam525');
             console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
-            console.log('\n--> Evaluate Transaction: Query all usage record of medical1');
-            result = await usage.evaluateTransaction('GetAll');
-            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+
+
+
+            
+
+           
+
+            // console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');
+            // result = await medical.evaluateTransaction('GetAll');
+            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+
+            // console.log('\n--> Evaluate Transaction: Query MedicalInfos have diabete and cancer');
+            // result = await medical.evaluateTransaction('QueryByKeyWord', k1 );
+            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+
+            // console.log('\n--> Evaluate Transaction: Query MedicalInfos have diabete');
+            // result = await medical.evaluateTransaction('QueryByKeyWord', k2 );
+            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+
+            // console.log('\n--> Evaluate Transaction: Query all usage record of medical1');
+            // result = await usage.evaluateTransaction('GetAll');
+            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
 
         } finally {

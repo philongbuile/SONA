@@ -162,26 +162,87 @@ export class PatientContract extends Contract {
         return assetJSON.toString();
     }
 
-    @Transaction(false)
-    @Returns('string')
-    public async GetAll(ctx: Context): Promise<string> {
-        const allResults = [];
-        // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
-        const iterator = await ctx.stub.getStateByRange('', '');
-        let result = await iterator.next();
-        while (!result.done) {
-            const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
-            let MedicalInfo;
-            try {
-                MedicalInfo = JSON.parse(strValue);
-            } catch (err) {
-                console.log(err);
-                MedicalInfo = strValue;
-            }
-            allResults.push(MedicalInfo);
-            result = await iterator.next();
+    // @Transaction(false)
+    // @Returns('string')
+    // public async GetAll(ctx: Context): Promise<string> {
+    //     const allResults = [];
+    //     // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
+    //     const iterator = await ctx.stub.getStateByRange('', '');
+    //     let result = await iterator.next();
+    //     while (!result.done) {
+    //         const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
+    //         let MedicalInfo;
+    //         try {
+    //             MedicalInfo = JSON.parse(strValue);
+    //         } catch (err) {
+    //             console.log(err);
+    //             MedicalInfo = strValue;
+    //         }
+    //         allResults.push(MedicalInfo);
+    //         result = await iterator.next();
+    //     }
+    //     return JSON.stringify(allResults);
+    // }
+
+
+    @Transaction()
+    public async AuthorizeOperator(ctx: Context, patient_username: string, operator_username: string): Promise<void> {
+        
+        // check if operator exists
+        let isExists = await this.AssetExists(ctx, operator_username);
+
+        if (!isExists) {
+            throw Error(`username ${operator_username} does not exist`);
         }
-        return JSON.stringify(allResults);
+        // retriev patient info
+        let patient = await this.ReadPatient(ctx, patient_username);
+
+        let patient_obj = JSON.parse(patient);
+
+        // add operator username to authorizedDoctorss
+
+        patient_obj.AuthorizedDoctors.push(operator_username);
+        
+        // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
+        await ctx.stub.putState(patient_username, Buffer.from(stringify(sortKeysRecursive(patient_obj))));
+        // return JSON.stringify(patient);
+
     }
+
+
+    @Transaction()
+    public async RevokeOperator(ctx: Context, patient_username: string, operator_username: string): Promise<void> {
+        
+        // check if operator exists
+        let isExists = await this.AssetExists(ctx, operator_username);
+
+        if (!isExists) {
+            throw Error(`username ${operator_username} does not exist`);
+        }
+        // retriev patient info
+        let patient = await this.ReadPatient(ctx, patient_username);
+        let patient_obj = JSON.parse(patient);
+
+
+        // remove operator username to authorizedDoctorss
+        for( var i = 0; i < patient_obj.AuthorizedDoctors.length; i++){ 
+    
+            if ( patient_obj.AuthorizedDoctors[i] === operator_username) { 
+        
+                patient_obj.AuthorizedDoctors.splice(i, 1); 
+            }
+        
+        }
+                
+        // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
+        await ctx.stub.putState(patient_username, Buffer.from(stringify(sortKeysRecursive(patient_obj))));
+        // return JSON.stringify(patient);
+
+    }
+
+
+
+
+
 
 }
