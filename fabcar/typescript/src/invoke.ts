@@ -35,8 +35,8 @@ async function main() {
 
         // Get the contract from the network.
         const caseContract = network.getContract('fabcar','CaseContract');
-        const patientContract = network.getContract('fabcar','AssetTransferContract')
-        const medicalOperatorContract = network.getContract('fabcar','MedicalOperatorContract');
+        const patientContract = network.getContract('fabcar','PatientContract')
+        const medicalOperatorContract = network.getContract('fabcar','OperatorContract');
         const usageRecordContract = network.getContract('fabcar','UsageRecordContract');
 
         // Submit the specified transaction.
@@ -44,13 +44,15 @@ async function main() {
         // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR12', 'Dave')
         // await contract.submitTransaction('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom');
 
-        await patientContract.submitTransaction('InitLedger');
-        console.log(`Transaction: InitLedger has been submitted`);
-        await medicalOperatorContract.submitTransaction('InitOperator');
-        console.log(`Transaction: InitOperator has been submitted`);
-        // await medicalOperatorContract.submitTransaction('CreateCase','philong123','Doctor1','Success','Flu','Use medicine');
-        console.log(`Transaction: OperatorCreateCase has been submitted`);
-        await usageRecordContract.submitTransaction('ReadRecord','philong123');
+         await patientContract.submitTransaction('InitLedger');
+         console.log(`Transaction: InitLedger has been submitted`);
+         await patientContract.submitTransaction('QueryPatient','philong123');
+         
+        // await medicalOperatorContract.submitTransaction('InitOperator');
+        // console.log(`Transaction: InitOperator has been submitted`);
+        // // await medicalOperatorContract.submitTransaction('CreateCase','philong123','Doctor1','Success','Flu','Use medicine');
+        // console.log(`Transaction: OperatorCreateCase has been submitted`);
+        // await usageRecordContract.submitTransaction('ReadRecord','philong123');
 
 
 
