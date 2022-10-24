@@ -10,11 +10,12 @@ import {CaseContract} from '../src/caseContract';
 import {MedicalInfoContract} from '../src/MedicalInfo_Contract'
 import { Operator } from '../src/asset';
 import { OperatorContract } from '../src/MedicalOperator_Contract';
+import { UsageRecordContract } from '../src/UsageRecordContract';
 let assert = sinon.assert;
 chai.use(sinonChai);
 
 describe('Asset Transfer Basic Tests', () => {
-    let transactionContext, chaincodeStub, case1, patient1, medical1, operator1;
+    let transactionContext, chaincodeStub, case1, patient1, medical1, operator1, record1;
     beforeEach(() => {
         transactionContext = new Context();
 
@@ -103,52 +104,64 @@ describe('Asset Transfer Basic Tests', () => {
             docType: 'operator',
             Username: 'Doctor1',
             Role: 'doctor'
+        };
+
+        record1 = {
+            Case_ID: 'case1',
+            MedicalInfo_ID: 'medical1',
+            Record_ID: 'record1',
+            Operation: 'read',
+            Roles: 'doctor',
+            OperatorName: 'Doctor1',
+            Time : '22/03/2010'
         }
+        
+        
 
         
         
     });
 
-    describe('Test InitLedger of cases', () => {
-        it('should return error on InitLedger', async () => {
-            chaincodeStub.putState.rejects('failed inserting key');
-            // let Patient = new PatientContract();
-            let caseContract = new CaseContract();
-            try {
-                await caseContract.InitLedger(transactionContext);
-                assert.fail('InitLedger should have failed');
-            } catch (err) {
-                expect(err.name).toEqual('failed inserting key');
-            }
-        });
+    // describe('Test InitLedger of cases', () => {
+    //     it('should return error on InitLedger', async () => {
+    //         chaincodeStub.putState.rejects('failed inserting key');
+    //         // let Patient = new PatientContract();
+    //         let caseContract = new CaseContract();
+    //         try {
+    //             await caseContract.InitLedger(transactionContext);
+    //             assert.fail('InitLedger should have failed');
+    //         } catch (err) {
+    //             expect(err.name).toEqual('failed inserting key');
+    //         }
+    //     });
 
-        it('should return success on InitLedger', async () => {
-            let caseContract = new CaseContract();
-            await caseContract.InitLedger(transactionContext);
-            let ret = JSON.parse((await chaincodeStub.getState('case1')).toString());
-            expect(ret).toEqual(Object.assign({docType: 'case'}, case1));
-        });
-    });
+    //     it('should return success on InitLedger', async () => {
+    //         let caseContract = new CaseContract();
+    //         await caseContract.InitLedger(transactionContext);
+    //         let ret = JSON.parse((await chaincodeStub.getState('case1')).toString());
+    //         expect(ret).toEqual(Object.assign({docType: 'case'}, case1));
+    //     });
+    // });
 
-    describe('Test InitLedger of patient', () => {
-        it('should return error on InitLedger', async () => {
-            chaincodeStub.putState.rejects('failed inserting key');
-            let Patient = new PatientContract();
-            try {
-                await Patient.InitLedger(transactionContext);
-                assert.fail('InitLedger should have failed');
-            } catch (err) {
-                expect(err.name).toEqual('failed inserting key');
-            }
-        });
+    // describe('Test InitLedger of patient', () => {
+    //     it('should return error on InitLedger', async () => {
+    //         chaincodeStub.putState.rejects('failed inserting key');
+    //         let Patient = new PatientContract();
+    //         try {
+    //             await Patient.InitLedger(transactionContext);
+    //             assert.fail('InitLedger should have failed');
+    //         } catch (err) {
+    //             expect(err.name).toEqual('failed inserting key');
+    //         }
+    //     });
 
-        it('should return success on InitLedger', async () => {
-            let patientContract = new PatientContract();
-            await patientContract.InitLedger(transactionContext);
-            let ret = JSON.parse((await chaincodeStub.getState(patient1.Username)).toString());
-            expect(ret).toEqual(Object.assign({docType: 'patient'}, patient1));
-        });
-    });
+    //     it('should return success on InitLedger', async () => {
+    //         let patientContract = new PatientContract();
+    //         await patientContract.InitLedger(transactionContext);
+    //         let ret = JSON.parse((await chaincodeStub.getState(patient1.Username)).toString());
+    //         expect(ret).toEqual(Object.assign({docType: 'patient'}, patient1));
+    //     });
+    // });
 
     describe('Test InitLedger of medical info', () => {
         it('should return error on InitLedger', async () => {
@@ -171,30 +184,74 @@ describe('Asset Transfer Basic Tests', () => {
         });
     });
 
-
-
-
-
-    describe('Test Creat Case', () => {
-        // it('should return error on InitLedger', async () => {
-        //     chaincodeStub.putState.rejects('failed inserting key');
-        //     // let Patient = new PatientContract();
-        //     let caseContract = new CaseContract();
-        //     try {
-        //         await caseContract.InitLedger(transactionContext);
-        //         assert.fail('InitLedger should have failed');
-        //     } catch (err) {
-        //         expect(err.name).toEqual('failed inserting key');
-        //     }
-        // });
+    describe('Test query usage record base on medical_id', () => {
 
         it('should return success on InitLedger', async () => {
-            let caseContract = new CaseContract();
-            let asset = await caseContract.CreateCase(transactionContext, 'test result', 'diagnosis', 'treatment');
-            let ret = JSON.parse((await chaincodeStub.getState(asset.Case_ID)).toString());
-            expect(ret).toEqual(Object.assign({docType: 'case'}, asset));
+
+            let selector = {
+                selector:  {
+                    MedicalInfo_ID:  { "$eq": "medical1" }
+                }
+            };
+
+
+
+            let recordContract = new CaseContract();
+            let asset = await recordContract.InitLedger(transactionContext);
+            let caseContract = new MedicalInfoContract();
+            await caseContract.InitLedger(transactionContext);
+            let usageContract = new UsageRecordContract();
+            await usageContract.InitLedger(transactionContext);
+
+
+            // let iterator = await chaincodeStub.getQueryResult(JSON.stringify(selector));
+            let iterator = await chaincodeStub.getQueryResult(JSON.stringify(selector));
+            console.info(JSON.stringify(selector));
+            // let iterator = await chaincodeStub.getStateByRange('','');
+
+
+            const allResults: string[] = [];
+            let result = await iterator.next();
+        while (!result.done) {
+            const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
+            let MedicalInfo;
+            try {
+                MedicalInfo = JSON.parse(strValue);
+            } catch (err) {
+                console.log(err);
+                MedicalInfo = strValue;
+            }
+            allResults.push(MedicalInfo);
+            result = await iterator.next();
+        }
+        // return JSON.stringify(allResults);
+
+            expect(allResults).toEqual(Object.assign({docType: 'record'}, record1));
         });
     });
+
+
+
+    // describe('Test Creat record', () => {
+    //     // it('should return error on InitLedger', async () => {
+    //     //     chaincodeStub.putState.rejects('failed inserting key');
+    //     //     // let Patient = new PatientContract();
+    //     //     let caseContract = new CaseContract();
+    //     //     try {
+    //     //         await caseContract.InitLedger(transactionContext);
+    //     //         assert.fail('InitLedger should have failed');
+    //     //     } catch (err) {
+    //     //         expect(err.name).toEqual('failed inserting key');
+    //     //     }
+    //     // });
+
+    //     it('should return success on InitLedger', async () => {
+    //         let caseContract = new CaseContract();
+    //         let asset = await caseContract.CreateCase(transactionContext, 'test result', 'diagnosis', 'treatment');
+    //         let ret = JSON.parse((await chaincodeStub.getState(asset.Case_ID)).toString());
+    //         expect(ret).toEqual(Object.assign({docType: 'case'}, asset));
+    //     });
+    // });
 
     // describe('Test CreatePatient', () => {
     //     it('should return error on CreateAsset', async () => {
@@ -262,26 +319,26 @@ describe('Asset Transfer Basic Tests', () => {
     //     });
     // });
 
-    describe('Test QueryPatient', () => {
-        it('should return error on ReadAsset', async () => {
-            let Patient = new PatientContract();
-            await Patient.CreatePatient(transactionContext, patient1.FullName, patient1.Username, patient1.Phone, patient1.Address, patient1.DoB, patient1.Gender,patient1.AuthorizedDoctors, operator1.Username);
+    // describe('Test QueryPatient', () => {
+    //     it('should return error on ReadAsset', async () => {
+    //         let Patient = new PatientContract();
+    //         await Patient.CreatePatient(transactionContext, patient1.FullName, patient1.Username, patient1.Phone, patient1.Address, patient1.DoB, patient1.Gender,patient1.AuthorizedDoctors, operator1.Username);
 
-            try {
-                await Patient.QueryPatient(transactionContext, patient1.Username, operator1.Username);
-                assert.fail('Readpatient1 should have failed');
-            } catch (err) {
-                expect(err.message).toEqual('The patient1 patient12 does not exist');
-            }
-        });
+    //         try {
+    //             await Patient.QueryPatient(transactionContext, patient1.Username, operator1.Username);
+    //             assert.fail('Readpatient1 should have failed');
+    //         } catch (err) {
+    //             expect(err.message).toEqual('The patient1 patient12 does not exist');
+    //         }
+    //     });
 
-        it('should return success on ReadAsset', async () => {
-            let Patient = new PatientContract();
-            await Patient.CreatePatient(transactionContext,patient1.FullName, patient1.Username, patient1.Phone, patient1.Address, patient1.DoB, patient1.Gender, patient1.AuthorizedDoctors, operator1.Username);
-            let ret = JSON.parse(await chaincodeStub.getState(patient1.Username));
-            expect(ret).toEqual(patient1);
-        });
-    });
+    //     it('should return success on ReadAsset', async () => {
+    //         let Patient = new PatientContract();
+    //         await Patient.CreatePatient(transactionContext,patient1.FullName, patient1.Username, patient1.Phone, patient1.Address, patient1.DoB, patient1.Gender, patient1.AuthorizedDoctors, operator1.Username);
+    //         let ret = JSON.parse(await chaincodeStub.getState(patient1.Username));
+    //         expect(ret).toEqual(patient1);
+    //     });
+    // });
 
     // describe('Test DeletePatient', () => {
     //     it('should return error on DeleteAsset', async () => {

@@ -248,7 +248,7 @@ export class MedicalInfoContract extends Contract {
 
     @Transaction(false)
     @Returns('string')
-    public async QueryByKeyWord(ctx: Context, keywords: string[]): Promise<string> {
+    public async QueryByKeyWord(ctx: Context, keywords: string): Promise<string> {
         const allResults = [];
         // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
 
@@ -262,11 +262,6 @@ export class MedicalInfoContract extends Contract {
         };
 
         let iterator = await ctx.stub.getQueryResult(JSON.stringify(selector));
-
-
-        // function for checking if a 
-
-        
         
         // const iterator = await ctx.stub.getStateByRange('', '');
         let result = await iterator.next();
@@ -274,10 +269,11 @@ export class MedicalInfoContract extends Contract {
             const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
             let MedicalInfo;
 
+            let keywords_array = JSON.parse(keywords);
             // check if the medical info string contains keyword
             let flag = false;
-            let ret = keywords.filter((keyword) => strValue.includes(keyword));
-            if (ret.length == 2) flag = true;
+            let ret = keywords_array.filter((keyword) => strValue.includes(keyword));
+            if (ret.length == keywords_array.length) flag = true;
 
             if (flag) {
                 try {
