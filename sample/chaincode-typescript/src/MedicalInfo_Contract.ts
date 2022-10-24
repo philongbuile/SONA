@@ -6,7 +6,7 @@ import {Context, Contract, Info, Returns, Transaction} from 'fabric-contract-api
 import stringify from 'json-stringify-deterministic';
 import sortKeysRecursive from 'sort-keys-recursive';
 import {Case, Examination, MedicalInfo} from './asset';
-import {v4 as uuid} from 'uuid';
+
 import { CaseContract } from './caseContract';
 import { PatientContract } from './PatientContract';
 import { OperatorContract } from './MedicalOperator_Contract';
@@ -74,10 +74,11 @@ export class MedicalInfoContract extends Contract {
     // patient_username: needed to check whether operator has right to create 
     // medical info for that patient.
     @Transaction()
-    public async CreateMedicalInfo(ctx: Context,cases: Case[]): Promise<MedicalInfo> {
+    // need modify : add create record
+    public async CreateMedicalInfo(ctx: Context, id: string): Promise<MedicalInfo> {
 
         // generate uuid for medical record
-        const id = uuid();
+        // const id = uuid();
 
         const exists = await this.MedicalInfoExists(ctx, id);
         if (exists) {
@@ -85,7 +86,7 @@ export class MedicalInfoContract extends Contract {
         }
         const medicalInfo: MedicalInfo  = {
             ID: id,
-            Cases: cases
+            Cases: [],
         };
 
         // add this medical info to patient object
@@ -106,8 +107,10 @@ export class MedicalInfoContract extends Contract {
         return MedicalInfoJSON.toString();
     }
 
+
+    
     @Transaction(false)
-    public async QueryMedicalInfo(ctx: Context, id: string, operator_username: string): Promise<string> {
+    public async operatorQueryMedicalInfo(ctx: Context, id: string, operator_username: string,record_id: string, time: string): Promise<string> {
 
         const MedicalInfoJSON = await ctx.stub.getState(id); // get the MedicalInfo from chaincode state
         if (!MedicalInfoJSON || MedicalInfoJSON.length === 0) {
@@ -116,19 +119,34 @@ export class MedicalInfoContract extends Contract {
 
          // create usage record
          let recordContract = new UsageRecordContract();
-         await recordContract.CreateRecord(ctx, undefined , id, 'read', operator_username);
+         await recordContract.CreateRecord(ctx, record_id,undefined , id, 'read', operator_username,  time);
+
 
         return MedicalInfoJSON.toString();
     }
+    @Transaction()
+    public async patientQueryMedicalInfo(ctx: Context, id: string): Promise<string> {
+
+        const MedicalInfoJSON = await ctx.stub.getState(id); // get the MedicalInfo from chaincode state
+        if (!MedicalInfoJSON || MedicalInfoJSON.length === 0) {
+            throw new Error(`The MedicalInfo ${id} does not exist`);
+        }
+
+        //do not create usage record
+        const result =  Buffer.from(MedicalInfoJSON).toString('utf8');
+
+        return result;
+    }
 
 
-    private CreateCase(testresult: string, diagnosis: string, treatment: string): Case {
+
+
+    private CreateCase(case_id: string,testresult: string, diagnosis: string, treatment: string): Case {
         const new_examination : Examination = {
             TestResult: testresult,
             Diagnosis: diagnosis,
             Treatment: treatment
         };
-        const case_id = uuid();
         const Case_object : Case = {
             docType:'case',
             Case_ID: case_id,
@@ -142,7 +160,7 @@ export class MedicalInfoContract extends Contract {
     // type of updates: 
     //      add a new case
     @Transaction()
-    public async AddCase(ctx: Context, info_id: string, test_result: string, diagnosis: string, treatment: string, operator_username: string, patient_username: string): Promise<void> {
+    public async AddCase(ctx: Context,case_id:string ,info_id: string, test_result: string, diagnosis: string, treatment: string, operator_username: string, patient_username: string,record_id: string, time: string): Promise<void> {
 
 
         const isAuthorized = new PatientContract().IsAuthorized(ctx, patient_username, operator_username);
@@ -150,25 +168,35 @@ export class MedicalInfoContract extends Contract {
         if (!isAuthorized) {
             throw Error('Permission Denied');
         }
-   
-        const current_info = JSON.parse(await this.ReadMedicalInfo(ctx, info_id));
+        
+        // let current_info = JSON.parse(await this.ReadMedicalInfo(ctx, info_id));
 
-        const new_case = this.CreateCase(test_result, diagnosis, treatment);
-        const new_info = current_info.Cases.push(new_case);
+        // let new_case = this.CreateCase(case_id, test_result, diagnosis, treatment);
+        // let new_info = current_info.Cases.push(new_case);
+
+
+        const current_info_Uint8 = await ctx.stub.getState(info_id);
+        const current_info_jsonstring = Buffer.from(current_info_Uint8).toString('utf8');
+        let  infoObject = JSON.parse(current_info_jsonstring);
+        
+        let new_case = this.CreateCase(case_id, test_result,diagnosis,treatment);
+        infoObject.Cases.push(new_case);
+
+
 
 
         // // overwriting original MedicalInfo with new MedicalInfo
 
-        await ctx.stub.putState(info_id, Buffer.from(stringify(sortKeysRecursive(new_info))));
+        await ctx.stub.putState(info_id, Buffer.from(stringify(sortKeysRecursive(infoObject))));
 
         // create usage record
         let recordContract = new UsageRecordContract();
-        await recordContract.CreateRecord(ctx, new_case.Case_ID, info_id, 'write', operator_username);
+        await recordContract.CreateRecord(ctx,record_id ,new_case.Case_ID, info_id, 'write', operator_username,time);
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
     }
 
     @Transaction()
-    public async AppendCase(ctx: Context, info_id: string, case_id: string, test_result: string, diagnosis: string, treatment: string,  operator_username: string, patient_username: string): Promise<void> {
+    public async AppendCase(ctx: Context, info_id: string, case_id: string, test_result: string, diagnosis: string, treatment: string,  operator_username: string, patient_username: string,record_id: string, time: string): Promise<void> {
 
         // check if the operator has right to append to case
         const isAuthorized = new PatientContract().IsAuthorized(ctx, patient_username, operator_username);
@@ -177,20 +205,14 @@ export class MedicalInfoContract extends Contract {
             throw Error('Permission Denied');
         }
         
-        // const new_case = await caseContract.UpdateCase(ctx,case_id, test_result, diagnosis, treatment);
-
-        // create examination
-        const examination_object : Examination = {
-            TestResult: test_result,
-            Diagnosis: diagnosis,
-            Treatment: treatment
-        };
+        // Call contract update case to add the examination to the case
+        await new CaseContract().UpdateCase(ctx,info_id,case_id,test_result, diagnosis, treatment);
+   
 
         // create usage record
         let recordContract = new UsageRecordContract();
-        await recordContract.CreateRecord(ctx, case_id, info_id, 'write', operator_username);
-
-    }
+        await recordContract.CreateRecord(ctx,record_id ,case_id, info_id, 'write', operator_username,time);
+         }
 
 
     
