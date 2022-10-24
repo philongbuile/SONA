@@ -36,23 +36,41 @@ export class MedicalInfoContract extends Contract {
             },
             {
                 ID: 'medical2',
-                Cases: [
+                Cases: 
+                [
                     {
                         Case_ID: 'case2',
-                    Examinations: [
-                    {
-                        TestResult: '',
-                        Diagnosis: '',
-                        Treatment: '',
+                        Examinations: [
+                        {
+                            TestResult: '',
+                            Diagnosis: 'diabete type 2',
+                            Treatment: 'medicine',
 
+                        },
+                        {
+                            TestResult: '',
+                            Diagnosis: 'diabete type 3',
+                            Treatment: 'medicine',
+                        }
+                        ]
                     },
                     {
-                        TestResult: '',
-                        Diagnosis: '',
-                        Treatment: '',
+                        Case_ID: 'case3',
+                        Examinations: [
+                        {
+                            TestResult: '',
+                            Diagnosis: 'cancer stage I',
+                            Treatment: 'medicine',
 
+                        },
+                        {
+                            TestResult: '',
+                            Diagnosis: 'cancer stage II',
+                            Treatment: 'medicine',
+                        }
+                        ]
                     }
-                ]}]
+                ]
             }
 
             
@@ -228,34 +246,52 @@ export class MedicalInfoContract extends Contract {
     }
 
 
-    // @Transaction(false)
-    // @Returns('string')
-    // public async QueryByKeyWord(ctx: Context, keywords: string[]): Promise<string> {
-    //     const allResults = [];
-    //     // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
-    //     const iterator = await ctx.stub.getStateByRange('', '');
-    //     let result = await iterator.next();
-    //     while (!result.done) {
-    //         const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
-    //         let MedicalInfo;
+    @Transaction(false)
+    @Returns('string')
+    public async QueryByKeyWord(ctx: Context, keywords: string[]): Promise<string> {
+        const allResults = [];
+        // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
 
-    //         // check if the medical info string contains keyword
-    //         const keyword = keywords.join();
-    //         const keywordExists = strValue.toLowerCase().includes(keyword.toLowerCase());
 
-    //         if (keywordExists) {
-    //             try {
-    //                 MedicalInfo = JSON.parse(strValue);
-    //             } catch (err) {
-    //                 console.log(err);
-    //                 MedicalInfo = strValue;
-    //             }
-    //             allResults.push(MedicalInfo);
-    //         }
+        // first query all the medical record
+
+        let selector = {
+            selector:  {
+                docType:  { "$eq": 'medical_info' }
+            }
+        };
+
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(selector));
+
+
+        // function for checking if a 
+
+        
+        
+        // const iterator = await ctx.stub.getStateByRange('', '');
+        let result = await iterator.next();
+        while (!result.done) {
+            const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
+            let MedicalInfo;
+
+            // check if the medical info string contains keyword
+            let flag = false;
+            let ret = keywords.filter((keyword) => strValue.includes(keyword));
+            if (ret.length == 2) flag = true;
+
+            if (flag) {
+                try {
+                    MedicalInfo = JSON.parse(strValue);
+                } catch (err) {
+                    console.log(err);
+                    MedicalInfo = strValue;
+                }
+                allResults.push(MedicalInfo);
+            }
             
-    //         result = await iterator.next();
-    //     }
-    //     return JSON.stringify(allResults);
-    // }
+            result = await iterator.next();
+        }
+        return JSON.stringify(allResults);
+    }
 
 }
