@@ -24,16 +24,46 @@ export class UsageRecordContract extends Contract {
         console.log('calling init function of patient contract')
         // first creat the medicalInfo for that patient 
         // then add it to the patient info
-        const patients: Patient[] = [];
+        const records: UsageRecord[] = [
+            {
+                Case_ID: 'case1',
+                MedicalInfo_ID: 'medical1',
+                Record_ID: 'record1',
+                Operation: 'read',
+                Roles: 'doctor',
+                OperatorName: 'Doctor1',
+                Time : '22/03/2010'
+            },
+            {
+                Case_ID: 'case2',
+                MedicalInfo_ID: 'medical2',
+                Record_ID: 'record2',
+                Operation: 'read',
+                Roles: 'doctor',
+                OperatorName: 'Doctor1',
+                Time : '22/03/2010'
+            },
+            {
+                Case_ID: 'case2',
+                MedicalInfo_ID: 'medical1',
+                Record_ID: 'record',
+                Operation: 'read',
+                Roles: 'doctor',
+                OperatorName: 'Doctor1',
+                Time : '22/03/2010'
+            }
+            
 
-        for (const patient of patients) {
-            patient.docType = 'patient';
+        ];
+
+        for (const record of records) {
+            record.docType = 'record';
             // example of how to write to world state deterministically
             // use convetion of alphabetic order
             // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
             // when retrieving data, in any lang, the order of data will be the same and consequently also the corresonding hash
-            await ctx.stub.putState(patient.Username, Buffer.from(stringify(sortKeysRecursive(patient))));
-            console.info(`Patient ${patient.Username} initialized`);
+            await ctx.stub.putState(record.Record_ID, Buffer.from(stringify(sortKeysRecursive(record))));
+            console.info(`record ${record.Record_ID} initialized`);
         }
     }
 
@@ -44,7 +74,6 @@ export class UsageRecordContract extends Contract {
     @Transaction()
     public async CreateRecord(ctx: Context, case_id: string, medicalinfo_id: string ,operation: string,operator_username: string): Promise<void>{
         
-        const id = uuidv4();
 
         let operatorContract = new OperatorContract();
         const operatorString = await operatorContract.QueryOperator(ctx, operator_username);
@@ -55,7 +84,7 @@ export class UsageRecordContract extends Contract {
             docType: 'UsageRecord',
             Case_ID: case_id,
             MedicalInfo_ID: medicalinfo_id,
-            Record_ID: id,
+            Record_ID: 'record3',
             Operation: operation,
             Roles: operator.Role,
             OperatorName: operator.username,
@@ -68,8 +97,6 @@ export class UsageRecordContract extends Contract {
         // // push record into the records array
         // patientObject.Records.push(record);
         // // update world state
-
-
         return await ctx.stub.putState(record.Record_ID, Buffer.from(stringify(sortKeysRecursive(record))));
 
     }
@@ -89,10 +116,22 @@ export class UsageRecordContract extends Contract {
     @Transaction(false)
     @Returns('string')
     public async GetAll(ctx: Context): Promise<string> {
+
+
         const allResults = [];
         // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
-        const iterator = await ctx.stub.getStateByRange('', '');
+        let selector = {
+            selector:  {
+                MedicalInfo_ID:  { "$eq": "medical1" }
+            }
+        };
+
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(selector));
+        console.info(JSON.stringify(selector));
+        // let iterator = await chaincodeStub.getStateByRange('','');
         let result = await iterator.next();
+
+
         while (!result.done) {
             const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
             let MedicalInfo;
@@ -111,6 +150,32 @@ export class UsageRecordContract extends Contract {
     @Transaction()
     public async QueryRecords(ctx:Context, medical_info_id: string) : Promise<string>{
         // query all the usage records of the medical_info specified
+        const allResults = [];
+        // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
+        let selector = {
+            selector:  {
+                MedicalInfo_ID:  { "$eq": medical_info_id }
+            }
+        };
+
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(selector));
+        // let iterator = await chaincodeStub.getStateByRange('','');
+        let result = await iterator.next();
+
+
+        while (!result.done) {
+            const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
+            let MedicalInfo;
+            try {
+                MedicalInfo = JSON.parse(strValue);
+            } catch (err) {
+                console.log(err);
+                MedicalInfo = strValue;
+            }
+            allResults.push(MedicalInfo);
+            result = await iterator.next();
+        }
+        return JSON.stringify(allResults);
 
         return '';
     }
