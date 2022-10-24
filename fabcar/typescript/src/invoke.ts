@@ -36,6 +36,8 @@ async function main() {
         // Get the contract from the network.
         const caseContract = network.getContract('fabcar','CaseContract');
         const patientContract = network.getContract('fabcar','AssetTransferContract')
+        const medicalOperatorContract = network.getContract('fabcar','MedicalOperatorContract');
+        const usageRecordContract = network.getContract('fabcar','UsageRecordContract');
 
         // Submit the specified transaction.
         // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
@@ -43,29 +45,16 @@ async function main() {
         // await contract.submitTransaction('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom');
 
         await patientContract.submitTransaction('InitLedger');
-        console.log(`Transaction has been submitted`);
-        // await caseContract.submitTransaction('InitCaseLedger');
-
-        // await caseContract.submitTransaction('CreateCase','1','success','allergic','use medicine');
-        // console.log(`Transaction has been submitted`);
-
-        await caseContract.submitTransaction('CreateCase','2','Doctor1','case1','success','flu','using medicine');
-        console.log(`Case Created`);
-
-        
-
-        // await caseContract.submitTransaction('CreateCase','2','failed','handsome','no treatment yet');
-        // console.log(`Transaction has been submitted`);
+        console.log(`Transaction: InitLedger has been submitted`);
+        await medicalOperatorContract.submitTransaction('InitOperator');
+        console.log(`Transaction: InitOperator has been submitted`);
+        // await medicalOperatorContract.submitTransaction('CreateCase','philong123','Doctor1','Success','Flu','Use medicine');
+        console.log(`Transaction: OperatorCreateCase has been submitted`);
+        await usageRecordContract.submitTransaction('ReadRecord','philong123');
 
 
-        const result = await caseContract.submitTransaction('ReadCase','2');
-        console.log(`Transaction has been evaluated, cases of Patient 2 are : ${result}`);
-        const operator_readcase = await caseContract.submitTransaction('OperatorReadCase','2','Doctor1','read');
-        console.log(`Transaction has been evaluated, cases of Patient 2 are : ${operator_readcase}`);
 
-        const patientReadRecord = await caseContract.submitTransaction('ReadRecord','2');
-        console.log(`Transaction has been evaluated, usage records of Patient 2 are : ${patientReadRecord}`);
-
+      
 
         // Disconnect from the gateway.
         await gateway.disconnect();
