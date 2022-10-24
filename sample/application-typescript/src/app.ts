@@ -102,21 +102,26 @@ async function main() {
             const network = await gateway.getNetwork(channelName);
 
             // Get the contract from the network.
-            const contract = network.getContract(chaincodeName);
+            const operator = network.getContract(chaincodeName, 'OperatorContract');
+            const medical = network.getContract(chaincodeName, 'MedicalInfoContract');
+            const usage = network.getContract(chaincodeName, 'UsageRecordContract');
 
-            // Initialize a set of asset data on the channel using the chaincode 'InitLedger' function.
+            // Initialize a set of asset data on the channel using the cshaincode 'InitLedger' function.
             // This type of transaction would only be run once by an application the first time it was started after it
             // deployed the first time. Any updates to the chaincode deployed later would likely not need to run
             // an "init" type function.
             console.log('\n--> Submit Transaction: InitLedger, function creates the initial set of assets on the ledger');
-            await contract.submitTransaction('InitLedger');
+            await operator.submitTransaction('InitLedger');
+            await medical.submitTransaction('InitLedger');
+            await usage.submitTransaction('InitLedger');
+
             console.log('*** Result: committed');
 
             // Let's try a query type operation (function).
             // This will be sent to just one peer and the results will be shown.
             console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');
-            let result = await contract.evaluateTransaction('GetAll');
-            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+            // let result = await contract.evaluateTransaction('GetAll');
+            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
             const author = JSON.stringify(['Doctor1']);
 
@@ -124,12 +129,17 @@ async function main() {
             // Now let's try to submit a transaction.
             // This will be sent to both peers and if both peers endorse the transaction, the endorsed proposal will be sent
             // to the orderer to be committed by each of the peer's to the channel ledger.
-            console.log('\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments');
-            await contract.submitTransaction('CreatPatient','Beyonce', 'beyon123', 'w3525', 'shewefs', 'sfhgsk', 'patient1.Gender', author, 'Doctor1');
-            console.log('*** Result: committed');
+            // console.log('\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments');
+            // await contract.submitTransaction('CreatPatient','Beyonce', 'beyon123', 'w3525', 'shewefs', 'sfhgsk', 'patient1.Gender', author, 'Doctor1');
+            // console.log('*** Result: committed');
+
+
 
             console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');
-            result = await contract.evaluateTransaction('GetAll');
+            let result = await medical.evaluateTransaction('GetAll');
+            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+
+            result = await medical.evaluateTransaction('QueryMedicalInfo', 'medical1', 'Doctor1');
             console.log(`*** Result: ${prettyJSONString(result.toString())}`);
             
 

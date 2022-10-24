@@ -21,4 +21,4 @@ export { UsageRecordContract } from './UsageRecordContract';
 
 
 
-export const contracts: any[] = [CaseContract, PatientContract, MedicalInfoContract, OperatorContract, UsageRecordContract];
+export const contracts: any[] = [CaseContract, PatientContract, MedicalInfoContract, OperatorContract, UsageRecordContract, OperatorContract];
