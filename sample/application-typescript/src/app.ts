@@ -105,6 +105,7 @@ async function main() {
             const operator = network.getContract(chaincodeName, 'OperatorContract');
             const medical = network.getContract(chaincodeName, 'MedicalInfoContract');
             const usage = network.getContract(chaincodeName, 'UsageRecordContract');
+            const patient = network.getContract(chaincodeName, 'PatientContract');
 
             // Initialize a set of asset data on the channel using the cshaincode 'InitLedger' function.
             // This type of transaction would only be run once by an application the first time it was started after it
@@ -119,11 +120,17 @@ async function main() {
 
             const k1 = JSON.stringify(['diabete', 'cancer']);
             const k2 = JSON.stringify(['diabete']);
+            const doctors = JSON.stringify(['Doctor1']);
+
+            let result;
 
 
+            console.log('\n--> Evaluate Transaction: Create patient 32562 ');
+            result = await patient.submitTransaction('CreatePatient', 'tu cam', 'tucam525', 'medid362', '2463','cat street', '44/3', 'female', 'Doctor1');
+            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
             console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');
-            let result = await medical.evaluateTransaction('GetAll');
+            result = await medical.evaluateTransaction('GetAll');
             console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
             console.log('\n--> Evaluate Transaction: Query MedicalInfos have diabete and cancer');

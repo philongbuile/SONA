@@ -20,8 +20,8 @@ export class PatientContract extends Contract {
         console.log('calling init function of patient contract')
         // first creat the medicalInfo for that patient 
         // then add it to the patient info
-        const medical1 = await new MedicalInfoContract().CreateMedicalInfo(ctx , 'patient1000');
-        const medical2 = await new MedicalInfoContract().CreateMedicalInfo(ctx, 'patient1001');
+        // const medical1 = await new MedicalInfoContract().CreateMedicalInfo(ctx , 'patient1000');
+        // const medical2 = await new MedicalInfoContract().CreateMedicalInfo(ctx, 'patient1001');
 
 
 
@@ -33,7 +33,7 @@ export class PatientContract extends Contract {
                 Address: '43/2 abc street',
                 DoB: '11/2',
                 Gender: 'female',
-                MedicalInfo_ID: medical1.ID,
+                MedicalInfo_ID: 'medical1',
                 AuthorizedDoctors: ['Doctor1', 'Doctor2'],
             },
             {
@@ -43,7 +43,7 @@ export class PatientContract extends Contract {
                 Address: '12 xyz Street',
                 DoB: '12/03/2001',
                 Gender: 'male',
-                MedicalInfo_ID: medical2.ID,
+                MedicalInfo_ID: 'medical2',
                 AuthorizedDoctors:['Doctor1'],
             }
         ];
@@ -61,13 +61,16 @@ export class PatientContract extends Contract {
 
     // CreateAsset issues a new asset to the world state with given details.
     @Transaction()
-    public async CreatePatient(ctx: Context,fullname: string, username: string, medinfo_id: string, phone: string, address: string, dob: string, gender: string, authorized_doctors: string[], operator_username: string): Promise<void> {
+    public async CreatePatient(ctx: Context,fullname: string, username: string, medinfo_id: string, phone: string, address: string, dob: string, gender: string, operator_username: string): Promise<void> {
         const exists = await this.AssetExists(ctx,username);
         if (exists) {
             throw new Error(`The asset ${username} already exists`);
         }
+        // create medicalinfo for this patient
+        await new MedicalInfoContract().CreateMedicalInfo(ctx, medinfo_id);
 
         const patient = {
+            docType: 'patient',
             FullName: fullname,
             Username: username,
             Phone: phone,
@@ -75,7 +78,7 @@ export class PatientContract extends Contract {
             DoB: dob,
             Gender: gender,
             MedicalInfo: medinfo_id,
-            AuthorizedDoctors: authorized_doctors
+            AuthorizedDoctors: [operator_username]
             
         };
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'

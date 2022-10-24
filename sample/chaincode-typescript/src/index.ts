@@ -11,7 +11,6 @@ import { UsageRecordContract } from './UsageRecordContract';
 
 
 export {PatientContract} from './PatientContract';
-export {CaseContract} from './caseUtils';
 export {MedicalInfoContract} from './MedicalInfo_Contract'
 export {OperatorContract} from './MedicalOperator_Contract'
 export { UsageRecordContract } from './UsageRecordContract';
@@ -21,4 +20,4 @@ export { UsageRecordContract } from './UsageRecordContract';
 
 
 
-export const contracts: any[] = [CaseContract, PatientContract, MedicalInfoContract, OperatorContract, UsageRecordContract, OperatorContract];
+export const contracts: any[] = [PatientContract, MedicalInfoContract, OperatorContract, UsageRecordContract];
