@@ -3,7 +3,7 @@
  */
 
 import {PatientContract} from './PatientContract';
-import {CaseContract} from './caseContract'
+import {CaseContract} from './caseUtils'
 import {MedicalInfoContract} from './MedicalInfo_Contract'
 import {OperatorContract} from './MedicalOperator_Contract'
 import { UsageRecordContract } from './UsageRecordContract';
@@ -11,7 +11,7 @@ import { UsageRecordContract } from './UsageRecordContract';
 
 
 export {PatientContract} from './PatientContract';
-export {CaseContract} from './caseContract';
+export {CaseContract} from './caseUtils';
 export {MedicalInfoContract} from './MedicalInfo_Contract'
 export {OperatorContract} from './MedicalOperator_Contract'
 export { UsageRecordContract } from './UsageRecordContract';

@@ -67,18 +67,6 @@ export class PatientContract extends Contract {
             throw new Error(`The asset ${username} already exists`);
         }
 
-
-        // we cannot check IsAuthorize when creating patient 
-        // CAUSE THERE'S NO PATIENT EXISTS TO CHECK FOR THAT !!!!!!!!!
-        // const isAuthorized = this.IsAuthorized(ctx, username, operator_username);
-
-        // if (!isAuthorized) {
-        //     throw Error('Permission Denied');
-        // }
-
-       
-
-
         const patient = {
             FullName: fullname,
             Username: username,

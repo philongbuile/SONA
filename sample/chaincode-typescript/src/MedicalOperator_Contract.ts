@@ -8,7 +8,7 @@ import stringify from 'json-stringify-deterministic';
 import sortKeysRecursive from 'sort-keys-recursive';
 
 import {UsageRecord, Operator, Case} from './asset';
-import {CaseContract} from './caseContract'
+import {CaseContract} from './caseUtils'
 
 @Info({title: 'MedicalOperatorContract', description: 'Smart contract for Medical Operator'})
 export class OperatorContract extends Contract {

@@ -7,7 +7,7 @@ import stringify from 'json-stringify-deterministic';
 import sortKeysRecursive from 'sort-keys-recursive';
 import {Case, Examination, MedicalInfo} from './asset';
 
-import { CaseContract } from './caseContract';
+import { CaseContract } from './caseUtils';
 import { PatientContract } from './PatientContract';
 import { OperatorContract } from './MedicalOperator_Contract';
 import { UsageRecordContract } from './UsageRecordContract';
@@ -185,24 +185,12 @@ export class MedicalInfoContract extends Contract {
         if (!isAuthorized) {
             throw Error('Permission Denied');
         }
-        
-        // let current_info = JSON.parse(await this.ReadMedicalInfo(ctx, info_id));
-
-        // let new_case = this.CreateCase(case_id, test_result, diagnosis, treatment);
-        // let new_info = current_info.Cases.push(new_case);
-
-
         const current_info_Uint8 = await ctx.stub.getState(info_id);
         const current_info_jsonstring = Buffer.from(current_info_Uint8).toString('utf8');
         let  infoObject = JSON.parse(current_info_jsonstring);
         
-        let new_case = this.CreateCase(case_id, test_result,diagnosis,treatment);
+        let new_case = new CaseContract().CreateCase(case_id, test_result,diagnosis,treatment);
         infoObject.Cases.push(new_case);
-
-
-
-
-        // // overwriting original MedicalInfo with new MedicalInfo
 
         await ctx.stub.putState(info_id, Buffer.from(stringify(sortKeysRecursive(infoObject))));
 
@@ -223,7 +211,7 @@ export class MedicalInfoContract extends Contract {
         }
         
         // Call contract update case to add the examination to the case
-        await new CaseContract().UpdateCase(ctx,info_id,case_id,test_result, diagnosis, treatment);
+        await new CaseContract().UpdateCase(ctx, info_id,case_id,test_result, diagnosis, treatment);
    
 
         // create usage record
