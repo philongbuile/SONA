@@ -133,9 +133,8 @@ export class MedicalInfoContract extends Contract {
         }
 
         //do not create usage record
-        const result =  Buffer.from(MedicalInfoJSON).toString('utf8');
 
-        return result;
+        return MedicalInfoJSON.toString();
     }
 
 
