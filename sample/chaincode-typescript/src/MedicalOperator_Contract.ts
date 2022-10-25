@@ -48,7 +48,8 @@ export class OperatorContract extends Contract {
 
     @Transaction()
     public async QueryOperator(ctx: Context, username: string): Promise<Operator> {
-
+        console.log('QueryOperator::OperatorContract running');
+        
         const assetJSON = await ctx.stub.getState(username);
         let isExists =  assetJSON && assetJSON.length > 0;
         

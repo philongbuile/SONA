@@ -5,11 +5,10 @@ const util = require('util')
 
 const app = express();
 
-// app.use(express.bodyParser());
-app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.json({type: 'application/json'}));
+// app.use(express.urlencoded()); 
+app.use(express.urlencoded({ extended: true}));
 
-// app.set("views", path.resolve(__dirname, "views"));
 app.set("view engine", "ejs");
 
 // Setting for Hyperledger Fabric
@@ -50,7 +49,10 @@ app.get('/patient/queryall', async (req, res) => {
         const network = await gateway.getNetwork('mychannel');
 
         // Get the contract from the network.
-        const patientContract = network.getContract('fabcar', 'PatientContract');
+        const patientContract = network.getContract('sona', 'PatientContract');
+
+        await patientContract.submitTransaction('InitLedger');
+
         const result = await patientContract.evaluateTransaction('GetAll');
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
         res.status(200).json({response: result.toString()});
@@ -91,7 +93,9 @@ app.get('/patient/query/:username', async (req, res) => {
         const network = await gateway.getNetwork('mychannel');
 
         // Get the contract from the network.
-        const patientContract = network.getContract('fabcar', 'PatientContract');
+        const patientContract = network.getContract('sona', 'PatientContract');
+
+        await patientContract.submitTransaction('InitLedger');
 
         const result = await patientContract.evaluateTransaction('patientQuery', req.params.username);
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
@@ -108,14 +112,14 @@ app.get('/patient/query/:username', async (req, res) => {
 })
 
 
-app.get('/', async (req, res, next) => {
+app.get('/patient/doctor-query', async (req, res, next) => {
     let result = 'List of Doctor'
     res.render('form', {
         result:result
     })
 })
 
-app.post('/', async (req, res, next) => {
+app.post('/patient/doctor-query', async (req, res, next) => {
     try {
 
         let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
@@ -141,36 +145,37 @@ app.post('/', async (req, res, next) => {
         const network = await gateway.getNetwork('mychannel');
 
         // Get the contract from the network.
-        const patientContract = network.getContract('fabcar', 'PatientContract');
-
-        // res.contentType('application/json');
+        const patientContract = network.getContract('sona', 'PatientContract');
+        const medicalOperatorContract = network.getContract('sona', 'OperatorContract')
+        const usageRecordContract = network.getContract('sona', 'UsageRecordContract');
 
         let patient_username = req.body.patient;
         let doctor_username = req.body.doctor;
         let record_id = req.body.record;
         let date = Date();
         
+        await patientContract.submitTransaction('InitLedger');
+        await medicalOperatorContract.submitTransaction('InitLedger');
+        await usageRecordContract.submitTransaction('InitLedger');
+
+
+        console.log(patient_username)
+        console.log(doctor_username)
+        console.log(record_id)
+
         const result = await patientContract.evaluateTransaction('doctorQuery', patient_username
                                                                                 , doctor_username
                                                                                 , record_id
                                                                                 , date);
-        // if(result === 'undefined'){
-        //     result = 'UNDEFINED'
-        // }
-        
-        // const rest = {
-        //     'patient': patient_username, 
-        //     'doctor': doctor_username, 
-        //     'record': record_id, 
-        //     'time': date
-        // }
 
-        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-        // res.status(200).json({response: result.toString()});
-        // res.render('form', {
-        //     result: result
-        // });
-        res.send(result)
+
+        console.log(result)
+        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        res.status(200).json({response: result.toString()});
+        res.render('form', {
+            result: result
+        });
+        // res.send(result)
         // Disconnect from the gateway.
         await gateway.disconnect();
 

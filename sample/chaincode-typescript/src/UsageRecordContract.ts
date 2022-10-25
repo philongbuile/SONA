@@ -73,12 +73,9 @@ export class UsageRecordContract extends Contract {
     // create an object record then push it in to the Records array corresponding to the patient
     @Transaction()
     public async CreateRecord(ctx: Context,record_id: string ,case_id: string, medicalinfo_id: string ,operation: string,operator_username: string, time: string): Promise<void>{
-        
-        
-
+        console.log('CreateRecord::UsageRecord running ');
         let operatorContract = new OperatorContract();
         const operator = await operatorContract.QueryOperator(ctx,operator_username)
-
 
         
         const record ={

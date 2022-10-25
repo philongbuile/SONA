@@ -54,7 +54,7 @@ export class PatientContract extends Contract {
                 DoB: '02/10/2001',
                 Gender: 'male',
                 MedicalInfo_ID: 'medical2',
-                AuthorizedDoctors:['Doctor2'],
+                AuthorizedDoctors:['Doctor1'],
             }
         ];
 
@@ -113,6 +113,7 @@ export class PatientContract extends Contract {
     @Transaction(false)
     @Returns('boolean')
     private async AssetExists(ctx: Context, username: string): Promise<boolean> {
+        console.log('AssetExists::PatientContract running')
         const assetJSON = await ctx.stub.getState(username);
         return assetJSON && assetJSON.length > 0;
     }
@@ -121,7 +122,7 @@ export class PatientContract extends Contract {
     @Transaction(false)
     @Returns('boolean')
     public async IsAuthorized(ctx: Context, patient_username: string, doctor_username: string): Promise<boolean> {
-
+        console.log('isAuthorized::PatientContract running')
         const exists = await this.AssetExists(ctx, doctor_username);
 
         if (!exists) {
@@ -146,7 +147,7 @@ export class PatientContract extends Contract {
     @Transaction(false)
     @Returns('boolean')
     public async doctorQuery(ctx: Context, patient_username: string, doctor_username: string, record_id: string, time: string): Promise<string> {
-
+        console.log('doctorQuery::PatientContract running');
         const isAuthorized = await this.IsAuthorized(ctx, patient_username, doctor_username);
 
         if (!isAuthorized) {
@@ -158,7 +159,7 @@ export class PatientContract extends Contract {
 
         // create usage record
         let recordContract = new UsageRecordContract();
-        recordContract.CreateRecord(ctx, record_id ,undefined, patient_obj.Medical_Info.ID, 'read patient\'s data', doctor_username, time);
+        recordContract.CreateRecord(ctx, record_id , 'blank', patient_obj.Medical_Info, 'read patient\'s data', doctor_username, time);
 
         return patient;    
     }
