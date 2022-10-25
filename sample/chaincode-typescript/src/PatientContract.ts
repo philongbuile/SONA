@@ -45,6 +45,16 @@ export class PatientContract extends Contract {
                 Gender: 'male',
                 MedicalInfo_ID: 'medical2',
                 AuthorizedDoctors:['Doctor1'],
+            },
+            {
+                FullName: 'Le Duc Minh',
+                Username: 'minhleduc0210',
+                Phone: '0706208723',
+                Address: '2018 2019 OG Street',
+                DoB: '02/10/2001',
+                Gender: 'male',
+                MedicalInfo_ID: medical2.ID,
+                AuthorizedDoctors:['Doctor2'],
             }
         ];
 
@@ -148,7 +158,7 @@ export class PatientContract extends Contract {
 
         // create usage record
         let recordContract = new UsageRecordContract();
-        recordContract.CreateRecord(ctx, record_id ,undefined, patient_obj.Medical_Info.ID, 'read', doctor_username, time);
+        recordContract.CreateRecord(ctx, record_id ,undefined, patient_obj.Medical_Info.ID, 'read patient\'s data', doctor_username, time);
 
         return patient;    
     }
