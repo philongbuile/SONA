@@ -20,9 +20,9 @@ async function main() {
         const wallet = await fabric_network_1.Wallets.newFileSystemWallet(walletPath);
         console.log(`Wallet path: ${walletPath}`);
         // Check to see if we've already enrolled the user.
-        const userIdentity = await wallet.get('appUser');
+        const userIdentity = await wallet.get('philongUser');
         if (userIdentity) {
-            console.log('An identity for the user "appUser" already exists in the wallet');
+            console.log('An identity for the user "philongUser" already exists in the wallet');
             return;
         }
         // Check to see if we've already enrolled the admin user.
@@ -36,8 +36,8 @@ async function main() {
         const provider = wallet.getProviderRegistry().getProvider(adminIdentity.type);
         const adminUser = await provider.getUserContext(adminIdentity, 'admin');
         // Register the user, enroll the user, and import the new identity into the wallet.
-        const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: 'appUser', role: 'client' }, adminUser);
-        const enrollment = await ca.enroll({ enrollmentID: 'appUser', enrollmentSecret: secret });
+        const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: 'philongUser1', role: 'client' }, adminUser);
+        const enrollment = await ca.enroll({ enrollmentID: 'philongUser1', enrollmentSecret: secret });
         const x509Identity = {
             credentials: {
                 certificate: enrollment.certificate,
@@ -46,11 +46,11 @@ async function main() {
             mspId: 'Org1MSP',
             type: 'X.509',
         };
-        await wallet.put('appUser', x509Identity);
-        console.log('Successfully registered and enrolled admin user "appUser" and imported it into the wallet');
+        await wallet.put('philongUser1', x509Identity);
+        console.log('Successfully registered and enrolled admin user "philongUser1" and imported it into the wallet');
     }
     catch (error) {
-        console.error(`Failed to register user "appUser": ${error}`);
+        console.error(`Failed to register user "philongUser1": ${error}`);
         process.exit(1);
     }
 }

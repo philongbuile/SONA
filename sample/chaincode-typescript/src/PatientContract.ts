@@ -53,7 +53,7 @@ export class PatientContract extends Contract {
                 Address: '2018 2019 OG Street',
                 DoB: '02/10/2001',
                 Gender: 'male',
-                MedicalInfo_ID: medical2.ID,
+                MedicalInfo_ID: 'medical2',
                 AuthorizedDoctors:['Doctor2'],
             }
         ];
@@ -172,27 +172,27 @@ export class PatientContract extends Contract {
         return assetJSON.toString();
     }
 
-    // @Transaction(false)
-    // @Returns('string')
-    // public async GetAll(ctx: Context): Promise<string> {
-    //     const allResults = [];
-    //     // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
-    //     const iterator = await ctx.stub.getStateByRange('', '');
-    //     let result = await iterator.next();
-    //     while (!result.done) {
-    //         const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
-    //         let MedicalInfo;
-    //         try {
-    //             MedicalInfo = JSON.parse(strValue);
-    //         } catch (err) {
-    //             console.log(err);
-    //             MedicalInfo = strValue;
-    //         }
-    //         allResults.push(MedicalInfo);
-    //         result = await iterator.next();
-    //     }
-    //     return JSON.stringify(allResults);
-    // }
+    @Transaction(false)
+    @Returns('string')
+    public async GetAll(ctx: Context): Promise<string> {
+        const allResults = [];
+        // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
+        const iterator = await ctx.stub.getStateByRange('', '');
+        let result = await iterator.next();
+        while (!result.done) {
+            const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
+            let MedicalInfo;
+            try {
+                MedicalInfo = JSON.parse(strValue);
+            } catch (err) {
+                console.log(err);
+                MedicalInfo = strValue;
+            }
+            allResults.push(MedicalInfo);
+            result = await iterator.next();
+        }
+        return JSON.stringify(allResults);
+    }
 
 
     @Transaction()
