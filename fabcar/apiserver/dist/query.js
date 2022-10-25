@@ -29,18 +29,18 @@ async function main() {
         const network = await gateway.getNetwork('mychannel');
         // Get the contract from the network.
         //const contract = network.getContract('fabcar');
-        // const caseContract = network.getContract('fabcar', 'CaseContract');
-        const patientContract = network.getContract('fabcar', 'PatientContract');
+        const caseContract = network.getContract('fabcar', 'CaseContract');
+        const patientContract = network.getContract('fabcar', 'AssetTransferContract');
         // Evaluate the specified transaction.
         // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        // const result = await caseContract.evaluateTransaction('ReadCase', '2');
-        // console.log(`Transaction has been evaluated, cases of Patient 2 are : ${result}`);
+        const result = await caseContract.evaluateTransaction('ReadCase', '2');
+        console.log(`Transaction has been evaluated, cases of Patient 2 are : ${result}`);
         // const result1 = await caseContract.evaluateTransaction('ReadCase','1');
         // console.log(`Transaction has been evaluated, cases of patient 1  are: ${result1}`);
         // const result3 = await caseContract.evaluateTransaction('ReadCase','2');
         // console.log(`Transaction has been evaluated, result is: ${result3}`);
-        const result2 = await patientContract.evaluateTransaction('GetAll');
+        const result2 = await caseContract.evaluateTransaction('ReadRecord', '2');
         console.log(`Transaction has been evaluated, cases of Patient 2 are : ${result2}`);
         // 
     }
