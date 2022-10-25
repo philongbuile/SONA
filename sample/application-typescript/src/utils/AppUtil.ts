@@ -13,7 +13,8 @@ const buildCCPOrg1 = (): Record<string, any> => {
     // const ccpPath = path.resolve(__dirname, '..', '..', '..', '..', 'test-network',
     //     'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
 
-    const ccpPath = '/home/philong/sona/sample/application-typescript/org/connection-org1.json';
+    const ccpPath = path.resolve(__dirname, '..', '..', 'org', 'connection-org1.json');``
+    // const ccpPath = '/home/philong/sona/sample/application-typescript/org/connection-org1.json';
     const fileExists = fs.existsSync(ccpPath);
     if (!fileExists) {
         throw new Error(`no such file or directory: ${ccpPath}`);

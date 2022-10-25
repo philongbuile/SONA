@@ -1,14 +1,10 @@
 const express = require('express');
-// const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 const ejs = require('ejs');
-const util = require('util')
 
 const app = express();
 
-// app.use(express.bodyParser());
-app.use(express.json());
-app.use(express.urlencoded());
-
+app.use(bodyParser.json());
 // app.set("views", path.resolve(__dirname, "views"));
 app.set("view engine", "ejs");
 
@@ -16,8 +12,7 @@ app.set("view engine", "ejs");
 const { Wallets, Gateway } = require('fabric-network');
 const fs = require('fs');
 const path = require('path');
-const { time } = require('console');
-const ccpPath = path.resolve(__dirname, '..', '..', '..','SONA', 'test-network','organizations','peerOrganizations','org1.example.com', 'connection-org1.json');
+const ccpPath = path.resolve(__dirname, '..', '..','SONA','sample', 'application-typescript','org', 'connection-org1.json');
 let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
 const PORT = 8080
@@ -35,16 +30,16 @@ app.get('/patient/queryall', async (req, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('appUser');
+        const identity = await wallet.get('userOne');
         if (!identity) {
-            console.log('An identity for the user "appUser" does not exist in the wallet');
+            console.log('An identity for the user "userOne" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'userOne', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -76,16 +71,16 @@ app.get('/patient/query/:username', async (req, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('appUser');
+        const identity = await wallet.get('userOne');
         if (!identity) {
-            console.log('An identity for the user "appUser" does not exist in the wallet');
+            console.log('An identity for the user "userOne" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'userOne', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -107,15 +102,7 @@ app.get('/patient/query/:username', async (req, res) => {
     }
 })
 
-
-app.get('/', async (req, res, next) => {
-    let result = 'List of Doctor'
-    res.render('form', {
-        result:result
-    })
-})
-
-app.post('/', async (req, res, next) => {
+app.post('/patient/doctor-query', async (req, res) => {
     try {
 
         let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
@@ -126,16 +113,16 @@ app.post('/', async (req, res, next) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('appUser');
+        const identity = await wallet.get('userOne');
         if (!identity) {
-            console.log('An identity for the user "appUser" does not exist in the wallet');
+            console.log('An identity for the user "userOne" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'userOne', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -143,34 +130,22 @@ app.post('/', async (req, res, next) => {
         // Get the contract from the network.
         const patientContract = network.getContract('fabcar', 'PatientContract');
 
-        // res.contentType('application/json');
-
-        let patient_username = req.body.patient;
-        let doctor_username = req.body.doctor;
-        let record_id = req.body.record;
-        let date = Date();
+        let patient_username = req.body.username
+        let doctor_username = req.body.doctor_username
+        let record_id = req.body.record_id
+        let date = Date()
         
-        const result = await patientContract.evaluateTransaction('doctorQuery', patient_username
-                                                                                , doctor_username
-                                                                                , record_id
+        const result = await patientContract.evaluateTransaction('patientQuery', req.body.patient_username
+                                                                                , req.body.doctor_username
+                                                                                , req.body.record_id
                                                                                 , date);
-        // if(result === 'undefined'){
-        //     result = 'UNDEFINED'
-        // }
-        
-        // const rest = {
-        //     'patient': patient_username, 
-        //     'doctor': doctor_username, 
-        //     'record': record_id, 
-        //     'time': date
-        // }
 
-        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
         // res.status(200).json({response: result.toString()});
-        // res.render('form', {
-        //     result: result
-        // });
-        res.send(result)
+        res.render('form', {
+            result:result
+        });
+
         // Disconnect from the gateway.
         await gateway.disconnect();
 
