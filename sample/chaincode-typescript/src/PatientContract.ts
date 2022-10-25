@@ -249,10 +249,4 @@ export class PatientContract extends Contract {
         // return JSON.stringify(patient);
 
     }
-
-
-
-
-
-
 }
