@@ -7,7 +7,7 @@ import { Wallets, X509Identity } from 'fabric-network';
 import * as fs from 'fs';
 import * as path from 'path';
 
-async function main() {
+export async function enrollAdmin() {
     try {
         // load the network configuration
         const ccpPath = path.resolve(__dirname, '..', '..', '..','test-network','organizations','peerOrganizations','org1.example.com', 'connection-org1.json');
@@ -48,5 +48,3 @@ async function main() {
         process.exit(1);
     }
 }
-
-main();
