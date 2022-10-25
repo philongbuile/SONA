@@ -1,3 +1,6 @@
+
+
+
 module.exports={
         // Create a new file system based wallet for managing identities.
         const walletPath = path.join(process.cwd(), 'wallet');
