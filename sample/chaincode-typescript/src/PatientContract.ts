@@ -45,6 +45,16 @@ export class PatientContract extends Contract {
                 Gender: 'male',
                 MedicalInfo_ID: 'medical2',
                 AuthorizedDoctors:['Doctor1'],
+            },
+            {
+                FullName: 'Le Duc Minh',
+                Username: 'minhleduc0210',
+                Phone: '0706208723',
+                Address: '2018 2019 OG Street',
+                DoB: '02/10/2001',
+                Gender: 'male',
+                MedicalInfo_ID: medical2.ID,
+                AuthorizedDoctors:['Doctor2'],
             }
         ];
 
