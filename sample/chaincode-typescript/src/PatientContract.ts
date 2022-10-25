@@ -53,7 +53,7 @@ export class PatientContract extends Contract {
                 Address: '2018 2019 OG Street',
                 DoB: '02/10/2001',
                 Gender: 'male',
-                MedicalInfo_ID: medical2.ID,
+                MedicalInfo_ID: 'medical2',
                 AuthorizedDoctors:['Doctor2'],
             }
         ];
