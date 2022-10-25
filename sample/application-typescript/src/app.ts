@@ -25,7 +25,7 @@ const org1UserId = 'appUser';
 //   install, approve, and commit the javascript chaincode, all the actions it takes
 //   to deploy a chaincode to a channel.
 //         ===> from directory /fabric-samples/test-network
-//         ./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-typescript/ -ccl javascript
+//         ./network.sh deployCC -ccn basic -ccp ../sample/chaincode-typescript/ -ccl javascript
 // - Be sure that node.js is installed
 //         ===> from directory /fabric-samples/asset-transfer-basic/application-typescript
 //         node -v
@@ -154,7 +154,7 @@ async function main() {
             console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
             
-            const patientContract = network.getContract('fabcar','PatientContract')
+        const patientContract = network.getContract('fabcar','PatientContract')
         const medicalOperatorContract = network.getContract('fabcar','OperatorContract');
         const usageRecordContract = network.getContract('fabcar','UsageRecordContract');
         const medicalInfoContract = network.getContract('fabcar','MedicalInfoContract');

@@ -35,14 +35,13 @@ async function main() {
         
 
         // Get the contract from the network.
-        const patientContract = network.getContract('fabcar','PatientContract')
-        const medicalOperatorContract = network.getContract('fabcar','OperatorContract');
-        const usageRecordContract = network.getContract('fabcar','UsageRecordContract');
-        const medicalInfoContract = network.getContract('fabcar','MedicalInfoContract');
+        const patientContract = network.getContract('sona','PatientContract')
+        const medicalOperatorContract = network.getContract('sona','OperatorContract');
+        const usageRecordContract = network.getContract('sona','UsageRecordContract');
+        const medicalInfoContract = network.getContract('sona','MedicalInfoContract');
 
     
 
-<<<<<<< HEAD
          await patientContract.submitTransaction('InitLedger');
          console.log(`Transaction: InitLedger has been submitted`);
          const query_result = await patientContract.submitTransaction('patientQuery','philong123');
@@ -59,17 +58,6 @@ async function main() {
 
         const result =await usageRecordContract.submitTransaction('QueryRecords','medical1');
         console.log(`Transaction evaluated, result of query record of med1: ${result}`);
-=======
-        await patientContract.submitTransaction('InitLedger');
-        console.log(`Transaction: InitLedger has been submitted`);
-        await patientContract.submitTransaction('patientQuery','minhleduc0210');
-         
-        // await medicalOperatorContract.submitTransaction('InitOperator');
-        // console.log(`Transaction: InitOperator has been submitted`);
-        // await medicalOperatorContract.submitTransaction('CreateCase','philong123','Doctor1','Success','Flu','Use medicine');
-        // console.log(`Transaction: OperatorCreateCase has been submitted`);
-        // await usageRecordContract.submitTransaction('ReadRecord','philong123');
->>>>>>> dbc2d83b (Add apiserver folder in fabcar folder (/fabcar/apiserver))
 
 
 

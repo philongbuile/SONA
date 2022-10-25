@@ -1,25 +1,41 @@
-const express = require("express");
-const bodyParser = require("body-parser");
+const express = require('express');
+// const bodyParser = require('body-parser');
+const ejs = require('ejs');
+const util = require('util')
 
 const app = express();
 
-app.use(bodyParser.json());
+// app.use(express.bodyParser());
+app.use(express.json());
+app.use(express.urlencoded());
 
 // Setting for Hyperledger Fabric
-const { Wallets, Gateway } = require("fabric-network");
-const fs = require("fs");
-const path = require("path");
-// const ccpPath = "connection-org1.json";
-const ccpPath = path.resolve(
-  __dirname,
-  "..",
-  "..",
-  "connection",
-  "connection-org1.json"
-);
-let ccp = JSON.parse(fs.readFileSync(ccpPath, "utf8"));
+// const { Wallets, Gateway } = require("fabric-network");
+// const fs = require("fs");
+// const path = require("path");
+// // const ccpPath = "connection-org1.json";
+// const ccpPath = path.resolve(
+//   __dirname,
+//   "..",
+//   "..",
+//   "connection",
+//   "connection-org1.json"
+// );
+// let ccp = JSON.parse(fs.readFileSync(ccpPath, "utf8"));
 
-const PORT = 8080;
+// const PORT = 8080;
+// // app.set("views", path.resolve(__dirname, "views"));
+// app.set("view engine", "ejs");
+
+// Setting for Hyperledger Fabric
+const { Wallets, Gateway } = require('fabric-network');
+const fs = require('fs');
+const path = require('path');
+const { time } = require('console');
+const ccpPath = path.resolve(__dirname, '..', '..', '..','SONA', 'test-network','organizations','peerOrganizations','org1.example.com', 'connection-org1.json');
+let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+
+const PORT = 8080
 app.listen(PORT, () => {
   console.log("App listening on port " + PORT);
 });
@@ -87,35 +103,78 @@ app.get("/patient/query/:username", async (req, res) => {
       console.log("Run the registerUser.js application before retrying");
       return;
     }
+})
 
-    // Create a new gateway for connecting to our peer node.
-    const gateway = new Gateway();
-    await gateway.connect(ccp, {
-      wallet,
-      identity: "appUser",
-      discovery: { enabled: true, asLocalhost: false },
-    });
 
-    // Get the network (channel) our contract is deployed to.
-    const network = await gateway.getNetwork("mychannel");
+app.get('/', async (req, res, next) => {
+    let result = 'List of Doctor'
+    res.render('form', {
+        result:result
+    })
+})
 
-    // Get the contract from the network.
-    const patientContract = network.getContract("fabcar", "PatientContract");
+app.post('/', async (req, res, next) => {
+    try {
 
-    const result = await patientContract.evaluateTransaction(
-      "patientQuery",
-      req.params.username
-    );
-    console.log(
-      `Transaction has been evaluated, result is: ${result.toString()}`
-    );
-    res.status(200).json({ response: result.toString() });
+        let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
-    // Disconnect from the gateway.
-    await gateway.disconnect();
-  } catch (error) {
-    console.error(`Failed to evaluate transaction: ${error}`);
-    res.status(500).json({ error: error });
-    process.exit(1);
-  }
-});
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), 'wallet');
+        const wallet = await Wallets.newFileSystemWallet(walletPath);
+        console.log(`Wallet path: ${walletPath}`);
+
+        // Check to see if we've already enrolled the user.
+        const identity = await wallet.get('appUser');
+        if (!identity) {
+            console.log('An identity for the user "appUser" does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+            return;
+        }
+
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
+
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+
+        // Get the contract from the network.
+        const patientContract = network.getContract('fabcar', 'PatientContract');
+
+        // res.contentType('application/json');
+
+        let patient_username = req.body.patient;
+        let doctor_username = req.body.doctor;
+        let record_id = req.body.record;
+        let date = Date();
+        
+        const result = await patientContract.evaluateTransaction('doctorQuery', patient_username
+                                                                                , doctor_username
+                                                                                , record_id
+                                                                                , date);
+        // if(result === 'undefined'){
+        //     result = 'UNDEFINED'
+        // }
+        
+        // const rest = {
+        //     'patient': patient_username, 
+        //     'doctor': doctor_username, 
+        //     'record': record_id, 
+        //     'time': date
+        // }
+
+        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        // res.status(200).json({response: result.toString()});
+        // res.render('form', {
+        //     result: result
+        // });
+        res.send(result)
+        // Disconnect from the gateway.
+        await gateway.disconnect();
+
+    } catch (error) {
+        console.error(`Failed to evaluate transaction: ${error}`);
+        res.status(500).json({error: error});
+        process.exit(1);
+    }
+})
