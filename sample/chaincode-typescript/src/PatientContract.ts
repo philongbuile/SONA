@@ -154,7 +154,7 @@ export class PatientContract extends Contract {
             throw new Error(`permission denied to query ${patient_username} info`);
         }
 
-        const patient = await this.ReadPatient(ctx, patient_username);
+        const patient = await this.patientQuery(ctx, patient_username);
         const patient_obj = JSON.parse(patient);
 
         // create usage record

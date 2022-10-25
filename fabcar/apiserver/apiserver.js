@@ -1,12 +1,10 @@
 const express = require('express');
-// const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const util = require('util')
 
 const app = express();
 
 app.use(express.json({type: 'application/json'}));
-// app.use(express.urlencoded()); 
 app.use(express.urlencoded({ extended: true}));
 
 app.set("view engine", "ejs");
@@ -111,15 +109,7 @@ app.get('/patient/query/:username', async (req, res) => {
     }
 })
 
-
-app.get('/patient/doctor-query', async (req, res, next) => {
-    let result = 'List of Doctor'
-    res.render('form', {
-        result:result
-    })
-})
-
-app.post('/patient/doctor-query', async (req, res, next) => {
+app.get('/patient/:patient_username/:doctor_username/:record_id', async (req, res, next) => {
     try {
 
         let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
@@ -148,34 +138,153 @@ app.post('/patient/doctor-query', async (req, res, next) => {
         const patientContract = network.getContract('sona', 'PatientContract');
         const medicalOperatorContract = network.getContract('sona', 'OperatorContract')
         const usageRecordContract = network.getContract('sona', 'UsageRecordContract');
-
-        let patient_username = req.body.patient;
-        let doctor_username = req.body.doctor;
-        let record_id = req.body.record;
-        let date = Date();
         
         await patientContract.submitTransaction('InitLedger');
         await medicalOperatorContract.submitTransaction('InitLedger');
         await usageRecordContract.submitTransaction('InitLedger');
 
+        let date = Date()
 
-        console.log(patient_username)
-        console.log(doctor_username)
-        console.log(record_id)
-
-        const result = await patientContract.evaluateTransaction('doctorQuery', patient_username
-                                                                                , doctor_username
-                                                                                , record_id
+        const result = await patientContract.evaluateTransaction('doctorQuery', req.params.patient_username
+                                                                                , req.params.doctor_username
+                                                                                , req.params.record_id
                                                                                 , date);
 
 
         console.log(result)
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
         res.status(200).json({response: result.toString()});
-        res.render('form', {
-            result: result
-        });
+        // res.render('form', {
+        //     result: result
+        // });
         // res.send(result)
+        // Disconnect from the gateway.
+        await gateway.disconnect();
+
+    } catch (error) {
+        console.error(`Failed to evaluate transaction: ${error}`);
+        res.status(500).json({error: error});
+        process.exit(1);
+    }
+})
+
+// app.get('/patient/doctor-query', async (req, res, next) => {
+//     let result = 'List of Doctor'
+//     res.render('form', {
+//         result:result
+//     })
+// })
+
+// app.post('/patient/doctor-query', async (req, res, next) => {
+//     try {
+
+//         let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+
+//         // Create a new file system based wallet for managing identities.
+//         const walletPath = path.join(process.cwd(), 'wallet');
+//         const wallet = await Wallets.newFileSystemWallet(walletPath);
+//         console.log(`Wallet path: ${walletPath}`);
+
+//         // Check to see if we've already enrolled the user.
+//         const identity = await wallet.get('appUser');
+//         if (!identity) {
+//             console.log('An identity for the user "appUser" does not exist in the wallet');
+//             console.log('Run the registerUser.js application before retrying');
+//             return;
+//         }
+
+//         // Create a new gateway for connecting to our peer node.
+//         const gateway = new Gateway();
+//         await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
+
+//         // Get the network (channel) our contract is deployed to.
+//         const network = await gateway.getNetwork('mychannel');
+
+//         // Get the contract from the network.
+//         const patientContract = network.getContract('sona', 'PatientContract');
+//         const medicalOperatorContract = network.getContract('sona', 'OperatorContract')
+//         const usageRecordContract = network.getContract('sona', 'UsageRecordContract');
+
+//         let patient_username = req.body.patient;
+//         let doctor_username = req.body.doctor;
+//         let record_id = req.body.record;
+//         let date = Date();
+        
+//         await patientContract.submitTransaction('InitLedger');
+//         await medicalOperatorContract.submitTransaction('InitLedger');
+//         await usageRecordContract.submitTransaction('InitLedger');
+
+
+//         console.log(patient_username)
+//         console.log(doctor_username)
+//         console.log(record_id)
+
+//         const result = await patientContract.evaluateTransaction('doctorQuery', patient_username
+//                                                                                 , doctor_username
+//                                                                                 , record_id
+//                                                                                 , date);
+
+
+//         console.log(result)
+//         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+//         res.status(200).json({response: result.toString()});
+//         res.render('form', {
+//             result: result
+//         });
+//         // res.send(result)
+//         // Disconnect from the gateway.
+//         await gateway.disconnect();
+
+//     } catch (error) {
+//         console.error(`Failed to evaluate transaction: ${error}`);
+//         res.status(500).json({error: error});
+//         process.exit(1);
+//     }
+// })
+
+app.get('/patient/authorize/:patient/:operator', async (req, res) => {
+    try {
+
+        let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), 'wallet');
+        const wallet = await Wallets.newFileSystemWallet(walletPath);
+        console.log(`Wallet path: ${walletPath}`);
+
+        // Check to see if we've already enrolled the user.
+        const identity = await wallet.get('appUser');
+        if (!identity) {
+            console.log('An identity for the user "appUser" does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+            return;
+        }
+
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
+
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+
+        // Get the contract from the network.
+        const patientContract = network.getContract('sona', 'PatientContract');
+        const medicalOperatorContract = network.getContract('sona', 'OperatorContract')
+        const usageRecordContract = network.getContract('sona', 'UsageRecordContract');
+        
+        await patientContract.submitTransaction('InitLedger');
+        await medicalOperatorContract.submitTransaction('InitLedger');
+        await usageRecordContract.submitTransaction('InitLedger');
+
+
+        const result = await patientContract.evaluateTransaction('AuthorizeOperator', req.params.patient, req.params.operator);
+
+
+        console.log(req.params)
+        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        res.status(200).json({response: result.toString()});
+
+        // res.send(req.params)
         // Disconnect from the gateway.
         await gateway.disconnect();
 
