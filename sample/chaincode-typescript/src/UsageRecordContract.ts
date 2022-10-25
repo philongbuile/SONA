@@ -57,7 +57,7 @@ export class UsageRecordContract extends Contract {
         ];
 
         for (const record of records) {
-            record.docType = 'record';
+            record.docType = 'UsageRecord';
             // example of how to write to world state deterministically
             // use convetion of alphabetic order
             // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
@@ -85,11 +85,7 @@ export class UsageRecordContract extends Contract {
             docType: 'UsageRecord',
             Case_ID: case_id,
             MedicalInfo_ID: medicalinfo_id,
-<<<<<<< HEAD
-            Record_ID: 'record3',
-=======
             Record_ID: record_id,
->>>>>>> b7baba95988467316addc6770dd16e0e2d4f3766
             Operation: operation,
             Roles: operator.Role,
             OperatorName: operator.Username,
@@ -118,7 +114,6 @@ export class UsageRecordContract extends Contract {
     //     return patientRecordsJSON.toString();
     // }
 
-<<<<<<< HEAD
     @Transaction(false)
     @Returns('string')
     public async GetAll(ctx: Context): Promise<string> {
@@ -128,7 +123,8 @@ export class UsageRecordContract extends Contract {
         // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
         let selector = {
             selector:  {
-                MedicalInfo_ID:  { "$eq": "medical1" }
+                MedicalInfo_ID:  { "$eq": "medical1" },
+                docType: {"$eq":'UsageRecord'}
             }
         };
 
@@ -152,44 +148,16 @@ export class UsageRecordContract extends Contract {
         }
         return JSON.stringify(allResults);
     }
-=======
-
-
-
-
-    // modify
-    // @Transaction(false)
-    // @Returns('string')
-    // public async GetAll(ctx: Context): Promise<string> {
-    //     const allResults = [];
-    //     // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
-    //     const iterator = await ctx.stub.getStateByRange('', '');
-    //     let result = await iterator.next();
-    //     while (!result.done) {
-    //         const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
-    //         let MedicalInfo;
-    //         try {
-    //             MedicalInfo = JSON.parse(strValue);
-    //         } catch (err) {
-    //             console.log(err);
-    //             MedicalInfo = strValue;
-    //         }
-    //         allResults.push(MedicalInfo);
-    //         result = await iterator.next();
-    //     }
-    //     return JSON.stringify(allResults);
-    // }
->>>>>>> b7baba95988467316addc6770dd16e0e2d4f3766
 
     @Transaction()
     public async QueryRecords(ctx:Context, medical_info_id: string) : Promise<string>{
         // query all the usage records of the medical_info specified
-<<<<<<< HEAD
         const allResults = [];
         // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
         let selector = {
             selector:  {
-                MedicalInfo_ID:  { "$eq": medical_info_id }
+                MedicalInfo_ID:  { "$eq": medical_info_id },
+                docType: {"$eq":'UsageRecord'}
             }
         };
 
@@ -213,9 +181,6 @@ export class UsageRecordContract extends Contract {
         return JSON.stringify(allResults);
 
         return '';
-=======
-        return ''; 
->>>>>>> b7baba95988467316addc6770dd16e0e2d4f3766
     }
 
     

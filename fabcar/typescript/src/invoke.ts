@@ -5,6 +5,7 @@
 import { Gateway, Wallets } from 'fabric-network';
 import * as path from 'path';
 import * as fs from 'fs';
+import { v4 as uuidv4 } from 'uuid';
 
 async function main() {
     try {
@@ -34,25 +35,29 @@ async function main() {
         
 
         // Get the contract from the network.
-        const caseContract = network.getContract('fabcar','CaseContract');
         const patientContract = network.getContract('fabcar','PatientContract')
         const medicalOperatorContract = network.getContract('fabcar','OperatorContract');
         const usageRecordContract = network.getContract('fabcar','UsageRecordContract');
+        const medicalInfoContract = network.getContract('fabcar','MedicalInfoContract');
 
-        // Submit the specified transaction.
-        // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
-        // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR12', 'Dave')
-        // await contract.submitTransaction('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom');
+    
 
          await patientContract.submitTransaction('InitLedger');
          console.log(`Transaction: InitLedger has been submitted`);
-         await patientContract.submitTransaction('QueryPatient','philong123');
-         
-        // await medicalOperatorContract.submitTransaction('InitOperator');
-        // console.log(`Transaction: InitOperator has been submitted`);
-        // // await medicalOperatorContract.submitTransaction('CreateCase','philong123','Doctor1','Success','Flu','Use medicine');
-        // console.log(`Transaction: OperatorCreateCase has been submitted`);
-        // await usageRecordContract.submitTransaction('ReadRecord','philong123');
+         const query_result = await patientContract.submitTransaction('patientQuery','philong123');
+         console.log(`Transaction evaluated, result of patient query: ${query_result}`);
+        await medicalOperatorContract.submitTransaction('InitLedger');
+        console.log(`Transaction: InitOperator has been submitted`);
+        
+        await medicalInfoContract.submitTransaction('InitLedger');
+        console.log('successfully init operators');
+        const patientqueryMed_result = await medicalInfoContract.submitTransaction('patientQueryMedicalInfo','medical2');
+        console.log(`Result of patientqueryMed_result: ${patientqueryMed_result}`);
+        const operatorquery_result = await medicalInfoContract.submitTransaction('operatorQueryMedicalInfo','medical1','Doctor1',uuidv4(),new Date().toLocaleString());
+        console.log(`Transaction evaluated, result of query medical info of med1 from operator Doctor 1: ${operatorquery_result}`);
+
+        const result =await usageRecordContract.submitTransaction('QueryRecords','medical1');
+        console.log(`Transaction evaluated, result of query record of med1: ${result}`);
 
 
 

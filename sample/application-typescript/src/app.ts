@@ -7,12 +7,13 @@ import { Gateway, GatewayOptions } from 'fabric-network';
 import * as path from 'path';
 import { buildCCPOrg1, buildWallet, prettyJSONString } from './utils//AppUtil';
 import { buildCAClient, enrollAdmin, registerAndEnrollUser } from './utils/CAUtil';
+import { v4 as uuidv4 } from 'uuid';
 
 const channelName = 'mychannel';
 const chaincodeName = 'fabcar';
 const mspOrg1 = 'Org1MSP';
 const walletPath = path.join(__dirname, 'wallet');
-const org1UserId = 'appUser';
+const org1UserId = 'appUser1';
 
 // pre-requisites:
 // - fabric-sample two organization test-network setup with two peers, ordering service,
@@ -45,7 +46,7 @@ const org1UserId = 'appUser';
    Failed to register user : Error: fabric-ca request register failed with errors [[ { code: 20, message: 'Authentication failure' } ]]
    ******** FAILED to run the application: Error: Identity not found in wallet: appUser
 */
-// Delete the /fabric-samples/asset-transfer-basic/application-typescript/wallet directory
+// Delete the /fabric-samples/asset-transfer-basic/application-t\\wsl.localhost\Ubuntu\home\philong\sona\sample\application-typescript\orgypescript/wallet directory
 // and retry this application.
 //
 // The certificate authority must have been restarted and the saved certificates for the
@@ -88,7 +89,7 @@ async function main() {
         const gatewayOpts: GatewayOptions = {
             wallet,
             identity: org1UserId,
-            discovery: { enabled: true, asLocalhost: true }, // using asLocalhost as this gateway is using a fabric network deployed locally
+            discovery: { enabled: true, asLocalhost: false }, // using asLocalhost as this gateway is using a fabric network deployed locally
         };
 
         try {
@@ -152,8 +153,30 @@ async function main() {
             result = await patient.evaluateTransaction('patientQuery', 'tucam525');
             console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
+            
+            const patientContract = network.getContract('fabcar','PatientContract')
+        const medicalOperatorContract = network.getContract('fabcar','OperatorContract');
+        const usageRecordContract = network.getContract('fabcar','UsageRecordContract');
+        const medicalInfoContract = network.getContract('fabcar','MedicalInfoContract');
 
+    
 
+         await patientContract.submitTransaction('InitLedger');
+         console.log(`Transaction: InitLedger has been submitted`);
+         const query_result = await patientContract.submitTransaction('patientQuery','philong123');
+         console.log(`Transaction evaluated, result of patient query: ${prettyJSONString(query_result.toString())}`);
+        await medicalOperatorContract.submitTransaction('InitLedger');
+        console.log(`Transaction: InitOperator has been submitted`);
+        
+        await medicalInfoContract.submitTransaction('InitLedger');
+        console.log('successfully init operators');
+        const patientqueryMed_result = await medicalInfoContract.submitTransaction('patientQueryMedicalInfo','medical2');
+        console.log(`Result of patientqueryMed_result: ${prettyJSONString(patientqueryMed_result.toString())}`);
+        const operatorquery_result = await medicalInfoContract.submitTransaction('operatorQueryMedicalInfo','medical1','Doctor1',uuidv4(),new Date().toLocaleString());
+        console.log(`Transaction evaluated, result of query medical info of med1 from operator Doctor 1: ${prettyJSONString(operatorquery_result.toString())}`);
+
+        result =await usageRecordContract.submitTransaction('QueryRecords','medical1');
+        console.log(`Transaction evaluated, result of query record of med1: ${prettyJSONString(result.toString())}`);
 
             
 
