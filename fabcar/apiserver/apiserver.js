@@ -519,6 +519,11 @@ app.get('/medinfo/patient_query_medicalinfo/:medicalinfo_id', async (req, res) =
         process.exit(1);
     }
 })
+
+
+
+
+//still buggy, maybe because of the chaincode
 // medical info query by keyword
 app.get('/medinfo/query_by_keyword/:keyword', async (req, res) => {
     try {
@@ -563,7 +568,7 @@ app.get('/medinfo/query_by_keyword/:keyword', async (req, res) => {
         process.exit(1);
     }
 })
-
+//
 
 
 

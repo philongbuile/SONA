@@ -19,16 +19,16 @@ async function main() {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('appUser');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "appUser" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.ts application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -44,10 +44,13 @@ async function main() {
 
          await patientContract.submitTransaction('InitLedger');
          console.log(`Transaction: InitLedger has been submitted`);
-         const query_result = await patientContract.submitTransaction('patientQuery','philong123');
+         await medicalOperatorContract.submitTransaction('InitLedger');
+         console.log(`Transaction: InitOperator has been submitted`);
+         let query_result = await patientContract.submitTransaction('patientQuery','philong123');
          console.log(`Transaction evaluated, result of patient query: ${query_result}`);
-        await medicalOperatorContract.submitTransaction('InitLedger');
-        console.log(`Transaction: InitOperator has been submitted`);
+        query_result = await patientContract.submitTransaction('doctorQuery','philong123','Doctor1',uuidv4(),new Date().toLocaleString());
+         console.log(`Transaction evaluated, result of patient query: ${query_result}`);
+
         
         await medicalInfoContract.submitTransaction('InitLedger');
         console.log('successfully init operators');
