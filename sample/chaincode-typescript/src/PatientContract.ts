@@ -205,8 +205,9 @@ export class PatientContract extends Contract {
         if (!isExists) {
             throw Error(`username ${operator_username} does not exist`);
         }
-        // retriev patient info
-        let patient = await this.ReadPatient(ctx, patient_username);
+        
+        // retriev patient info2
+        let patient = await this.patientQuery(ctx, patient_username);
 
         let patient_obj = JSON.parse(patient);
 
@@ -230,10 +231,10 @@ export class PatientContract extends Contract {
         if (!isExists) {
             throw Error(`username ${operator_username} does not exist`);
         }
+
         // retriev patient info
         let patient = await this.ReadPatient(ctx, patient_username);
         let patient_obj = JSON.parse(patient);
-
 
         // remove operator username to authorizedDoctorss
         for( var i = 0; i < patient_obj.AuthorizedDoctors.length; i++){ 
@@ -250,10 +251,5 @@ export class PatientContract extends Contract {
         // return JSON.stringify(patient);
 
     }
-
-
-
-
-
 
 }

@@ -17,10 +17,13 @@ const { time } = require('console');
 const ccpPath = path.resolve(__dirname, '..', '..', '..','SONA', 'test-network','organizations','peerOrganizations','org1.example.com', 'connection-org1.json');
 let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
+const temp_walletpath = path.join(process.cwd(), 'wallet');
+
 const PORT = 8080
 app.listen(PORT, () => {
     console.log("App listening on port " + PORT)
 })
+
 
 
 app.get('/patient/queryall', async (req, res) => {
@@ -49,7 +52,7 @@ app.get('/patient/queryall', async (req, res) => {
         // Get the contract from the network.
         const patientContract = network.getContract('sona', 'PatientContract');
 
-        await patientContract.submitTransaction('InitLedger');
+        // await patientContract.submitTransaction('InitLedger');
 
         const result = await patientContract.evaluateTransaction('GetAll');
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
@@ -242,7 +245,7 @@ app.get('/patient/:patient_username/:doctor_username/:record_id', async (req, re
 //     }
 // })
 
-app.get('/patient/authorize/:patient/:operator', async (req, res) => {
+app.get('/patient-authorize/doctor/:patient/:operator', async (req, res) => {
     try {
 
         let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
@@ -281,10 +284,66 @@ app.get('/patient/authorize/:patient/:operator', async (req, res) => {
 
 
         console.log(req.params)
+        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        // res.status(200).json({response: result.toString()});
+
+        res.send(result)
+
+        // Disconnect from the gateway.
+        await gateway.disconnect();
+
+    } catch (error) {
+        console.error(`Failed to evaluate transaction: ${error}`);
+        res.status(500).json({error: error});
+        process.exit(1);
+    }
+})
+
+app.get('/patient/create/:fullname/:username/:medical_info/:address/:phone/:dob/:gender/:authorize_doctor', async (req, res) => {
+    try {
+
+        let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), 'wallet');
+        const wallet = await Wallets.newFileSystemWallet(walletPath);
+        console.log(`Wallet path: ${walletPath}`);
+
+        // Check to see if we've already enrolled the user.
+        const identity = await wallet.get('appUser');
+        if (!identity) {
+            console.log('An identity for the user "appUser" does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+            return;
+        }
+
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
+
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+
+        // Get the contract from the network.
+        const patientContract = network.getContract('sona', 'PatientContract');
+
+        await patientContract.submitTransaction('InitLedger');
+
+        let date = Date()
+
+        const result = await patientContract.evaluateTransaction('CreatePatient', req.params.fullname
+                                                                                , req.params.username
+                                                                                , req.params.medical_info
+                                                                                , req.params.address
+                                                                                , req.params.phone
+                                                                                , req.params.dob
+                                                                                , req.params.gender
+                                                                                , req.params.authorize_doctor);
+
+        console.log(result)
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
         res.status(200).json({response: result.toString()});
 
-        // res.send(req.params)
         // Disconnect from the gateway.
         await gateway.disconnect();
 

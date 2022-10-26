@@ -22,14 +22,11 @@ app.listen(PORT, () => {
 })
 
 
-app.get('/patient/doctor-query', (req, res, next) => {
-    let result = 'List of Doctor'
-    res.render('form', {
-        result: result
-    })
+app.get('/patient/query/:name/:age', (req, res, next) => {
+    res.send(req.params)
 })
 
-app.post('/patient/doctor-query', (req, res, next) => {
+app.post('/patient/doctor-query/:re', (req, res, next) => {
     try {
 
         let patient_username = req.body.patient;
