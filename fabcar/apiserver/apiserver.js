@@ -69,10 +69,15 @@ app.get("/operator/query/:username", async (req, res) => {
   await operator.queryOperator(req, res);
 });
 
-// create operator
-app.get("/operator/create/:username/:role", async (req, res) => {
+// // create operator
+// app.get("/operator/create/:username/:role", async (req, res) => {
+//   await operator.createOperator(req, res);
+// });
+
+app.post("/operator/create/", async (req, res) => {
   await operator.createOperator(req, res);
 });
+
 // usage record endpoint
 app.get("/record/getall", async (req, res) => {
   await record.queryAll(req, res);
@@ -102,21 +107,17 @@ app.get(
   }
 );
 // medical info query by keyword
-app.get("/medinfo/query_by_keyword/:keyword", async (req, res) => {
+app.post("/medinfo/query_by_keyword/", async (req, res) => {
   await medical.queryByKeywords(req, res);
 });
 
-// Medical Info AddCase
-app.get(
-  "/medinfo/addcase/:info_id/:test_result/:diagnosis/:treatment/:operator_username/:patient_username",
-  async (req, res) => {
-    medical.addCase(req, res);
-  }
-);
+//:info_id/:test_result/:diagnosis/:treatment/:operator_username/:patient_username
+app.post("/medinfo/addcase/", async (req, res) => {
+  await medical.addCase(req, res);
+});
 // Medical info AppendCase
-app.get(
-  "/medinfo/appendcase/:case_id/:info_id/:test_result/:diagnosis/:treatment/:operator_username/:patient_username",
-  async (req, res) => {
-    await medical.appendCase(req, res);
-  }
-);
+
+// :case_id/:info_id/:test_result/:diagnosis/:treatment/:operator_username/:patient_username
+app.post("/medinfo/appendcase/", async (req, res) => {
+  await medical.appendCase(req, res);
+});
