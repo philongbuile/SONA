@@ -14,9 +14,6 @@ const PORT = 8080;
 app.listen(PORT, () => {
   console.log("App listening on port " + PORT);
 });
-// Setting for Hyperledger Fabric
-
-const temp_walletpath = path.join(process.cwd(), "wallet");
 
 ////////////////////////////////////////////////////////////
 ////////// Patient endpoints
@@ -82,7 +79,7 @@ app.get("/record/getall", async (req, res) => {
 });
 // query records
 app.get("/record/query/:medinfo_id", async (req, res) => {
-  await record.queryMedicalInfo(req, res);
+  await record.queryMedIdUsage(req, res);
 });
 
 //////////////////    MEDICAL

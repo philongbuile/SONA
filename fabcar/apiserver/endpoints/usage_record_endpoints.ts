@@ -42,7 +42,7 @@ export async function queryAll(req, res) {
 }
 
 
-export async function queryMedicalInfo(req, res){
+export async function queryMedIdUsage(req, res){
     try {
         const wallet = await utils.getWallet();
         const gateway = await utils.getGateway(wallet, asLocalhost);
