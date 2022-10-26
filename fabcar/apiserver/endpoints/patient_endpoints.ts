@@ -2,7 +2,8 @@
 const utils = require("../utils/utils.ts");
 const queryOperatorRoute = "/operator/query/:username";
 const createOperatorRoute = "/operator/create/:username/:role";
-
+const { v4: uuidv4 } = require("uuid"); // for record_id
+const { v1: uuidv1 } = require("uuid"); // for case_id
 
 const { Wallets, Gateway } = require("fabric-network");
 const fs = require("fs");
@@ -66,58 +67,149 @@ export async function queryAll(req, res) {
 
 
 export async function doctorQuery(req, res) {
-    try {
-        const wallet = await utils.getWallet();
-        const gateway = await utils.getGateway(wallet, asLocalhost);
-        const network = await utils.getNetwork(gateway, wallet);
+  try {
+    const wallet = await utils.getWallet();
+    const gateway = await utils.getGateway(wallet, asLocalhost);
+    const network = await utils.getNetwork(gateway, wallet);
 
-        // Get the contract from the network.
-        const patientContract = network.getContract("fabcar", "PatientContract");
-    
-        // res.contentType('application/json');
-    
-        let patient_username = req.body.patient;
-        let doctor_username = req.body.doctor;
-        let record_id = req.body.record;
-        let date = Date();
-    
-        const result = await patientContract.evaluateTransaction(
-          "doctorQuery",
-          patient_username,
-          doctor_username,
-          record_id,
-          date
-        );
-        // if(result === 'undefined'){
-        //     result = 'UNDEFINED'
-        // }
-    
-        // const rest = {
-        //     'patient': patient_username,
-        //     'doctor': doctor_username,
-        //     'record': record_id,
-        //     'time': date
-        // }
-    
-        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-        // res.status(200).json({response: result.toString()});
-        // res.render('form', {
-        //     result: result
-        // });
-        res.send(result);
-        // Disconnect from the gateway.
-        await gateway.disconnect();
-      } catch (error) {
-        console.error(`Failed to evaluate transaction: ${error}`);
-        res.status(500).json({ error: error });
-        process.exit(1);
-      }
+    // Get the contract from the network.
+    const patientContract = network.getContract("fabcar", "PatientContract");
+    // const medicalOperatorContract = network.getContract('fabcar', 'OperatorContract')
+    // const usageRecordContract = network.getContract('fabcar', 'UsageRecordContract');
+
+    // await patientContract.submitTransaction('InitLedger');
+    // await medicalOperatorContract.submitTransaction('InitLedger');
+    // await usageRecordContract.submitTransaction('InitLedger');
+
+    let date = Date().toLocaleString();
+    let record_id = uuidv4();
+
+    const result = await patientContract.submitTransaction(
+      "doctorQuery",
+      req.params.patient_username,
+      req.params.doctor_username,
+      record_id,
+      date
+    );
+
+    console.log(result);
+    console.log(
+      `Transaction has been evaluated, result is: ${result.toString()}`
+    );
+    res.status(200).json({ response: result.toString() });
+
+    // Disconnect from the gateway.
+    await gateway.disconnect();
+  } catch (error) {
+    console.error(`Failed to evaluate transaction: ${error}`);
+    res.status(500).json({ error: error });
+    process.exit(1);
+  }
 }
 
 
+export async function createPatient(req ,res) {
+  try {
+
+    const wallet = await utils.getWallet();
+    const gateway = await utils.getGateway(wallet, asLocalhost);
+    const network = await utils.getNetwork(gateway, wallet);
+
+    // Get the contract from the network.
+    const patientContract = network.getContract('fabcar', 'PatientContract');
+    let medicalinfo_id = uuidv1();
+    // await patientContract.submitTransaction('InitLedger');
+
+    const result = await patientContract.submitTransaction('CreatePatient', req.params.fullname
+                                                                            , req.params.username
+                                                                            , medicalinfo_id
+                                                                            , req.params.address
+                                                                            , req.params.phone
+                                                                            , req.params.dob
+                                                                            , req.params.gender
+                                                                            , req.params.authorize_doctor);
+
+    // console.log(result)
+    // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+     res.status(200).json({response: `Successfully create Patient: ${req.params.fullname}`});
+
+    // Disconnect from the gateway.
+    await gateway.disconnect();
+
+} catch (error) {
+    console.error(`Failed to evaluate transaction: ${error}`);
+    res.status(500).json({error: error});
+    process.exit(1);
+
+}
+}
+
+export async function authorizeOperator(req , res){
+  try {
+    const wallet = await utils.getWallet();
+    const gateway = await utils.getGateway(wallet, asLocalhost);
+    const network = await utils.getNetwork(gateway, wallet);
+
+    // Get the contract from the network.
+    const patientContract = network.getContract("fabcar", "PatientContract");
+
+    const result = await patientContract.submitTransaction(
+      "AuthorizeOperator",
+      req.params.patient_username,
+      req.params.operator_username
+    );
+
+    console.log(req.params);
+    // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+    res
+      .status(200)
+      .json({
+        response: `Authorize successfully operator: ${req.params.operator_username}`,
+      });
+
+    //res.send(result)
+
+    // Disconnect from the gateway.
+    await gateway.disconnect();
+  } catch (error) {
+    console.error(`Failed to evaluate transaction: ${error}`);
+    res.status(500).json({ error: error });
+    process.exit(1);
+  }
+}
 
 
+export async function revokeOperator(req, res) {
+  try {
+    const wallet = await utils.getWallet();
+    const gateway = await utils.getGateway(wallet, asLocalhost);
+    const network = await utils.getNetwork(gateway, wallet);
 
+    // Get the contract from the network.
+    const patientContract = network.getContract("fabcar", "PatientContract");
+
+    const result = await patientContract.submitTransaction(
+      "RevokeOperator",
+      req.params.patient_username,
+      req.params.operator_username
+    );
+
+    // console.log(result)
+    // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+    res
+      .status(200)
+      .json({
+        response: `Revoke successfully operator: ${req.params.operator_username}`,
+      });
+
+    // Disconnect from the gateway.
+    await gateway.disconnect();
+  } catch (error) {
+    console.error(`Failed to evaluate transaction: ${error}`);
+    res.status(500).json({ error: error });
+    process.exit(1);
+  }
+}
 
 
 

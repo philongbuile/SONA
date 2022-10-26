@@ -52,8 +52,8 @@ async function main() {
             mspId: 'Org1MSP',
             type: 'X.509',
         };
-        await wallet.put('philongUser1', x509Identity);
-        console.log('Successfully registered and enrolled admin user "philongUser1" and imported it into the wallet');
+        await wallet.put('philongLocal', x509Identity);
+        console.log('Successfully registered and enrolled admin user "philongLocal" and imported it into the wallet');
 
     } catch (error) {
         console.error(`Failed to register user "camtu123": ${error}`);
