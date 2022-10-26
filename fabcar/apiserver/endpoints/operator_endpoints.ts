@@ -36,7 +36,6 @@ export async function queryOperator(req, res): Promise<void> {
       } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
         res.status(500).json({ error: error });
-        process.exit(1);
       }
 
 }
@@ -63,6 +62,5 @@ export async function createOperator(req, res) {
   } catch (error) {
     console.error(`Failed to evaluate transaction: ${error}`);
     res.status(500).json({ error: error });
-    process.exit(1);
   }
 }

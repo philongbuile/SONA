@@ -30,14 +30,13 @@ export async function patientQuery(req, res) {
         );
         res.status(200).json({ response: result.toString() });
     
-        res.send(result);
+        // res.send(result);
         // Disconnect from the gateway.
     
         await gateway.disconnect();
       } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
         res.status(500).json({ error: error });
-        process.exit(1);
       }
 }
 
@@ -61,7 +60,6 @@ export async function queryAll(req, res) {
       } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
         res.status(500).json({ error: error });
-        process.exit(1);
       }
 }
 
@@ -103,7 +101,7 @@ export async function doctorQuery(req, res) {
   } catch (error) {
     console.error(`Failed to evaluate transaction: ${error}`);
     res.status(500).json({ error: error });
-    process.exit(1);
+
   }
 }
 
@@ -139,7 +137,7 @@ export async function createPatient(req ,res) {
 } catch (error) {
     console.error(`Failed to evaluate transaction: ${error}`);
     res.status(500).json({error: error});
-    process.exit(1);
+
 
 }
 }
@@ -174,7 +172,7 @@ export async function authorizeOperator(req , res){
   } catch (error) {
     console.error(`Failed to evaluate transaction: ${error}`);
     res.status(500).json({ error: error });
-    process.exit(1);
+
   }
 }
 
@@ -207,7 +205,7 @@ export async function revokeOperator(req, res) {
   } catch (error) {
     console.error(`Failed to evaluate transaction: ${error}`);
     res.status(500).json({ error: error });
-    process.exit(1);
+
   }
 }
 
