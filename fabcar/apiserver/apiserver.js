@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 const { Wallets, Gateway } = require('fabric-network');
 const fs = require('fs');
 const path = require('path');
+//const ccpPath = path.resolve(__dirname, '..','..','connection','connection-org1.json');
 const ccpPath = path.resolve(__dirname, '..', '..', '..','sona', 'test-network','organizations','peerOrganizations','org1.example.com', 'connection-org1.json');
 let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
@@ -23,8 +24,14 @@ app.listen(PORT, () => {
 
 const temp_walletpath = path.join(process.cwd(), 'wallet');
 
-app.get('/patient/queryall', async (req, res) => {
+////////////////////////////////////////////////////////////
+////////// Patient endpoints
+////////////////////////////////////////////////////////////
+// create patient
+app.get('/patient/create/:fullname/:username/:address/:phone/:dob/:gender/:authorize_doctor', async (req, res) => {
     try {
+
+        let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
         // Create a new file system based wallet for managing identities.
         const walletPath = path.join(process.cwd(), 'wallet');
@@ -32,16 +39,93 @@ app.get('/patient/queryall', async (req, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('philongUser1');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "philongUser1" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'philongUser1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
+
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+
+        // Get the contract from the network.
+        const patientContract = network.getContract('sona', 'PatientContract');
+        let medicalinfo_id = uuidv1();
+        // await patientContract.submitTransaction('InitLedger');
+
+        const result = await patientContract.submitTransaction('CreatePatient', req.params.fullname
+                                                                                , req.params.username
+                                                                                , medicalinfo_id
+                                                                                , req.params.address
+                                                                                , req.params.phone
+                                                                                , req.params.dob
+                                                                                , req.params.gender
+                                                                                , req.params.authorize_doctor);
+
+        // console.log(result)
+        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+         res.status(200).json({response: `Successfully create Patient: ${req.params.fullname}`});
+
+        // Disconnect from the gateway.
+        await gateway.disconnect();
+
+    } catch (error) {
+        console.error(`Failed to evaluate transaction: ${error}`);
+        res.status(500).json({error: error});
+        process.exit(1);
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// this endpoint is used by admin!
+app.get('/patient/queryall', async (req, res) => {
+    try {
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), 'wallet');
+        const wallet = await Wallets.newFileSystemWallet(walletPath);
+        console.log(`Wallet path: ${walletPath}`);
+
+        // Check to see if we've already enrolled the user.
+        const identity = await wallet.get('philongLocal');
+        if (!identity) {
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+            return;
+        }
+
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -62,6 +146,7 @@ app.get('/patient/queryall', async (req, res) => {
     }
 })
 
+// Patient query their own account
 app.get('/patient/query/:username', async (req, res) => {
     try {
 
@@ -73,16 +158,16 @@ app.get('/patient/query/:username', async (req, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('philongUser1');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "philongUser1" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'philongUser1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -103,6 +188,208 @@ app.get('/patient/query/:username', async (req, res) => {
         process.exit(1);
     }
 })
+
+
+
+//doctorQuery
+app.get('/patient/doctorQuery/:patient_username/:doctor_username', async (req, res, next) => {
+    try {
+
+        let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), 'wallet');
+        const wallet = await Wallets.newFileSystemWallet(walletPath);
+        console.log(`Wallet path: ${walletPath}`);
+
+        // Check to see if we've already enrolled the user.
+        const identity = await wallet.get('philongLocal');
+        if (!identity) {
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+            return;
+        }
+
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
+
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+
+        // Get the contract from the network.
+        const patientContract = network.getContract('sona', 'PatientContract');
+        const medicalOperatorContract = network.getContract('sona', 'OperatorContract')
+        const usageRecordContract = network.getContract('sona', 'UsageRecordContract');
+        
+        await patientContract.submitTransaction('InitLedger');
+        await medicalOperatorContract.submitTransaction('InitLedger');
+        await usageRecordContract.submitTransaction('InitLedger');
+
+        let date = Date().toLocaleString();
+        let record_id = uuidv4();
+
+        const result = await patientContract.submitTransaction('doctorQuery', req.params.patient_username
+                                                                                , req.params.doctor_username
+                                                                                , record_id
+                                                                                , date);
+
+
+        console.log(result)
+        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        res.status(200).json({response: result.toString()});
+
+        // Disconnect from the gateway.
+        await gateway.disconnect();
+
+    } catch (error) {
+        console.error(`Failed to evaluate transaction: ${error}`);
+        res.status(500).json({error: error});
+        process.exit(1);
+    }
+})
+// patient authorize doctor
+app.get('/patient/authorize_doctor/:patient_username/:operator_username', async (req, res) => {
+    try {
+
+        let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), 'wallet');
+        const wallet = await Wallets.newFileSystemWallet(walletPath);
+        console.log(`Wallet path: ${walletPath}`);
+
+        // Check to see if we've already enrolled the user.
+        const identity = await wallet.get('philongLocal');
+        if (!identity) {
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+            return;
+        }
+
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
+
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+
+        // Get the contract from the network.
+        const patientContract = network.getContract('sona', 'PatientContract');
+        
+
+
+        const result = await patientContract.submitTransaction('AuthorizeOperator', req.params.patient_username, req.params.operator_username);
+
+
+        console.log(req.params)
+        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        res.status(200).json({response: `Authorize successfully operator: ${req.params.operator_username}`});
+
+        //res.send(result)
+
+        // Disconnect from the gateway.
+        await gateway.disconnect();
+
+    } catch (error) {
+        console.error(`Failed to evaluate transaction: ${error}`);
+        res.status(500).json({error: error});
+        process.exit(1);
+    }
+})
+// patient revoke doctor
+app.get('/patient/revoke_doctor/:patient_username/:operator_username', async (req, res) => {
+    try {
+
+        let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), 'wallet');
+        const wallet = await Wallets.newFileSystemWallet(walletPath);
+        console.log(`Wallet path: ${walletPath}`);
+
+        // Check to see if we've already enrolled the user.
+        const identity = await wallet.get('philongLocal');
+        if (!identity) {
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+            return;
+        }
+
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
+
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+
+        // Get the contract from the network.
+        const patientContract = network.getContract('sona', 'PatientContract');
+
+
+        const result = await patientContract.submitTransaction('RevokeOperator', req.params.patient_username
+                                                                                , req.params.operator_username);
+
+        // console.log(result)
+        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        res.status(200).json({response: `Revoke successfully operator: ${req.params.operator_username}`});
+
+        // Disconnect from the gateway.
+        await gateway.disconnect();
+
+    } catch (error) {
+        console.error(`Failed to evaluate transaction: ${error}`);
+        res.status(500).json({error: error});
+        process.exit(1);
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////
+//////////// Operator endpoints
+///////////////////////////////////////////////////
+
 // operator query
 app.get('/operator/query/:username', async (req, res) => {
     try {
@@ -116,16 +403,16 @@ app.get('/operator/query/:username', async (req, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('philongUser1');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "philongUser1" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'philongUser1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -159,16 +446,16 @@ app.get('/operator/init', async (req, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('philongUser1');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "philongUser1" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'philongUser1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -203,16 +490,16 @@ app.get('/operator/create/:username/:role', async (req, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('philongUser1');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "philongUser1" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'philongUser1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -234,6 +521,29 @@ app.get('/operator/create/:username/:role', async (req, res) => {
         process.exit(1);
     }
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////
+//////////// Usage record endpoint
+///////////////////////////////////////////////////
 // usage record endpoint
 app.get('/record/getall', async (req, res) => {
     try {
@@ -247,16 +557,16 @@ app.get('/record/getall', async (req, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('philongUser1');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "philongUser1" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'philongUser1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -291,16 +601,16 @@ app.get('/record/query/:medinfo_id', async (req, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('philongUser1');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "philongUser1" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'philongUser1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -324,7 +634,7 @@ app.get('/record/query/:medinfo_id', async (req, res) => {
 })
 /////////////////////////////////////////////////
 ///////
-// Medical info contract
+// Medical info endpoint
 /////////////////////////////////////////////////
 // create medical ino
 app.get('/medinfo/create/:medicalinfo_id', async (req, res) => {
@@ -339,16 +649,16 @@ app.get('/medinfo/create/:medicalinfo_id', async (req, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('philongUser1');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "philongUser1" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'philongUser1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -382,16 +692,16 @@ app.get('/medinfo/create', async (req, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('philongUser1');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "philongUser1" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'philongUser1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -444,16 +754,16 @@ app.get('/medinfo/operator_query_medicalinfo/:medicalinfo_id/:operator_username'
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('philongUser1');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "philongUser1" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'philongUser1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -488,16 +798,16 @@ app.get('/medinfo/patient_query_medicalinfo/:medicalinfo_id', async (req, res) =
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('philongUser1');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "philongUser1" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'philongUser1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -537,16 +847,16 @@ app.get('/medinfo/query_by_keyword/:keyword', async (req, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('philongUser1');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "philongUser1" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'philongUser1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -554,7 +864,6 @@ app.get('/medinfo/query_by_keyword/:keyword', async (req, res) => {
         // Get the contract from the network.
         const medInfoContract = network.getContract('sona', 'MedicalInfoContract');
         
-
         const result = await medInfoContract.submitTransaction('QueryByKeyWord', req.params.keyword);
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
         res.status(200).json({response: result.toString()});
@@ -587,16 +896,16 @@ app.get('/medinfo/addcase/:info_id/:test_result/:diagnosis/:treatment/:operator_
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('philongUser1');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "philongUser1" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'philongUser1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -631,16 +940,16 @@ app.get('/medinfo/appendcase/:case_id/:info_id/:test_result/:diagnosis/:treatmen
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('philongUser1');
+        const identity = await wallet.get('philongLocal');
         if (!identity) {
-            console.log('An identity for the user "philongUser1" does not exist in the wallet');
+            console.log('An identity for the user "philongLocal" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'philongUser1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'philongLocal', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
