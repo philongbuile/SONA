@@ -5,8 +5,8 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
     <style>
       html, body {
-      display: flex;
-      justify-content: center;
+      display: block;
+      /* justify-content: center; */
       font-family: Roboto, Arial, sans-serif;
       font-size: 15px;
       }
@@ -43,20 +43,20 @@
       }
       .container {
       padding: 16px 0;
-      text-align:left;
+      /* text-align:left; */
       }
       span.psw {
       float: right;
       padding-top: 0;
       padding-right: 15px;
       }
-      /* Change styles for span on extra small screens */
+      /* Change styles for span on extra small screens
       @media screen and (max-width: 300px) {
       span.psw {
       display: block;
       float: none;
       }
-    }
+    } */
     </style>
   </head>
   <body>
@@ -69,12 +69,20 @@
           <input type="text" placeholder="Enter Doctor name" name="doctor" id="doctor" required>
           <label><strong>Record ID</strong></label>
           <input type="text" placeholder="Enter Record ID" name="record" id="record" required>
-        </div>
-        <button type="submit">Submit</button>
-  </form>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
 
-  <div class="container" style="background-color: #eee">
-    <h1><%= result %></h1>
+  <div class="container">
+    <h1>QUERY RESULT: </h1>
+    <h1><%= result%></h1>
+    <h1><%= type %></h1>
+    <h1><%= result.Fullname%></h1>
+    <h1><%= result.Phone %></h1>
+    <h1><%= result.Address %></h1>
+    <h1><%= result.MedicalInfo_ID %></h1>
+    <h1><%= result.AuthorizedDoctors %></h1>
   </div>
+
   </body>
 </html>

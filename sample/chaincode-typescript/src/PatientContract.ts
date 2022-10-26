@@ -161,7 +161,7 @@ export class PatientContract extends Contract {
         let recordContract = new UsageRecordContract();
         recordContract.CreateRecord(ctx, record_id , 'blank', patient_obj.Medical_Info, 'read patient\'s data', doctor_username, time);
 
-        return patient;    
+        return patient_obj;    
     }
 
     @Transaction(false)
@@ -205,7 +205,7 @@ export class PatientContract extends Contract {
         if (!isExists) {
             throw Error(`username ${operator_username} does not exist`);
         }
-        
+
         // retriev patient info2
         let patient = await this.patientQuery(ctx, patient_username);
 
