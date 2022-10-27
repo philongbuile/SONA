@@ -10,6 +10,7 @@ const fs = require("fs");
 const path = require("path");
 const { time } = require("console");
 
+const chaincodename='sona';
 // const userID = "camtu123";
 const asLocalhost = false;
 
@@ -20,7 +21,7 @@ export async function patientQuery(req, res) {
         const network = await utils.getNetwork(gateway, wallet);
     
         // Get the contract from the network.
-        const patientContract = network.getContract("fabcar", "PatientContract");
+        const patientContract = network.getContract(chaincodename, "PatientContract");
         const result = await patientContract.evaluateTransaction(
           "patientQuery",
           req.params.username
@@ -48,7 +49,7 @@ export async function queryAll(req, res) {
         const network = await utils.getNetwork(gateway, wallet);
 
         // Get the contract from the network.
-        const patientContract = network.getContract("fabcar", "PatientContract");
+        const patientContract = network.getContract(chaincodename, "PatientContract");
         const result = await patientContract.evaluateTransaction("GetAll");
         console.log(
           `Transaction has been evaluated, result is: ${result.toString()}`
@@ -71,7 +72,7 @@ export async function doctorQuery(req, res) {
     const network = await utils.getNetwork(gateway, wallet);
 
     // Get the contract from the network.
-    const patientContract = network.getContract("fabcar", "PatientContract");
+    const patientContract = network.getContract(chaincodename, "PatientContract");
     // const medicalOperatorContract = network.getContract('fabcar', 'OperatorContract')
     // const usageRecordContract = network.getContract('fabcar', 'UsageRecordContract');
 
@@ -149,7 +150,7 @@ export async function authorizeDoctor(req , res){
     const network = await utils.getNetwork(gateway, wallet);
 
     // Get the contract from the network.
-    const patientContract = network.getContract("fabcar", "PatientContract");
+    const patientContract = network.getContract(chaincodename, "PatientContract");
 
     const result = await patientContract.submitTransaction(
       "AuthorizeOperator",
@@ -184,7 +185,7 @@ export async function revokeOperator(req, res) {
     const network = await utils.getNetwork(gateway, wallet);
 
     // Get the contract from the network.
-    const patientContract = network.getContract("fabcar", "PatientContract");
+    const patientContract = network.getContract(chaincodename, "PatientContract");
 
     const result = await patientContract.submitTransaction(
       "RevokeOperator",

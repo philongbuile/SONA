@@ -14,21 +14,40 @@ const PORT = 8080;
 app.listen(PORT, () => {
   console.log("App listening on port " + PORT);
 });
+const operator = require("./endpoints/operator_endpoints.ts");
+const patient = require("./endpoints/patient_endpoints.ts");
+const record = require("./endpoints/usage_record_endpoints.ts");
+const medical = require("./endpoints/medicalinfo_endpoints.ts");
+const wallet = require("./utils/registerUser.ts")
+////////////////////////////////////////////////////////////
+////////// register the user to the network
+////////////////////////////////////////////////////////////
+// 
+
+// register user to the network
+app.get(
+  "network-user/register/:username",
+  async (req, res) => {
+    await wallet.registerUser(req, res);
+  }
+);
+
+
+
+
 
 ////////////////////////////////////////////////////////////
 ////////// Patient endpoints
 ////////////////////////////////////////////////////////////
 // create patient
 
-const operator = require("./endpoints/operator_endpoints.ts");
-const patient = require("./endpoints/patient_endpoints.ts");
-const record = require("./endpoints/usage_record_endpoints.ts");
-const medical = require("./endpoints/medicalinfo_endpoints.ts");
+
 
 app.get(
   "/patient/create/:fullname/:username/:address/:phone/:dob/:gender/:authorize_doctor",
   async (req, res) => {
     await patient.createPatient(req, res);
+    
   }
 );
 
@@ -122,3 +141,5 @@ app.get(
     await medical.appendCase(req, res);
   }
 );
+
+
