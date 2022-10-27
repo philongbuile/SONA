@@ -16,10 +16,10 @@ const asLocalhost = false;
 
 export async function queryOperator(req, res): Promise<void> {
     try {
-        const wallet = await utils.getWallet();
-        const gateway = await utils.getGateway(wallet, asLocalhost);
-    
-        const network = await utils.getNetwork(gateway, wallet);
+      const userID = req.params.username;
+      const wallet = await utils.getWallet();
+      const gateway = await utils.getGateway(wallet, asLocalhost,userID );
+      const network = await utils.getNetwork(gateway, wallet, userID);
     
         // Get the contract from the network.
         const operatorContract = await network.getContract(chaincodename, "OperatorContract");
@@ -44,10 +44,10 @@ export async function queryOperator(req, res): Promise<void> {
 
 export async function createOperator(req, res) {
   try {
+    const userID = req.body.username;
     const wallet = await utils.getWallet();
-        const gateway = await utils.getGateway(wallet, asLocalhost);
-  
-        const network = await utils.getNetwork(gateway, wallet);
+    const gateway = await utils.getGateway(wallet, asLocalhost,userID );
+    const network = await utils.getNetwork(gateway, wallet, userID);
     // Get the contract from the network.
     const operatorContract = network.getContract(chaincodename, "OperatorContract");
 

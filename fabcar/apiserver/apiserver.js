@@ -25,14 +25,6 @@ const wallet = require("./utils/registerUser.ts");
 ////////// register the user to the network
 ////////////////////////////////////////////////////////////
 //
-
-// register user to the network
-app.get("/wallet/register/:username", async (req, res) => {
-  await wallet.registerUser(req.params.username);
-  res
-    .status(200)
-    .json({ response: `success to create ${username} to the wallet` });
-});
 ////////////////////////////////////////////////////////////
 ////////// Patient endpoints
 ////////////////////////////////////////////////////////////
