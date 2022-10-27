@@ -25,12 +25,9 @@ const patient = require("./endpoints/patient_endpoints.ts");
 const record = require("./endpoints/usage_record_endpoints.ts");
 const medical = require("./endpoints/medicalinfo_endpoints.ts");
 
-app.get(
-  "/patient/create/:fullname/:username/:address/:phone/:dob/:gender/:authorize_doctor",
-  async (req, res) => {
-    await patient.createPatient(req, res);
-  }
-);
+app.post("/patient/create/", async (req, res) => {
+  await patient.createPatient(req, res);
+});
 
 app.get("/patient/queryall", async (req, res) => {
   await patient.queryAll(req, res);

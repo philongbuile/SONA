@@ -118,18 +118,18 @@ export async function createPatient(req ,res) {
     let medicalinfo_id = uuidv1();
     // await patientContract.submitTransaction('InitLedger');
 
-    const result = await patientContract.submitTransaction('CreatePatient', req.params.fullname
-                                                                            , req.params.username
+    const result = await patientContract.submitTransaction('CreatePatient', req.body.fullname
+                                                                            , req.body.username
                                                                             , medicalinfo_id
-                                                                            , req.params.address
-                                                                            , req.params.phone
-                                                                            , req.params.dob
-                                                                            , req.params.gender
-                                                                            , req.params.authorize_doctor);
+                                                                            , req.body.address
+                                                                            , req.body.phone
+                                                                            , req.body.dob
+                                                                            , req.body.gender
+                                                                            , req.body.authorize_doctor);
 
     // console.log(result)
     // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-     res.status(200).json({response: `Successfully create Patient: ${req.params.fullname}`});
+     res.status(200).json(`${req.params.fullname}`);
 
     // Disconnect from the gateway.
     await gateway.disconnect();
