@@ -117,7 +117,7 @@ export async function createPatient(req ,res) {
     const network = await utils.getNetwork(gateway, wallet);
 
     // Get the contract from the network.
-    const patientContract = network.getContract('fabcar', 'PatientContract');
+    const patientContract = network.getContract(chaincodename, 'PatientContract');
     let medicalinfo_id = uuidv1();
     // await patientContract.submitTransaction('InitLedger');
 
