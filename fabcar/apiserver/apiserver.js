@@ -14,16 +14,29 @@ const PORT = 8080;
 app.listen(PORT, () => {
   console.log("App listening on port " + PORT);
 });
-
-////////////////////////////////////////////////////////////
-////////// Patient endpoints
-////////////////////////////////////////////////////////////
-// create patient
-
 const operator = require("./endpoints/operator_endpoints.ts");
 const patient = require("./endpoints/patient_endpoints.ts");
 const record = require("./endpoints/usage_record_endpoints.ts");
 const medical = require("./endpoints/medicalinfo_endpoints.ts");
+const utils = require("./utils/utils.ts");
+const wallet = require("./utils/registerUser.ts");
+// const wallet = require("./utils/registerUser.ts")
+////////////////////////////////////////////////////////////
+////////// register the user to the network
+////////////////////////////////////////////////////////////
+//
+
+// register user to the network
+app.get("/wallet/register/:username", async (req, res) => {
+  await wallet.registerUser(req.params.username);
+  res
+    .status(200)
+    .json({ response: `success to create ${username} to the wallet` });
+});
+////////////////////////////////////////////////////////////
+////////// Patient endpoints
+////////////////////////////////////////////////////////////
+// create patient
 
 app.post("/patient/create/", async (req, res) => {
   await patient.createPatient(req, res);
@@ -40,7 +53,9 @@ app.get("/patient/query/:username", async (req, res) => {
 //doctorQuery
 app.get(
   "/patient/doctorQuery/:patient_username/:doctor_username",
-  async (req, res, next) => {}
+  async (req, res, next) => {
+    await patient.doctorQuery(req, res);
+  }
 );
 // patient authorize doctor
 app.get(

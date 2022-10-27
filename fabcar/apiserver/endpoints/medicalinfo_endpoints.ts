@@ -6,6 +6,7 @@ const createOperatorRoute = "/operator/create/:username/:role";
 const { Wallets, Gateway } = require("fabric-network");
 const fs = require("fs");
 const path = require("path");
+const chaincodename = 'sona';
 const { time } = require("console");
 const { v4: uuidv4 } = require("uuid"); // for record_id
 const { v1: uuidv1 } = require("uuid"); // for case_id
@@ -22,7 +23,7 @@ export async function queryMedicalInfo(req, res){
   
         // Get the contract from the network.
         const medInfoContract = network.getContract(
-          "fabcar",
+          chaincodename,
           "MedicalInfoContract"
         );
         const result = await medInfoContract.submitTransaction(
@@ -54,7 +55,7 @@ export async function patientQuery(req, res) {
         const network = await utils.getNetwork(gateway, wallet);
         // Get the contract from the network.
         const medInfoContract = network.getContract(
-          "fabcar",
+          chaincodename,
           "MedicalInfoContract"
         );
   
@@ -84,7 +85,7 @@ export async function queryByKeywords(req, res){
         const network = await utils.getNetwork(gateway, wallet);
         // Get the contract from the network.
         const medInfoContract = network.getContract(
-          "fabcar",
+          chaincodename,
           "MedicalInfoContract"
         );
 
@@ -116,7 +117,7 @@ export async function addCase(req, res){
         const network = await utils.getNetwork(gateway, wallet);
         // Get the contract from the network.
         const medInfoContract = network.getContract(
-          "fabcar",
+          chaincodename,
           "MedicalInfoContract"
         );
         const case_id = uuidv1();
@@ -152,7 +153,7 @@ export async function appendCase(req, res){
         const network = await utils.getNetwork(gateway, wallet);
         // Get the contract from the network.
         const medInfoContract = network.getContract(
-          "fabcar",
+          chaincodename,
           "MedicalInfoContract"
         );
         //const case_id = uuidv1();

@@ -3,7 +3,7 @@ const utils = require("../utils/utils.ts");
 const queryOperatorRoute = "/operator/query/:username";
 const createOperatorRoute = "/operator/create/:username/:role";
 
-
+const chaincodename ='sona';
 const { Wallets, Gateway } = require("fabric-network");
 const fs = require("fs");
 const path = require("path");
@@ -20,7 +20,7 @@ export async function queryOperator(req, res): Promise<void> {
         const network = await utils.getNetwork(gateway, wallet);
     
         // Get the contract from the network.
-        const operatorContract = await network.getContract("fabcar", "OperatorContract");
+        const operatorContract = await network.getContract(chaincodename, "OperatorContract");
     
         const result = await operatorContract.evaluateTransaction(
           "QueryOperator",
@@ -47,7 +47,7 @@ export async function createOperator(req, res) {
   
         const network = await utils.getNetwork(gateway, wallet);
     // Get the contract from the network.
-    const operatorContract = network.getContract("fabcar", "OperatorContract");
+    const operatorContract = network.getContract(chaincodename, "OperatorContract");
 
     console.log(req.body.username);
     await operatorContract.submitTransaction(
