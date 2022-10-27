@@ -7,6 +7,8 @@ import * as FabricCAServices from 'fabric-ca-client';
 import * as path from 'path';
 import * as fs from 'fs';
 
+const userID = 'camtu123';
+
 async function main() {
     try {
         // load the network configuration
@@ -23,9 +25,9 @@ async function main() {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const userIdentity = await wallet.get('camtu123');
+        const userIdentity = await wallet.get(userID);
         if (userIdentity) {
-            console.log('An identity for the user "philongUser" already exists in the wallet');
+            console.log(`An identity for the user ${userID} already exists in the wallet`);
             return;
         }
 
@@ -42,8 +44,8 @@ async function main() {
        const adminUser = await provider.getUserContext(adminIdentity, 'admin');
 
         // Register the user, enroll the user, and import the new identity into the wallet.
-        const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: 'camtu123', role: 'client' }, adminUser);
-        const enrollment = await ca.enroll({ enrollmentID: 'camtu123', enrollmentSecret: secret });
+        const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: userID, role: 'client' }, adminUser);
+        const enrollment = await ca.enroll({ enrollmentID: userID, enrollmentSecret: secret });
         const x509Identity: X509Identity = {
             credentials: {
                 certificate: enrollment.certificate,
@@ -52,11 +54,11 @@ async function main() {
             mspId: 'Org1MSP',
             type: 'X.509',
         };
-        await wallet.put('philongLocal', x509Identity);
-        console.log('Successfully registered and enrolled admin user "philongLocal" and imported it into the wallet');
+        await wallet.put(userID, x509Identity);
+        console.log(`Successfully registered and enrolled admin user ${userID} and imported it into the wallet`);
 
     } catch (error) {
-        console.error(`Failed to register user "camtu123": ${error}`);
+        console.error(`Failed to register user ${userID}: ${error}`);
         process.exit(1);
     }
 }

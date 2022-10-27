@@ -24,35 +24,23 @@ const wallet = require("./utils/registerUser.ts");
 ////////////////////////////////////////////////////////////
 ////////// register the user to the network
 ////////////////////////////////////////////////////////////
-// 
+//
 
 // register user to the network
-app.get(
-  "/wallet/register/:username",
-  async (req, res) => {
-    await wallet.registerUser(req.params.username);
-    res.status(200).json({response: `success to create ${username} to the wallet`})
-  }
-);
-
-
-
-
-
+app.get("/wallet/register/:username", async (req, res) => {
+  await wallet.registerUser(req.params.username);
+  res
+    .status(200)
+    .json({ response: `success to create ${username} to the wallet` });
+});
 ////////////////////////////////////////////////////////////
 ////////// Patient endpoints
 ////////////////////////////////////////////////////////////
 // create patient
 
-
-
-app.get(
-  "/patient/create/:fullname/:username/:address/:phone/:dob/:gender/:authorize_doctor",
-  async (req, res) => {
-    await patient.createPatient(req, res);
-    
-  }
-);
+app.post("/patient/create/", async (req, res) => {
+  await patient.createPatient(req, res);
+});
 
 app.get("/patient/queryall", async (req, res) => {
   await patient.queryAll(req, res);
@@ -66,7 +54,7 @@ app.get("/patient/query/:username", async (req, res) => {
 app.get(
   "/patient/doctorQuery/:patient_username/:doctor_username",
   async (req, res, next) => {
-    await patient.doctorQuery(req,res);
+    await patient.doctorQuery(req, res);
   }
 );
 // patient authorize doctor
@@ -93,10 +81,15 @@ app.get("/operator/query/:username", async (req, res) => {
   await operator.queryOperator(req, res);
 });
 
-// create operator
-app.get("/operator/create/:username/:role", async (req, res) => {
+// // create operator
+// app.get("/operator/create/:username/:role", async (req, res) => {
+//   await operator.createOperator(req, res);
+// });
+
+app.post("/operator/create/", async (req, res) => {
   await operator.createOperator(req, res);
 });
+
 // usage record endpoint
 app.get("/record/getall", async (req, res) => {
   await record.queryAll(req, res);
@@ -104,11 +97,6 @@ app.get("/record/getall", async (req, res) => {
 // query records
 app.get("/record/query/:medinfo_id", async (req, res) => {
   await record.queryMedIdUsage(req, res);
-});
-
-//////////////////    MEDICAL
-app.get("/medinfo/create", async (req, res) => {
-  await medical.createMedInfo(req, res);
 });
 
 // operator query medical information
@@ -126,23 +114,17 @@ app.get(
   }
 );
 // medical info query by keyword
-app.get("/medinfo/query_by_keyword/:keyword", async (req, res) => {
+app.post("/medinfo/query_by_keyword/", async (req, res) => {
   await medical.queryByKeywords(req, res);
 });
 
-// Medical Info AddCase
-app.get(
-  "/medinfo/addcase/:info_id/:test_result/:diagnosis/:treatment/:operator_username/:patient_username",
-  async (req, res) => {
-    medical.addCase(req, res);
-  }
-);
+//:info_id/:test_result/:diagnosis/:treatment/:operator_username/:patient_username
+app.post("/medinfo/addcase/", async (req, res) => {
+  await medical.addCase(req, res);
+});
 // Medical info AppendCase
-app.get(
-  "/medinfo/appendcase/:case_id/:info_id/:test_result/:diagnosis/:treatment/:operator_username/:patient_username",
-  async (req, res) => {
-    await medical.appendCase(req, res);
-  }
-);
 
-
+// :case_id/:info_id/:test_result/:diagnosis/:treatment/:operator_username/:patient_username
+app.post("/medinfo/appendcase/", async (req, res) => {
+  await medical.appendCase(req, res);
+});

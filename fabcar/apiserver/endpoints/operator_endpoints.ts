@@ -9,6 +9,8 @@ const fs = require("fs");
 const path = require("path");
 const { time } = require("console");
 
+const {registerUser} = require('../utils/registerUser');
+
 // const userID = "camtu123";
 const asLocalhost = false;
 
@@ -49,13 +51,19 @@ export async function createOperator(req, res) {
     // Get the contract from the network.
     const operatorContract = network.getContract(chaincodename, "OperatorContract");
 
+    console.log(req.body.username);
     await operatorContract.submitTransaction(
       "CreateOperator",
-      req.params.username,
-      req.params.role
+      req.body.username,
+      req.body.role
     );
+
+    // register an identity for new user
+    await registerUser(req.body.username);
+
+
     //console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-    res.status(200).json({ response: "Create operator successfully!" });
+    res.status(200).json(`Create operator ${req.body.username} successfully!`);
 
     // Disconnect from the gateway.
     await gateway.disconnect();
