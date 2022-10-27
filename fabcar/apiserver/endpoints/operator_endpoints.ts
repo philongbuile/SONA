@@ -12,51 +12,19 @@ const { time } = require("console");
 // const userID = "camtu123";
 const asLocalhost = false;
 
-
-export async function queryAll(req, res) {
-    try {
-    
-        const wallet = await utils.getWallet();
-        const gateway = await utils.getGateway(wallet, asLocalhost);
-        const network = await utils.getNetwork(gateway, wallet);
-    
-        // Get the contract from the network.
-        const usageRecordContract = network.getContract(
-          "sona",
-          "UsageRecordContract"
-        );
-    
-        const result = await usageRecordContract.submitTransaction("GetAll");
-        console.log(
-          `Transaction has been evaluated, result is: ${result.toString()}`
-        );
-        res.status(200).json({ response: result.toString() });
-    
-        // Disconnect from the gateway.
-        await gateway.disconnect();
-      } catch (error) {
-        console.error(`Failed to evaluate transaction: ${error}`);
-        res.status(500).json({ error: error });
-        process.exit(1);
-      }
-}
-
-
-export async function queryMedIdUsage(req, res){
+export async function queryOperator(req, res): Promise<void> {
     try {
         const wallet = await utils.getWallet();
         const gateway = await utils.getGateway(wallet, asLocalhost);
+    
         const network = await utils.getNetwork(gateway, wallet);
     
         // Get the contract from the network.
-        const usageRecordContract = network.getContract(
-          "sona",
-          "UsageRecordContract"
-        );
+        const operatorContract = await network.getContract("sona", "OperatorContract");
     
-        const result = await usageRecordContract.submitTransaction(
-          "QueryRecords",
-          req.params.medinfo_id
+        const result = await operatorContract.evaluateTransaction(
+          "QueryOperator",
+          req.params.username
         );
         console.log(
           `Transaction has been evaluated, result is: ${result.toString()}`
@@ -68,7 +36,31 @@ export async function queryMedIdUsage(req, res){
       } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
         res.status(500).json({ error: error });
-        process.exit(1);
       }
+
 }
 
+export async function createOperator(req, res) {
+  try {
+    const wallet = await utils.getWallet();
+        const gateway = await utils.getGateway(wallet, asLocalhost);
+  
+        const network = await utils.getNetwork(gateway, wallet);
+    // Get the contract from the network.
+    const operatorContract = network.getContract("sona", "OperatorContract");
+
+    await operatorContract.submitTransaction(
+      "CreateOperator",
+      req.params.username,
+      req.params.role
+    );
+    //console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+    res.status(200).json({ response: "Create operator successfully!" });
+
+    // Disconnect from the gateway.
+    await gateway.disconnect();
+  } catch (error) {
+    console.error(`Failed to evaluate transaction: ${error}`);
+    res.status(500).json({ error: error });
+  }
+}
