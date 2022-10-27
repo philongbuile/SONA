@@ -105,6 +105,8 @@ export class MedicalInfoContract extends Contract {
         const medicalInfo: MedicalInfo  = {
             ID: id,
             Cases: [],
+            docType:'medical_info',
+
         };
 
         // add this medical info to patient object

@@ -43,7 +43,9 @@ app.get("/patient/query/:username", async (req, res) => {
 //doctorQuery
 app.get(
   "/patient/doctorQuery/:patient_username/:doctor_username",
-  async (req, res, next) => {}
+  async (req, res, next) => {
+    await patient.doctorQuery(req,res);
+  }
 );
 // patient authorize doctor
 app.get(

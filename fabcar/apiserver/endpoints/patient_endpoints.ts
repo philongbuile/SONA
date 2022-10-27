@@ -142,7 +142,7 @@ export async function createPatient(req ,res) {
 }
 }
 
-export async function authorizeOperator(req , res){
+export async function authorizeDoctor(req , res){
   try {
     const wallet = await utils.getWallet();
     const gateway = await utils.getGateway(wallet, asLocalhost);
