@@ -1,20 +1,17 @@
 import './navbar.css';
-import { BellOutlined } from '@ant-design/icons';
-import  {Button , Card, Form} from 'antd';
+import  { Card, Button, Col, Row} from 'antd';
+import 'antd/dist/antd.css';
 
 
 const navbar = () => {
   return (
-    <div className="md:container md:mx-auto">
-    <Form>
-        <Card className="navbar">
-            <li className="sm:ml-40 md:ml-80 xl:ml-150"><p>Healthcare</p></li>
-            <li className="sm:ml-40 md:ml-80 xl:ml-150"><Button className="navbar_button" type="primary">Authorization List</Button></li>
-            <li className="sm:ml-40 md:ml-80 xl:ml-150"><Button className="navbar_button" type="primary">Profile</Button>    </li>
-            <li className="sm:ml-40 md:ml-80 xl:ml-150"><Button className="navbar_button" type="primary" icon= {<BellOutlined />}></Button></li>
-        </Card>
-    </Form>
-    </div>
+        <div className="navbar"> 
+            <li><p>About us</p></li>
+            <li><p>Guideline</p></li>
+            <li><h1>Sona System</h1></li>
+            <li><p>Log in</p></li>
+            <li><p>Sign up</p></li>
+        </div>
   );
 }
 
