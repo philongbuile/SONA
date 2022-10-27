@@ -26,9 +26,10 @@ const wallet = require("./utils/registerUser.ts")
 
 // register user to the network
 app.get(
-  "network-user/register/:username",
+  "wallet/register/:username",
   async (req, res) => {
-    await wallet.registerUser(req, res);
+    await wallet.registerUser(req.params.username);
+    res.status(200).json({response: `success to create ${username} to the wallet`})
   }
 );
 
