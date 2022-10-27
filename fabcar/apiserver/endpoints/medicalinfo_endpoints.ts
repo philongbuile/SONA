@@ -14,40 +14,6 @@ const { v1: uuidv1 } = require("uuid"); // for case_id
 const asLocalhost = false;
 
 
-export async function createMedInfo(req, res){
-    try {
-        const wallet = await utils.getWallet();
-        const gateway = await utils.getGateway(wallet, asLocalhost);
-        const network = await utils.getNetwork(gateway, wallet);
-    
-    
-        // Get the contract from the network.
-        const medInfoContract = network.getContract(
-          "fabcar",
-          "MedicalInfoContract"
-        );
-    
-        let medicalinfo_id = uuidv1();
-        const result = await medInfoContract.submitTransaction(
-          "CreateMedicalInfo",
-          medicalinfo_id
-        );
-        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-        res.status(200).json({
-          response: `Successfully create medical info id ${medicalinfo_id}`,
-        });
-    
-        // Disconnect from the gateway.
-        await gateway.disconnect();
-      } catch (error) {
-        console.error(`Failed to evaluate transaction: ${error}`);
-        res.status(500).json({ error: error });
-        
-      }
-
-}
-
-
 export async function queryMedicalInfo(req, res){
     try {
         const wallet = await utils.getWallet();

@@ -84,11 +84,6 @@ app.get("/record/query/:medinfo_id", async (req, res) => {
   await record.queryMedIdUsage(req, res);
 });
 
-//////////////////    MEDICAL
-app.get("/medinfo/create", async (req, res) => {
-  await medical.createMedInfo(req, res);
-});
-
 // operator query medical information
 app.get(
   "/medinfo/operator_query_medicalinfo/:medicalinfo_id/:operator_username",
