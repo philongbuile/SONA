@@ -24,7 +24,8 @@
         "fabric-network": "^2.2.4",
         "fs": "^0.0.1-security",
         "path": "^0.12.7",
-        "util": "^0.12.5"
+        "util": "^0.12.5",
+        "uuid": "^9.0.0"
     },
     "devDependencies": {
         "@types/chai": "^4.1.7",
