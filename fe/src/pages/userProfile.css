@@ -1,3 +1,9 @@
+@media only screen and (min-width: 1024px) {
+  .container header .header-nav-area #nav_container  {
+    display:flex;
+  }
+}
+
 .container{
     position:relative;
     margin-left:auto;
@@ -60,6 +66,18 @@
 }
 
 .user_profile_container {
-    display: grid;
-    grid-template-columns: 0.6fr 0.4fr;
+    display: flex;
+    box-sizing: border-box;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.user_profile_personal {
+  padding-left: 100px;
+}
+
+.user_profile_medical {
+  padding-left: 100px;
 }

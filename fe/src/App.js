@@ -1,5 +1,5 @@
-import UserProfile from "./pages/UserProfile"
-import './App.css'
+import LoginPage from './pages/LoginPage';
+import UserProfile from './pages/UserProfile';
 
 function App() {
   return (

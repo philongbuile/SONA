@@ -19,21 +19,35 @@
     width: 40%;
 }
 
-.profile_bio{
+.profile_info_bio_title {
     position: absolute;
     width: 1056px;
     height: 54px;
-    left: 129px;
-    top: 484px;
+    left: 280px;
+    top: 430px;
 
     font-family: 'Inter';
-    font-style: normal;
     font-weight: 700;
     font-size: 36px;
     line-height: 150%;
     /* identical to box height, or 54px */
 
     letter-spacing: -0.022em;
+
+    color: #000000;
+}
+
+.profile_info_bio_content {
+    position: absolute;
+    width: 1056px;
+    height: 54px;
+    left: 280px;
+    top: 490px;
+
+    font-family: 'Inter';
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 150%;
 
     color: #000000;
 }

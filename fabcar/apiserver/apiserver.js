@@ -1,180 +1,132 @@
-const express = require('express');
+const { v4: uuidv4 } = require("uuid"); // for record_id
+const { v1: uuidv1 } = require("uuid"); // for case_id
+const express = require("express");
 // const bodyParser = require('body-parser');
-const ejs = require('ejs');
-const util = require('util')
-
+const ejs = require("ejs");
+const util = require("util");
+const cors = require("cors");
 const app = express();
 
 // app.use(express.bodyParser());
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(cors());
 
-// Setting for Hyperledger Fabric
-// const { Wallets, Gateway } = require("fabric-network");
-// const fs = require("fs");
-// const path = require("path");
-// // const ccpPath = "connection-org1.json";
-// const ccpPath = path.resolve(
-//   __dirname,
-//   "..",
-//   "..",
-//   "connection",
-//   "connection-org1.json"
-// );
-// let ccp = JSON.parse(fs.readFileSync(ccpPath, "utf8"));
-
-// const PORT = 8080;
-// // app.set("views", path.resolve(__dirname, "views"));
-// app.set("view engine", "ejs");
-
-// Setting for Hyperledger Fabric
-const { Wallets, Gateway } = require('fabric-network');
-const fs = require('fs');
-const path = require('path');
-const { time } = require('console');
-const ccpPath = path.resolve(__dirname, '..', '..', '..','SONA', 'test-network','organizations','peerOrganizations','org1.example.com', 'connection-org1.json');
-let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
-
-const PORT = 8080
+const PORT = 8080;
 app.listen(PORT, () => {
   console.log("App listening on port " + PORT);
 });
+const operator = require("./endpoints/operator_endpoints.ts");
+const patient = require("./endpoints/patient_endpoints.ts");
+const record = require("./endpoints/usage_record_endpoints.ts");
+const medical = require("./endpoints/medicalinfo_endpoints.ts");
+const utils = require("./utils/utils.ts");
+const wallet = require("./utils/registerUser.ts");
+// const wallet = require("./utils/registerUser.ts")
+////////////////////////////////////////////////////////////
+////////// register the user to the network
+////////////////////////////////////////////////////////////
+//
+
+// register user to the network
+app.get("/wallet/register/:username", async (req, res) => {
+  await wallet.registerUser(req.params.username);
+  res
+    .status(200)
+    .json({ response: `success to create ${username} to the wallet` });
+});
+////////////////////////////////////////////////////////////
+////////// Patient endpoints
+////////////////////////////////////////////////////////////
+// create patient
+
+app.post("/patient/create/", async (req, res) => {
+  await patient.createPatient(req, res);
+});
 
 app.get("/patient/queryall", async (req, res) => {
-  try {
-    // Create a new file system based wallet for managing identities.
-    const walletPath = path.join(process.cwd(), "wallet");
-    const wallet = await Wallets.newFileSystemWallet(walletPath);
-    console.log(`Wallet path: ${walletPath}`);
-
-    // Check to see if we've already enrolled the user.
-    const identity = await wallet.get("appUser");
-    if (!identity) {
-      console.log(
-        'An identity for the user "appUser" does not exist in the wallet'
-      );
-      console.log("Run the registerUser.js application before retrying");
-      return;
-    }
-
-    // Create a new gateway for connecting to our peer node.
-    const gateway = new Gateway();
-    await gateway.connect(ccp, {
-      wallet,
-      identity: "appUser",
-      discovery: { enabled: true, asLocalhost: false },
-    });
-
-    // Get the network (channel) our contract is deployed to.
-    const network = await gateway.getNetwork("mychannel");
-
-    // Get the contract from the network.
-    const patientContract = network.getContract("fabcar", "PatientContract");
-    const result = await patientContract.evaluateTransaction("GetAll");
-    console.log(
-      `Transaction has been evaluated, result is: ${result.toString()}`
-    );
-    res.status(200).json({ response: result.toString() });
-
-    // Disconnect from the gateway.
-    await gateway.disconnect();
-  } catch (error) {
-    console.error(`Failed to evaluate transaction: ${error}`);
-    res.status(500).json({ error: error });
-    process.exit(1);
-  }
+  await patient.queryAll(req, res);
 });
 
 app.get("/patient/query/:username", async (req, res) => {
-  try {
-    let ccp = JSON.parse(fs.readFileSync(ccpPath, "utf8"));
+  await patient.patientQuery(req, res);
+});
 
-    // Create a new file system based wallet for managing identities.
-    const walletPath = path.join(process.cwd(), "wallet");
-    const wallet = await Wallets.newFileSystemWallet(walletPath);
-    console.log(`Wallet path: ${walletPath}`);
+//doctorQuery
+app.get(
+  "/patient/doctorQuery/:patient_username/:doctor_username",
+  async (req, res, next) => {
+    await patient.doctorQuery(req, res);
+  }
+);
+// patient authorize doctor
+app.get(
+  "/patient/authorize_doctor/:patient_username/:operator_username",
+  async (req, res) => {
+    patient.authorizeDoctor(req, res);
+  }
+);
+// patient revoke doctor
+app.get(
+  "/patient/revoke_doctor/:patient_username/:operator_username",
+  async (req, res) => {
+    patient.revokeOperator(req, res);
+  }
+);
 
-    // Check to see if we've already enrolled the user.
-    const identity = await wallet.get("appUser");
-    if (!identity) {
-      console.log(
-        'An identity for the user "appUser" does not exist in the wallet'
-      );
-      console.log("Run the registerUser.js application before retrying");
-      return;
-    }
-})
+///////////////////////////////////////////////////
+//////////// Operator endpoints
+///////////////////////////////////////////////////
 
+// operator query
+app.get("/operator/query/:username", async (req, res) => {
+  await operator.queryOperator(req, res);
+});
 
-app.get('/', async (req, res, next) => {
-    let result = 'List of Doctor'
-    res.render('form', {
-        result:result
-    })
-})
+// // create operator
+// app.get("/operator/create/:username/:role", async (req, res) => {
+//   await operator.createOperator(req, res);
+// });
 
-app.post('/', async (req, res, next) => {
-    try {
+app.post("/operator/create/", async (req, res) => {
+  await operator.createOperator(req, res);
+});
 
-        let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+// usage record endpoint
+app.get("/record/getall", async (req, res) => {
+  await record.queryAll(req, res);
+});
+// query records
+app.get("/record/query/:medinfo_id", async (req, res) => {
+  await record.queryMedIdUsage(req, res);
+});
 
-        // Create a new file system based wallet for managing identities.
-        const walletPath = path.join(process.cwd(), 'wallet');
-        const wallet = await Wallets.newFileSystemWallet(walletPath);
-        console.log(`Wallet path: ${walletPath}`);
+// operator query medical information
+app.get(
+  "/medinfo/operator_query_medicalinfo/:medicalinfo_id/:operator_username",
+  async (req, res) => {
+    await medical.queryMedicalInfo(req, res);
+  }
+);
+// patientQueryMedicalInfo
+app.get(
+  "/medinfo/patient_query_medicalinfo/:medicalinfo_id",
+  async (req, res) => {
+    await medical.patientQuery(req, res);
+  }
+);
+// medical info query by keyword
+app.post("/medinfo/query_by_keyword/", async (req, res) => {
+  await medical.queryByKeywords(req, res);
+});
 
-        // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('appUser');
-        if (!identity) {
-            console.log('An identity for the user "appUser" does not exist in the wallet');
-            console.log('Run the registerUser.js application before retrying');
-            return;
-        }
+//:info_id/:test_result/:diagnosis/:treatment/:operator_username/:patient_username
+app.post("/medinfo/addcase/", async (req, res) => {
+  await medical.addCase(req, res);
+});
+// Medical info AppendCase
 
-        // Create a new gateway for connecting to our peer node.
-        const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
-
-        // Get the network (channel) our contract is deployed to.
-        const network = await gateway.getNetwork('mychannel');
-
-        // Get the contract from the network.
-        const patientContract = network.getContract('fabcar', 'PatientContract');
-
-        // res.contentType('application/json');
-
-        let patient_username = req.body.patient;
-        let doctor_username = req.body.doctor;
-        let record_id = req.body.record;
-        let date = Date();
-        
-        const result = await patientContract.evaluateTransaction('doctorQuery', patient_username
-                                                                                , doctor_username
-                                                                                , record_id
-                                                                                , date);
-        // if(result === 'undefined'){
-        //     result = 'UNDEFINED'
-        // }
-        
-        // const rest = {
-        //     'patient': patient_username, 
-        //     'doctor': doctor_username, 
-        //     'record': record_id, 
-        //     'time': date
-        // }
-
-        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-        // res.status(200).json({response: result.toString()});
-        // res.render('form', {
-        //     result: result
-        // });
-        res.send(result)
-        // Disconnect from the gateway.
-        await gateway.disconnect();
-
-    } catch (error) {
-        console.error(`Failed to evaluate transaction: ${error}`);
-        res.status(500).json({error: error});
-        process.exit(1);
-    }
-})
+// :case_id/:info_id/:test_result/:diagnosis/:treatment/:operator_username/:patient_username
+app.post("/medinfo/appendcase/", async (req, res) => {
+  await medical.appendCase(req, res);
+});

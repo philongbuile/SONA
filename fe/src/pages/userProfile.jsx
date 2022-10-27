@@ -10,8 +10,12 @@ const UserProfile = () => {
     <div className="user_profile">
       <Navbar />
       <div className="user_profile_container container">
-        <Profile />
-        <RecordList />
+        <div className="user_profile_personal">
+          <Profile />
+        </div>
+        <div className="user_profile_medical">
+          <RecordList />
+        </div>
       </div>
     </div>
   );

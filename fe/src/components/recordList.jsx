@@ -1,57 +1,49 @@
 import './RecordList.css';
-import { Form, Card, Table } from 'antd';
+import { Row, Col} from 'antd';
 
 const Record = () => {
-
-    const columns = [
-        {
-            id: 'id',
-            name: 'name',
-            diagnosis: 'diagnosis',
-            treatment: 'treatment'
-        },
-        {
-            id: 'id',
-            name: 'name',
-            diagnosis: 'diagnosis',
-            treatment: 'treatment'
-        },
-        {
-            id: 'id',
-            name: 'name',
-            diagnosis: 'diagnosis',
-            treatment: 'treatment'
-        }
-    ];
-
-    const data = [
-        {
-            id: '1',
-            name: 'John Brown',
-            diagnosis: 'fever',
-            treatment: 'paracetamol'
-        },
-        {
-            id: '2',
-            name: 'Jim Green',
-            diagnosis: 'diabetes',
-            treatment: 'insulin'
-        },
-        {
-            id: '3',
-            name: 'Joe Black',
-            diagnosis: 'cancer',
-            treatment: 'chemotherapy'
-        },
-    ];
-
     return (
-        <Card className="record_list">
-            <Form className="">
-                <Table columns={columns} dataSource={data} />
-            </Form>
-        </Card>
-    );
+        <div className="record_list">
+            <div className="record_list_header">
+                <h1>Medical Infor </h1>
+            </div>
+            <div className="record_list_content">
+                <Row className="record_list_content_item">
+                    <Col xs={24} xl={8}>
+                        Case ID: 1
+                    </Col>
+                    <Col xs={24} xl={8}>
+                        Date: 2021-01-01
+                    </Col>
+                    <Col xs={24} xl={8}>
+                        Status: Pending
+                    </Col>
+                </Row>
+                <Row className="record_list_content_item">
+                    <Col xs={24} xl={8}>
+                        Case ID: 2
+                    </Col>
+                    <Col xs={24} xl={8}>
+                        Date: 2021-01-02
+                    </Col>
+                    <Col xs={24} xl={8}>
+                        Status: Pending
+                    </Col>
+                </Row>
+                <Row className="record_list_content_item">
+                    <Col xs={24} xl={8}>
+                        Case ID: 3
+                    </Col>
+                    <Col xs={24} xl={8}>
+                        Date: 2021-01-02
+                    </Col>
+                    <Col xs={24} xl={8}>
+                        Status: Pending
+                    </Col>
+                </Row>
+            </div>
+        </div>
+    )
 };
 
 export default Record;
