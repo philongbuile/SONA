@@ -31,7 +31,7 @@ export async function queryOperator(req, res): Promise<void> {
         console.log(
           `Transaction has been evaluated, result is: ${result.toString()}`
         );
-        res.status(200).json({ response: result.toString() });
+        res.status(200).json({ response: JSON.parse(result.toString("utf8")) });
     
         // Disconnect from the gateway.
         await gateway.disconnect();
