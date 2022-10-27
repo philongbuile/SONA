@@ -51,19 +51,19 @@ export async function createOperator(req, res) {
     // Get the contract from the network.
     const operatorContract = network.getContract(chaincodename, "OperatorContract");
 
-    console.log(req.body.username);
+    console.log(req.params.username);
     await operatorContract.submitTransaction(
       "CreateOperator",
-      req.body.username,
-      req.body.role
+      req.params.username,
+      req.params.role
     );
 
     // register an identity for new user
-    await registerUser(req.body.username);
+    await registerUser(req.params.username);
 
 
     //console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-    res.status(200).json(`Create operator ${req.body.username} successfully!`);
+    res.status(200).json(`Create operator ${req.params.username} successfully!`);
 
     // Disconnect from the gateway.
     await gateway.disconnect();

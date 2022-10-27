@@ -81,14 +81,14 @@ app.get("/operator/query/:username", async (req, res) => {
   await operator.queryOperator(req, res);
 });
 
-// // create operator
-// app.get("/operator/create/:username/:role", async (req, res) => {
-//   await operator.createOperator(req, res);
-// });
-
-app.post("/operator/create/", async (req, res) => {
+// create operator
+app.get("/operator/create/:username/:role", async (req, res) => {
   await operator.createOperator(req, res);
 });
+
+// app.post("/operator/create/", async (req, res) => {
+//   await operator.createOperator(req, res);
+// });
 
 // usage record endpoint
 app.get("/record/getall", async (req, res) => {
