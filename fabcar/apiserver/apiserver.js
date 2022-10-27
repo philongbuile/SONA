@@ -18,7 +18,9 @@ const operator = require("./endpoints/operator_endpoints.ts");
 const patient = require("./endpoints/patient_endpoints.ts");
 const record = require("./endpoints/usage_record_endpoints.ts");
 const medical = require("./endpoints/medicalinfo_endpoints.ts");
-const wallet = require("./utils/registerUser.ts")
+const utils = require("./utils/utils.ts");
+const wallet = require("./utils/registerUser.ts");
+// const wallet = require("./utils/registerUser.ts")
 ////////////////////////////////////////////////////////////
 ////////// register the user to the network
 ////////////////////////////////////////////////////////////
@@ -26,7 +28,7 @@ const wallet = require("./utils/registerUser.ts")
 
 // register user to the network
 app.get(
-  "wallet/register/:username",
+  "/wallet/register/:username",
   async (req, res) => {
     await wallet.registerUser(req.params.username);
     res.status(200).json({response: `success to create ${username} to the wallet`})
