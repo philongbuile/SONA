@@ -9,6 +9,8 @@ const fs = require("fs");
 const path = require("path");
 const { time } = require("console");
 
+const {registerUser} = require('../utils/registerUser');
+
 // const userID = "camtu123";
 const asLocalhost = false;
 
@@ -55,6 +57,11 @@ export async function createOperator(req, res) {
       req.body.username,
       req.body.role
     );
+
+    // register an identity for new user
+    await registerUser(req.body.username);
+
+
     //console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
     res.status(200).json(`Create operator ${req.body.username} successfully!`);
 

@@ -13,6 +13,8 @@ const { time } = require("console");
 const chaincodename='sona';
 // const userID = "camtu123";
 const asLocalhost = false;
+const {registerUser} = require('../utils/registerUser');
+
 
 export async function patientQuery(req, res) {
     try {
@@ -128,6 +130,8 @@ export async function createPatient(req ,res) {
                                                                             , req.body.gender
                                                                             , req.body.authorize_doctor);
 
+  // register an identity for new user
+    await registerUser(req.body.username);                                                                        
     // console.log(result)
     // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
      res.status(200).json(`${req.params.fullname}`);
