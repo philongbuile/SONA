@@ -1,22 +1,20 @@
-import { Form } from 'antd';
-import '../components/navbar.jsx';
-import './userProfile.css';
+import { Card, Form } from 'antd';
+import Navbar from '../components/Navbar.jsx';
+import Profile from '../components/Profile.jsx';
+import './UserProfile.css';
+import avatar from '../assets/avatar.png';
+import RecordList from '../components/RecordList.jsx';
 
-const userProfile = () => {
+const UserProfile = () => {
   return (
-    <Form>
-       <Card
-        hoverable
-        className="profile_image"
-        cover={
-          <img
-            alt="example"
-            src={mocktest}
-            className="image_cover"
-            style={{ alignItems: 'center', borderRadius: 10 }}
-          />
-        } 
-        ></Card>
-    </Form>
+    <div className="user_profile">
+      <Navbar />
+      <div className="user_profile_container container">
+        <Profile />
+        <RecordList />
+      </div>
+    </div>
   );
 };
+
+export default UserProfile;

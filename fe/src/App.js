@@ -1,11 +1,10 @@
-import Navbar from './components/navbar';
-import Profile from './components/profile';
+import UserProfile from "./pages/UserProfile"
+import './App.css'
 
 function App() {
   return (
     <div className="App">
-      <Navbar />
-      <Profile /> 
+      <UserProfile />
     </div>
   )
 };

@@ -1,13 +1,13 @@
-import { Form, Card } from 'antd';
-import './profile.css';
-import avatar from './avatar.png';
+import { Card } from 'antd';
+import './Profile.css';
+import avatar from '../assets/avatar.png';
 
 const fullName = 'Vinh'
 const phone = '123456789'
 
 const profile = () => {
     return (
-            <Card
+        <Card
             hoverable
             className="profile"
             cover={
@@ -18,11 +18,7 @@ const profile = () => {
                 style={{ alignItems: 'center', borderRadius: 10 }}
             ></img>
             }>
-                <div className="profile_info">
-                    <p>Name: {fullName}</p>
-                    <p>Phone: {phone}</p>
-                </div>
-                 </Card>      
+        </Card>      
     );
 }
 

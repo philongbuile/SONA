@@ -16,5 +16,24 @@
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 20px;
-    width: 40%
+    width: 40%;
+}
+
+.profile_bio{
+    position: absolute;
+    width: 1056px;
+    height: 54px;
+    left: 129px;
+    top: 484px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 150%;
+    /* identical to box height, or 54px */
+
+    letter-spacing: -0.022em;
+
+    color: #000000;
 }

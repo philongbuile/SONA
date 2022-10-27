@@ -1,0 +1,11 @@
+.record_list {
+    box-sizing: border-box;
+    position: absolute;
+    width: 475px;
+    height: 745px;
+    left: 862px;
+    top: 22px;
+
+    background: #FFFFFF;
+    border: 1px solid #E2E9F1;
+}
