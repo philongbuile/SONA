@@ -4,11 +4,13 @@ const express = require("express");
 // const bodyParser = require('body-parser');
 const ejs = require("ejs");
 const util = require("util");
+const cors = require("cors");
 const app = express();
 
 // app.use(express.bodyParser());
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(cors());
 
 const PORT = 8080;
 app.listen(PORT, () => {
