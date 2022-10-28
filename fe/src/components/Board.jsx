@@ -16,44 +16,38 @@ const Board = () => {
                 <h1>Medical Examination</h1>
             </div>
                 <div className="board_content_title">
-                    <div>Personal Information</div>
+                    <div>Information</div>
                 <div className="board_content_item">
                     <Row className="board_list_content_item">
                         <Col xs={24} xl={8}>
-                            Patient ID: {username}
+                            Medical Infor ID: medical1
                         </Col>
                         <Col xs={24} xl={8}>
-                            Name: {personalData?.name}
+                            Case ID: case1
                         </Col>
                         <Col xs={24} xl={8}>
-                            Phone: {personalData?.phone}
-                        </Col>
-                        <Col xs={24} xl={8}>
-                            Email: {personalData?.email}
-                        </Col>
-                        <Col xs={24} xl={8}>
-                            Case ID: medicalData?.Cases
+                            DocType: Patient
                         </Col>
                     </Row>
                     <br></br>
                     <div>Test Result</div>
                     <Row className="board_list_content_item">
                         <Col xs={24} xl={8}>
-                            Test Result: {medicalData?.Cases.Examination.TestResult}
+                            Test Result: Success
                         </Col>
                     </Row>
                     <br></br>
                     <div>Diagnosis</div>
                     <Row className="board_list_content_item">
                         <Col xs={24} xl={8}>
-                            Diagnosis: {medicalData?.Cases.Examination.Diagnosis}
+                            Diagnosis: Allergic Rhinitis
                         </Col>
                     </Row>
                     <br></br>
                     <div>Treatment</div>
                     <Row className="board_list_content_item">
                         <Col xs={24} xl={8}>
-                            Treatment: {medicalData?.Cases.Examination.Treatment}
+                            Treatment: Use medicine
                         </Col>
                     </Row>
                 </div>
