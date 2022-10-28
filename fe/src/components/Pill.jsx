@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import './Pill.css';
-=======
 import './navbar.css';
->>>>>>> 05acefb770752bfbf0d9fae8b82ace3e5ee42e4a
 
 const Pill = () => {
   return (

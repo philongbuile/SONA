@@ -9,10 +9,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-          <Route path="/" element={<AuthorizationList />} />
-          <Route path="/:username/:medicalInfoID" element={<Examination />} />
+        <Route path="/:username/:medicalInfoID" element={<Examination />} />
       </Routes>
     </BrowserRouter>
-  )
-};
+  );
+}
 export default App;
