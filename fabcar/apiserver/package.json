@@ -25,6 +25,7 @@
         "fabric-network": "^2.2.4",
         "fs": "^0.0.1-security",
         "path": "^0.12.7",
+        "ts-node": "^10.9.1",
         "util": "^0.12.5",
         "uuid": "^9.0.0"
     },
