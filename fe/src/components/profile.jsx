@@ -1,5 +1,5 @@
 import { Card } from 'antd';
-import './Profile.css';
+import './profile.css';
 import avatar from '../assets/avatar.png';
 
 const profile = () => {
