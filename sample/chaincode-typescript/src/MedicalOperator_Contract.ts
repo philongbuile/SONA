@@ -21,6 +21,10 @@ export class OperatorContract extends Contract {
                 Role: 'doctor'
             },
             {
+                Username: 'Doctor2',
+                Role: 'doctor'
+            },
+            {
                 Username: 'Researcher1',
                 Role: 'researcher'
             }

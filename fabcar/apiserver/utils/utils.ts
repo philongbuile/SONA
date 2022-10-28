@@ -13,8 +13,7 @@ const ccpPath = path.resolve(
   "connection-org1.json"
 );
 let ccp = JSON.parse(fs.readFileSync(ccpPath, "utf8"));
-
-const userID = "appUser";
+const userID = "camtu123";
 const asLocalhost = false;
 
 export async function getWallet(): Promise<Wallet> {

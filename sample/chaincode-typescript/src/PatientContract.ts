@@ -153,13 +153,16 @@ export class PatientContract extends Contract {
         if (!isAuthorized) {
             throw new Error(`permission denied to query ${patient_username} info`);
         }
+        
 
         const patient = await this.patientQuery(ctx, patient_username);
         const patient_obj = JSON.parse(patient);
 
+        
+
         // create usage record
         let recordContract = new UsageRecordContract();
-        recordContract.CreateRecord(ctx, record_id , 'blank', patient_obj.Medical_Info, 'read patient\'s data', doctor_username, time);
+        recordContract.CreateRecord(ctx, record_id ,undefined, patient_obj.MedicalInfo_ID, 'read patient\'s data', doctor_username, time);
 
         return patient_obj;    
     }
@@ -210,6 +213,16 @@ export class PatientContract extends Contract {
         let patient = await this.patientQuery(ctx, patient_username);
 
         let patient_obj = JSON.parse(patient);
+        
+        // check if the doctor is already authorized
+        const doctors = patient_obj.AuthorizedDoctors;
+
+        const doctor_authorized_exists = doctors.some(name => {
+            if (name === operator_username) {
+                throw new Error(`The doctor ${operator_username} already authorized`); 
+            }
+        });
+        //
 
         // add operator username to authorizedDoctorss
 
@@ -251,5 +264,4 @@ export class PatientContract extends Contract {
         // return JSON.stringify(patient);
 
     }
-
 }

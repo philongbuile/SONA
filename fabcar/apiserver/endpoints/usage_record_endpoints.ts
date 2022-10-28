@@ -3,7 +3,7 @@ const utils = require("../utils/utils.ts");
 const queryOperatorRoute = "/operator/query/:username";
 const createOperatorRoute = "/operator/create/:username/:role";
 
-
+const chaincodename='sona'
 const { Wallets, Gateway } = require("fabric-network");
 const fs = require("fs");
 const path = require("path");
@@ -22,7 +22,7 @@ export async function queryAll(req, res) {
     
         // Get the contract from the network.
         const usageRecordContract = network.getContract(
-          "sona",
+          chaincodename,
           "UsageRecordContract"
         );
     
@@ -50,7 +50,7 @@ export async function queryMedIdUsage(req, res){
     
         // Get the contract from the network.
         const usageRecordContract = network.getContract(
-          "sona",
+          chaincodename,
           "UsageRecordContract"
         );
     
