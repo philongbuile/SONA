@@ -162,7 +162,7 @@ export class PatientContract extends Contract {
 
         // create usage record
         let recordContract = new UsageRecordContract();
-        recordContract.CreateRecord(ctx, record_id ,undefined, patient_obj.MedicalInfo_ID, 'read patient\'s data', doctor_username, time);
+        await recordContract.CreateRecord(ctx, record_id ,undefined, patient_obj.MedicalInfo_ID, 'read patient\'s data', doctor_username, time);
 
         return patient_obj;    
     }

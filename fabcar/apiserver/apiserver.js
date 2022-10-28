@@ -43,6 +43,9 @@ app.get("/wallet/register/:username", async (req, res) => {
 app.post("/patient/create/", async (req, res) => {
   await patient.createPatient(req, res);
 });
+// app.get("/patient/create/:fullname", async (req, res) => {
+//      await patient.createPatient(req, res);
+// });
 
 app.get("/patient/queryall", async (req, res) => {
   await patient.queryAll(req, res);
@@ -83,7 +86,7 @@ app.get("/operator/query/:username", async (req, res) => {
   await operator.queryOperator(req, res);
 });
 
-// // create operator
+// create operator
 // app.get("/operator/create/:username/:role", async (req, res) => {
 //   await operator.createOperator(req, res);
 // });

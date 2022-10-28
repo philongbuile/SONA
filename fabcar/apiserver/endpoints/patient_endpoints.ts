@@ -31,7 +31,7 @@ export async function patientQuery(req, res) {
         console.log(
           `Transaction has been evaluated, result is: ${result.toString()}`
         );
-        res.status(200).json({ response: result.toString() });
+        res.status(200).json({ response: JSON.parse(result.toString("utf8")) });
     
         // res.send(result);
         // Disconnect from the gateway.
@@ -56,7 +56,7 @@ export async function queryAll(req, res) {
         console.log(
           `Transaction has been evaluated, result is: ${result.toString()}`
         );
-        res.status(200).json({ response: result.toString() });
+        res.status(200).json({ response: JSON.parse(result.toString("utf8")) });
     
         // Disconnect from the gateway.
         await gateway.disconnect();
@@ -97,7 +97,7 @@ export async function doctorQuery(req, res) {
     console.log(
       `Transaction has been evaluated, result is: ${result.toString()}`
     );
-    res.status(200).json({ response: result.toString() });
+    res.status(200).json({ response: JSON.parse(result.toString("utf8")) });
 
     // Disconnect from the gateway.
     await gateway.disconnect();
@@ -117,7 +117,7 @@ export async function createPatient(req ,res) {
     const network = await utils.getNetwork(gateway, wallet);
 
     // Get the contract from the network.
-    const patientContract = network.getContract('fabcar', 'PatientContract');
+    const patientContract = network.getContract(chaincodename, 'PatientContract');
     let medicalinfo_id = uuidv1();
     // await patientContract.submitTransaction('InitLedger');
 

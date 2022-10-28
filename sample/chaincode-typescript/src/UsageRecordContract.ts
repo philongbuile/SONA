@@ -120,7 +120,7 @@ export class UsageRecordContract extends Contract {
         // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
         let selector = {
             selector:  {
-                MedicalInfo_ID:  { "$eq": "medical1" },
+                //MedicalInfo_ID:  { "$eq": "medical1" },
                 docType: {"$eq":'UsageRecord'}
             }
         };
