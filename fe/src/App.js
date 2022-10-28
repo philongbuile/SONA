@@ -1,5 +1,5 @@
 import LoginPage from './pages/LoginPage';
-import UserProfile from './pages/UserProfile';
+import UserProfile from './pages/userProfile';
 import Examination from './pages/Examination';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
