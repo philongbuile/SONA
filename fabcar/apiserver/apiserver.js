@@ -2,14 +2,9 @@ const { v4: uuidv4 } = require("uuid"); // for record_id
 const { v1: uuidv1 } = require("uuid"); // for case_id
 const express = require("express");
 // const bodyParser = require('body-parser');
-<<<<<<< HEAD
-// const ejs = require("ejs");
-const util = require("util");
-=======
 const ejs = require("ejs");
 const util = require("util");
 const cors = require("cors");
->>>>>>> main
 const app = express();
 
 // app.use(express.bodyParser());
