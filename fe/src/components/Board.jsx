@@ -5,8 +5,9 @@ import {PersonalInforFetch, MedicalInforFetch} from '../api/userApi';
 
 const Board = () => {
     const {username} = useParams();
+    const {medicalInfoID} = useParams();
     const {data: personalData, isPending, error} = PersonalInforFetch(username);
-    const {data: medicalData} = MedicalInforFetch(personalData.MedicalInfo);
+    const {data: medicalData} = MedicalInforFetch(medicalInfoID);
 
     return (
         <div className="board">
@@ -31,7 +32,7 @@ const Board = () => {
                             Email: {personalData?.email}
                         </Col>
                         <Col xs={24} xl={8}>
-                            Case ID: medicalData?.Cases.Case_ID
+                            Case ID: medicalData?.Cases
                         </Col>
                     </Row>
                     <br></br>
