@@ -1,5 +1,5 @@
 .pill {
-    width: 80%;
+    width: 85%;
     height: 60px;
     background-color: #edf2f9;
     display: flex;
@@ -8,8 +8,9 @@
     align-items: center;
     margin: 0 auto;
     margin-top: 40px;
-    padding: 30px;
-    padding-top: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 2px;
     font-family: Roboto;
 }
 
