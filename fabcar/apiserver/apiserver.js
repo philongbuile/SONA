@@ -4,11 +4,13 @@ const express = require("express");
 // const bodyParser = require('body-parser');
 const ejs = require("ejs");
 const util = require("util");
+const cors = require("cors");
 const app = express();
 
 // app.use(express.bodyParser());
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(cors());
 
 const PORT = 8080;
 app.listen(PORT, () => {
@@ -33,6 +35,9 @@ const wallet = require("./utils/registerUser.ts");
 app.post("/patient/create/", async (req, res) => {
   await patient.createPatient(req, res);
 });
+// app.get("/patient/create/:fullname", async (req, res) => {
+//      await patient.createPatient(req, res);
+// });
 
 app.get("/patient/queryall", async (req, res) => {
   await patient.queryAll(req, res);
@@ -73,7 +78,7 @@ app.get("/operator/query/:username", async (req, res) => {
   await operator.queryOperator(req, res);
 });
 
-// // create operator
+// create operator
 // app.get("/operator/create/:username/:role", async (req, res) => {
 //   await operator.createOperator(req, res);
 // });

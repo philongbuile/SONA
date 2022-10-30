@@ -7,6 +7,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<UserProfile />} />
         <Route path="/:username/:medicalInfoID" element={<Examination />} />
       </Routes>
     </BrowserRouter>

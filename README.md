@@ -19,10 +19,10 @@
 ## Routes:
 - POST /patient/create/ 
     req.body: fullname, username, address, phone, dob, gender, authorized_doctor
+    [Doctor]
 
 
 - GET /patient/query/:username 
-
     patient = {
             docType: 'patient',
             FullName: fullname,
@@ -34,6 +34,7 @@
             MedicalInfo: medinfo_id,
             AuthorizedDoctors: [operator_username]
         };
+    [Patient]
 
 - get /patient/doctorQuery/:patient_username/:doctor_username
     patient = {
@@ -47,6 +48,7 @@
             MedicalInfo: medinfo_id,
             AuthorizedDoctors: [operator_username]
         };
+    [Doctor]
 
 - GET /patient/authorize_doctor/:patient_username/:operator_username
     patient = {
@@ -60,8 +62,10 @@
             MedicalInfo: medinfo_id,
             AuthorizedDoctors: [operator_username]
         }
+    [Patient]
 
 - GET /patient/revoke_doctor/:patient_username/:operator_username
+    [Patient]
 
 - GET/operator/query/:username
      operator = {
@@ -69,9 +73,10 @@
             Username: username,
             Role: role
         }
+    [User]
 - POST /operator/create/
     req.body: username, role
-
+    [Admin] -> create doctor or researcher
 
 - GET /record/query/:medinfo_id
     - return array of usage-records of that medinfo_id
@@ -92,9 +97,11 @@
                 Operation: 'read',
                 Roles: 'doctor',
                 OperatorName: 'Doctor1',
-                Time : '22/03/2010'
+                Time: '22/03/2010'
         },
     ]
+
+    [Patient], [Researcher]
 
 
 - GET medinfo/operator_query_medicalinfo/:medicalinfo_id/:operator_username
@@ -114,6 +121,7 @@
                 }
         ]}]
     },
+    [Patient], [Doctor], [Researcher] -> get medical info by id
 
 - GET /medinfo/patient_query_medicalinfo/:medicalinfo_id/
     - return 1 medicalinfo object
@@ -134,10 +142,12 @@
                 }
         ]}]
     },
+    [Patient] -> get medical info by id
 
 - POST /medinfo/query_by_keyword/
     - req.body.keywords = ['keyword1', 'keyword2']
     - return array of medicalinfo's containing the keywords
+    [Researcher]
 
 - POST /medinfo/addcase/ 
     req.body.info_id,
@@ -147,6 +157,7 @@
     req.body.operator_username,
     req.body.patient_username,
 
+    [Doctor] [Researcher]
 
 - POST /medinfo/appendcase/
     req.body.info_id,
@@ -156,3 +167,5 @@
     req.body.treatment,
     req.body.operator_username,
     req.body.patient_username,
+
+    [Doctor] [Researcher]

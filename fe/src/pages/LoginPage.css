@@ -1,0 +1,9 @@
+.LoginPage {
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-image: url('../assets/background-main.png');
+
+    background-repeat: no-repeat;
+    height: 900px
+}
