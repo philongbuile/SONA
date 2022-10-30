@@ -47,7 +47,7 @@ const SearchByKeyWord = () => {
                                 {<div className='card p-0 overflow-hidden h-100 shadow'>
                                     {/* <img src={item.img} alt="" className='card-img-top img-fluid'/> */}
                                     <div className='card-body' key={item.MedicalInfo_ID}>
-                                        <Link to={`/case/${item.MedicalInfo_ID}`}>
+                                        <Link to={`/record/query/${item.MedicalInfo_ID}`}>
                                         <h5 className='card-title'>{item.MedicalInfo_ID}</h5>
                                             <div className='panel-body'>
                                                 <p className ='card-text'>{item.OperatorName}</p>
