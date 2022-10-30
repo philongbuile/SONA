@@ -23,7 +23,7 @@
     position: absolute;
     width: 1056px;
     height: 54px;
-    left: 280px;
+    left: 80px;
     top: 430px;
 
     font-family: 'Inter';
@@ -41,7 +41,7 @@
     position: absolute;
     width: 1056px;
     height: 54px;
-    left: 280px;
+    left: 50px;
     top: 490px;
 
     font-family: 'Inter';
@@ -51,3 +51,4 @@
 
     color: #000000;
 }
+

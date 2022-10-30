@@ -7,13 +7,12 @@ import LandingPage from './pages/LandingPage';
 
 function App() {
   return (
-    <LandingPage/>
-    // <BrowserRouter>
-    //   <Routes>
-    //       <Route path="/" element={<AuthorizationList />} />
-    //       <Route path="/:username/:medicalInfoID" element={<Examination />} />
-    //   </Routes>
-    // </BrowserRouter>
+    <BrowserRouter>
+      <Routes>
+          <Route path="/" element={<AuthorizationList />} />
+          <Route path="/:username/:medicalInfoID" element={<Examination />} />
+      </Routes>
+    </BrowserRouter>
   )
 };
 export default App;

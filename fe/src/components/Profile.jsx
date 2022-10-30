@@ -21,9 +21,9 @@ const profile = () => {
                 Bio
             </div>
             <div className="profile_info_bio_content">
-                <div>Name: Long Trung Nguyen</div>
-                <div>Dob: 1/1/2021</div>
-                <div>Phone: 0123456789</div>
+                <p>Name: Long Trung Nguyen</p>
+                <p>Dob: 1/1/2021</p>
+                <p>Phone: 0123456789</p>
             </div>
 
         </Card>      
