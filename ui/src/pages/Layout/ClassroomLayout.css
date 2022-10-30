@@ -1,0 +1,67 @@
+.classroom_layout__main {
+	width: 80%;
+}
+
+.classroom_page__sider {
+	color: #fff;
+	width: 20%;
+	height: 200px;
+}
+
+.classroom_layout__content {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content:center;
+	align-items: center;	
+}
+
+.classroom_layout__ant_content {
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	justify-content:center;
+	align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+	.classroom_layout__breadcrumb {
+		margin-bottom: 20px;
+		margin-left: 1em;
+	}
+
+	.classroom_page__sider {
+		display: none;
+	}
+
+	.classroom_layout__main {
+		width: 100%;
+	}
+
+	.classroom_layout__ant_content {
+		width: 92%;
+	}
+}
+
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+	.classroom_layout__breadcrumb {
+		margin-bottom: 20px;
+		margin-left: 3em;
+	}
+
+	.classroom_page__sider {
+		display: none;
+	}
+}
+
+@media screen and (min-width: 1025px) {
+	.classroom_layout__breadcrumb {
+		/* margin-bottom: 40px;
+		margin-left: 10em; */
+		display: none;
+	}
+
+	.classroom_page__mobile_menu {
+		display: none;
+	}
+}

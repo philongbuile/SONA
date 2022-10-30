@@ -1,0 +1,80 @@
+.btn{
+    /* Take button */
+    border-radius: 50px;
+    width: 206px;
+    height: 50px;
+    background-color: #8172D5;
+    color: white;
+    top: 120px;
+    font-family: Roboto;
+    grid-area: a;
+    align-self: center;
+    justify-self: center;
+ }
+ 
+ .card{
+     /* Select card test */
+     width: 260px;
+     border-radius: 10px;
+     border:20px ;
+     height: 310px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+ 
+ .image_cover{
+ 
+     /* image cover for select card test */
+ 
+     /* Overlay */
+     position:absolute;
+     width: 260px;
+     height: 216px;
+     top: 0px;
+     left: 0px;
+     object-fit: cover;
+     border-top: 20px;
+ }
+ 
+ .content{
+     /* Content for the card test */
+     display: flex;
+     position: absolute;
+     font-family: Roboto;
+     font-weight: bold;
+     font-size:medium;
+     /* grid-area: b; */
+     right: 87px;
+     bottom: 54px;
+ }
+ 
+ .wrapper{
+     /* Center the wrapper */
+     display: grid;
+     grid-template-columns: repeat(0, 1fr);
+     grid-template-rows: repeat(1, 1fr);
+     gap: 10px;
+     grid-auto-rows: 30px;
+     grid-template-areas: 
+         ". a b a ."
+         ". a b a .";
+ }
+
+ .tag_lon{
+     display: flex;
+     position: absolute;
+     left: 15px;
+     bottom: 16px;
+ }
+
+ .group_icon{
+     display: flex;
+     position: absolute;
+     top: 12px;
+     right: 38px;
+ }
+
+ 
+
+ 
