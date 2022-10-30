@@ -1,0 +1,28 @@
+html {
+    position: relative;
+    min-width: 1024px;
+    min-height: 768px;
+    height: 100%;
+}
+
+.container{
+    background-color: #3D9970;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    left: 50%;
+    margin-left: -50px;
+}
+
+.container-title{
+
+
+}
+
+.container-context{
+
+}
+
+.container-text{
+    
+}
