@@ -1,15 +1,13 @@
-var cat = {
-    name: 'Gafield',
-    display: function(){
-        console.log(this.name); // 'this' points to cat
-    }
-};
-cat.display(); // Saurabh
+const fetch = require('node-fetch')
 
-var name = "Tom";
-var outerDisplay = cat.display;
-outerDisplay(); // Bạn đoán xem kết quả là như thế nào?
+function fetchDemo() {
+    return fetch('http://localhost:8080/record/getall').then(function(response) {
+        return response.json();
+    }).then(function(json) {
+        return json;
+    });
+}
 
-var name1 = "Tom";
-var outerDisplay1 = cat.display.bind(cat);
-outerDisplay1(); // Bạn đoán xem kết quả là như thế nào?
+fetchDemo().then(function(result) {
+    console.log(result);
+});

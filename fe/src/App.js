@@ -12,8 +12,9 @@ function App() {
     <BrowserRouter>
     <Navbar/>
       <Routes>
-          <Route path="/:username/:medicalInfoID" element={<Examination />} />
-          <Route path="/" element={<SearchByKeyWord />} />
+          <Route exact path="/:username/:medicalInfoID" element={<Examination />} />
+          <Route exact path="/record" element={<SearchByKeyWord />} />
+          <Route exact path="/record/query/:id" element={<Case />} />
       </Routes>
     </BrowserRouter>
   );

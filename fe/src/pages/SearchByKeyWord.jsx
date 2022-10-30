@@ -1,20 +1,23 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import axios from 'axios'
  
 const SearchByKeyWord = () => {
     const [filter, setFilter] = useState('');
     const [cards, setCards] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:8000/cardData')
-            .then(res => res.json())
+        fetch('http://localhost:8080/record/getall')
+            .then(res => {
+                return res.json()
+            })
             .then((data) => {
                 console.log(data)
                 setCards(data);
             })
+            .catch(error => {
+                return error;
+            });
     }, []);
-
 
     return(
         <div className=''>
@@ -32,24 +35,26 @@ const SearchByKeyWord = () => {
                         </div>
                     </div>
 
-                    {(cards.cardData?.filter((res) => {
-                        if(filter === ''){
+                    {cards.response.filter((res) => {
+                        if(filter == ''){
                             return res
                         }else if(res.title.toLowerCase().includes(filter.toLowerCase())){
                             return res
                         }
-                    }) || cards.cardData)?.map((item, index) => {
+                    }).map((item, index) => {
                         return(
                             <div className='col-12 col-md-6 col-lg-3 mx-0 mb-4' >
                                 {<div className='card p-0 overflow-hidden h-100 shadow'>
-                                    <img src={item.img} alt="" className='card-img-top img-fluid'/>
-                                    <div className='card-body' key={item.id}>
-                                        <Link to={`/case/${item.id}`}>
-                                        <h5 className='card-title'>{item.title}</h5>
+                                    {/* <img src={item.img} alt="" className='card-img-top img-fluid'/> */}
+                                    <div className='card-body' key={item.MedicalInfo_ID}>
+                                        <Link to={`/case/${item.MedicalInfo_ID}`}>
+                                        <h5 className='card-title'>{item.MedicalInfo_ID}</h5>
                                             <div className='panel-body'>
-                                                <p className ='card-text'>{item.testResult}</p>
-                                                <p className ='card-text'>{item.diagnosis}</p>
-                                                <p className ='card-text'>{item.treatment}</p>
+                                                <p className ='card-text'>{item.OperatorName}</p>
+                                                <p className ='card-text'>{item.Operation}</p>
+                                                <p className ='card-text'>{item.Roles}</p>
+                                                <p className ='card-text'>{item.Record_ID}</p>
+                                                <p className ='card-text'>{item.Times}</p>
                                             </div>
                                         </Link>
                                         <button type='button' className='btn btn-primary'> Ask for Authorization</button>
