@@ -9,7 +9,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-          <Route path="/" element={<AuthorizationList />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/:username/:medicalInfoID" element={<Examination />} />
       </Routes>
     </BrowserRouter>
