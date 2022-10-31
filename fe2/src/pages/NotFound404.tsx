@@ -1,5 +1,3 @@
-import React from 'react';
-// routing
 import { useNavigate } from 'react-router-dom';
 
 export default function NotFound404() {
@@ -8,6 +6,7 @@ export default function NotFound404() {
 
   const handleHome = () => {
     navigate('/');
+
   };
 
   return (
