@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 const useFetch = (url) => {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState("");
     const [isPending, setIsPending] = useState(true);
     const [error, setError] = useState(null);
   
@@ -9,7 +9,15 @@ const useFetch = (url) => {
       const abortCont = new AbortController();
   
       setTimeout(() => {
-        fetch(url, { signal: abortCont.signal })
+        fetch(url, {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          signal: abortCont.signal,
+          restRequestTimeout: 60000
+        })
         .then(res => {
           if (!res.ok) { // error coming back from server
             throw Error('could not fetch the data for that resource');
@@ -29,6 +37,7 @@ const useFetch = (url) => {
             setIsPending(false);
             setError(err.message);
           }
+          console.log(err)
         })
       }, 1000);
   

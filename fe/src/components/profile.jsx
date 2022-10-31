@@ -1,8 +1,10 @@
 import { Card } from 'antd';
 import './profile.css';
 import avatar from '../assets/avatar.png';
+import { PersonalInforFetch } from '../api/userApi';
 
 const profile = () => {
+    const { data: personalData, isPending, error } = PersonalInforFetch('philong123');
     return (
         <Card
             hoverable
@@ -20,8 +22,7 @@ const profile = () => {
             </div>
             <div className="profile_info_bio_content">
                 <div>Name: Long Trung Nguyen</div>
-                <div>Dob: 12/12/2001</div>
-                <div>Email: longtrung@gmail.com</div>
+                <div>Dob: 1/1/2021</div>
                 <div>Phone: 0123456789</div>
             </div>
 
