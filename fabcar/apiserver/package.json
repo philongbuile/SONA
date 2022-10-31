@@ -25,7 +25,9 @@
         "fabric-network": "^2.2.4",
         "fs": "^0.0.1-security",
         "path": "^0.12.7",
-        "util": "^0.12.5"
+        "ts-node": "^10.9.1",
+        "util": "^0.12.5",
+        "uuid": "^9.0.0"
     },
     "devDependencies": {
         "@types/chai": "^4.1.7",
@@ -38,7 +40,6 @@
         "nyc": "^14.1.1",
         "sinon": "^7.1.1",
         "sinon-chai": "^3.3.0",
-        "ts-node": "^7.0.1",
         "tslint": "^5.11.0",
         "typescript": "^3.1.6"
     },
