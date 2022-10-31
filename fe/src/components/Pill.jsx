@@ -1,8 +1,8 @@
-import './Navbar.css';
+import './Pill.css';
 
-const HomeNavbar = () => {
+const Pill = () => {
   return (
-      <div className="home_navbar"> 
+      <div className="pill"> 
           <li><p>About us</p></li>
           <li><p>Guideline</p></li>
           <li><h1>Sona System</h1></li>
@@ -12,4 +12,4 @@ const HomeNavbar = () => {
   );
 }
 
-export default HomeNavbar;
+export default Pill;

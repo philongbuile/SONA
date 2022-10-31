@@ -5,6 +5,7 @@ import SearchByKeyWord from './pages/SearchByKeyWord'
 import Case from './pages/Case';
 import Navbar from './components/Navbar'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LandingPage from './pages/LandingPage';
 
 
 
