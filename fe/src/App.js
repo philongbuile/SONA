@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 import LoginPage from './pages/LoginPage';
 import UserProfile from './pages/UserProfile';
 import Examination from './pages/Examination';
 import SearchByKeyWord from './pages/SearchByKeyWord'
 import Case from './pages/Case';
 import Navbar from './components/Navbar'
+=======
+import LoginPage from "./pages/LoginPage";
+import UserProfile from "./pages/userProfile";
+import Examination from "./pages/Examination";
+import SearchByKeyWord from "./pages/SearchByKeyWord";
+import Case from "./pages/Case";
+import Navbar from "./components/navbar";
+>>>>>>> 42bfe293 (merge)
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from './pages/LandingPage';
 
