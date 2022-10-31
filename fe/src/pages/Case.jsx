@@ -1,6 +1,5 @@
-import Navbar from '../components/navbar'
 import { useParams } from 'react-router-dom'
-import useFetch from '../api/UseFetch'
+import useFetch from '../api/useFetch'
 import './Case.css'
 
 const Case = () => {
@@ -11,7 +10,7 @@ const Case = () => {
 
     return(
         <div className="box">
-            {isPending && <div> Loading ... </div>}
+            {isPending && <div className='loader'> </div>}
             {error && <div> {error} </div>}
             {case_ && 
                 <div className='container'> 
