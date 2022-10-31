@@ -1,7 +1,7 @@
 [
     {
-       "name": "collectionPateintIdentifiableData",
-       "policy": "OR('Org1MSP.member')",
+       "name": "PateintIdentifiableData",
+       "policy": "Or('Org1MSP.member')",
        "requiredPeerCount": 0,
        "maxPeerCount": 3,
        "blockToLive":1000000,

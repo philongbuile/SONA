@@ -5,15 +5,15 @@
  */
 import { Gateway, GatewayOptions } from 'fabric-network';
 import * as path from 'path';
-import { buildCCPOrg1, buildWallet, prettyJSONString } from './utils//AppUtil';
+import { buildCCPOrg2,buildCCPOrg1, buildWallet, prettyJSONString } from './utils//AppUtil';
 import { buildCAClient, enrollAdmin, registerAndEnrollUser } from './utils/CAUtil';
 import { v4 as uuidv4 } from 'uuid';
 
 const channelName = 'mychannel';
 const chaincodeName = 'fabcar';
-const mspOrg1 = 'Org1MSP';
-const walletPath = path.join(__dirname, 'wallet');
-const org1UserId = 'appUser';
+const mspOrg2 = 'Org2MSP';
+const walletPath = path.join(__dirname, 'wallet2');
+const org2UserId = 'appUser2';
 
 // pre-requisites:
 // - fabric-sample two organization test-network setup with two peers, ordering service,
@@ -65,21 +65,21 @@ const org1UserId = 'appUser';
 async function main() {
     try {
         // build an in memory object with the network configuration (also known as a connection profile)
-        const ccp = buildCCPOrg1();
+        const ccp = buildCCPOrg2();
 
         // build an instance of the fabric ca services client based on
         // the information in the network configuration
-        const caClient = buildCAClient(ccp, 'ca.org1.example.com');
+        const caClient = buildCAClient(ccp, 'ca.org2.example.com');
 
         // setup the wallet to hold the credentials of the application user
         const wallet = await buildWallet(walletPath);
 
         // in a real application this would be done on an administrative flow, and only once
-        await enrollAdmin(caClient, wallet, mspOrg1);
+        await enrollAdmin(caClient, wallet, mspOrg2);
 
         // in a real application this would be done only when a new user was required to be added
         // and would be part of an administrative flow
-        await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+        await registerAndEnrollUser(caClient, wallet, mspOrg2, org2UserId, 'org2.department1');
 
         // Create a new gateway instance for interacting with the fabric network.
         // In a real application this would be done as the backend server session is setup for
@@ -88,7 +88,7 @@ async function main() {
 
         const gatewayOpts: GatewayOptions = {
             wallet,
-            identity: org1UserId,
+            identity: org2UserId,
             discovery: { enabled: true, asLocalhost: true }, // using asLocalhost as this gateway is using a fabric network deployed locally
         };
 
@@ -119,47 +119,30 @@ async function main() {
             // await medical.submitTransaction('InitLedger');
             // await usage.submitTransaction('InitLedger');
             // await secured_patient.submitTransaction('InitLedger');
-
-
-            // Initialize a set of asset data on the channel using the cshaincode 'InitLedger' function.
-            // This type of transaction would only be run once by an application the first time it was started after it
-            // deployed the first time. Any updates to the chaincode deployed later would likely not need to run
-            // an "init" type function.
-            // console.log('\n--> Submit Transaction: InitLedger, function creates the initial set of assets on the ledger');
-            // await operator.submitTransaction('InitLedger');
-            // await medical.submitTransaction('InitLedger');
-            // await usage.submitTransaction('InitLedger');
-            // await secured_patient.submitTransaction('InitLedger');
             // await patient.submitTransaction('InitLedger');
 
 
 
-            console.log('*** Result: committed');
 
             let result;
 
-            // console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');
-            // result = await secured_patient.evaluateTransaction('GetAll');
-            // console.log(`*** getall Result: ${prettyJSONString(result.toString())}`);
-
+            const new_patient = 'vero';
             const medid = uuidv4();
-            const new_patient = 'suleiman';
+
             console.log(`Create patient ${new_patient}`);
             result = await secured_patient.submitTransaction('CreatePatient', 'tu cam', new_patient, medid, '2463','cat street', '44/3', 'female', 'Doctor1');
             console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
             
-
+            // console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');
+            // result = await secured_patient.evaluateTransaction('GetAll');
+            // console.log(`*** getall Result: ${prettyJSONString(result.toString())}`);
     
 
             
 
             // console.log('\n--> Evaluate Transaction: Authorized Doctor2');
             // result = await secured_patient.submitTransaction('AuthorizeOperator', new_patient, 'Doctor2');
-            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
-
-            // console.log('\n--> Evaluate Transaction: query patient');
-            // result = await secured_patient.evaluateTransaction('PatientQuery', new_patient);
             // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
 
@@ -171,13 +154,16 @@ async function main() {
             result = await secured_patient.evaluateTransaction('patientQuery', new_patient);
             console.log(`*** Result: ${prettyJSONString(result.toString())}`);
     
+
+     
+
             
 
            
 
-            // console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');
-            // result = await medical.evaluateTransaction('GetAll');
-            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+            // console.log('\n--> Evaluate Transaction: secured GetAllAssets, function returns all the current assets on the ledger');
+            // result = await secured_patient.evaluateTransaction('GetAll');
+            // console.log(`*** getall secured Result: ${prettyJSONString(result.toString())}`);
 
             // console.log('\n--> Evaluate Transaction: Query MedicalInfos have diabete and cancer');
             // result = await medical.evaluateTransaction('QueryByKeyWord', k1 );

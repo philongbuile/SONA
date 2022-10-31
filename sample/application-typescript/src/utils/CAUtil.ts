@@ -56,6 +56,7 @@ const registerAndEnrollUser = async (caClient: FabricCAServices, wallet: Wallet,
         const userIdentity = await wallet.get(userId);
         if (userIdentity) {
             console.log(`An identity for the user ${userId} already exists in the wallet`);
+            console.log(`${userIdentity}`)
             return;
         }
 

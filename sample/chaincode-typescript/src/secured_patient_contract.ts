@@ -11,7 +11,9 @@ import { MedicalInfoContract } from './MedicalInfo_Contract';
 import { OperatorContract } from './MedicalOperator_Contract';
 import { UsageRecordContract } from './UsageRecordContract';
 @Info({title: 'AssetTransfer', description: 'Smart contract for trading assets'})
-export class PatientContract extends Contract {
+export class SecuredPatientContract extends Contract {
+    // col_name = '_implicit_org_Org1MSP';
+    col_name = 'PateintIdentifiableData';
 
     @Transaction()
     public async InitLedger(ctx: Context): Promise<void> {
@@ -58,21 +60,21 @@ export class PatientContract extends Contract {
             }
         ];
 
-        for (const patient of patients) {
-            patient.docType = 'patient';
-            // example of how to write to world state deterministically
-            // use convetion of alphabetic order
-            // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-            // when retrieving data, in any lang, the order of data will be the same and consequently also the corresonding hash
-            await ctx.stub.putState(patient.Username, Buffer.from(stringify(sortKeysRecursive(patient))));
-            console.info(`Patient ${patient.Username} initialized`);
-        }
+        // for (const patient of patients) {
+        //     patient.docType = 'secured_patient';
+        //     // example of how to write to world state deterministically
+        //     // use convetion of alphabetic order
+        //     // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
+        //     // when retrieving data, in any lang, the order of data will be the same and consequently also the corresonding hash
+        //     await ctx.stub.putPrivateData( this.col_name, patient.Username, Buffer.from(stringify(sortKeysRecursive(patient))));
+        //     console.info(`Patient ${patient.Username} initialized`);
+        // }
     }
 
     // CreateAsset issues a new asset to the world state with given details.
     @Transaction()
     public async CreatePatient(ctx: Context,fullname: string, username: string, medinfo_id: string, phone: string, address: string, dob: string, gender: string, operator_username: string): Promise<void> {
-        const exists = await this.AssetExists(ctx,username);
+        const exists = await this.PatientExists(ctx,username);
         if (exists) {
             throw new Error(`The asset ${username} already exists`);
         }
@@ -80,7 +82,7 @@ export class PatientContract extends Contract {
         await new MedicalInfoContract().CreateMedicalInfo(ctx, medinfo_id);
 
         const patient = {
-            docType: 'patient',
+            docType: 'secured_patient',
             FullName: fullname,
             Username: username,
             Phone: phone,
@@ -92,7 +94,7 @@ export class PatientContract extends Contract {
             
         };
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-        await ctx.stub.putState(username, Buffer.from(stringify(sortKeysRecursive(patient))));
+        await ctx.stub.putPrivateData(this.col_name, username, Buffer.from(stringify(sortKeysRecursive(patient))));
         // return JSON.stringify(patient);
 
     }
@@ -101,7 +103,7 @@ export class PatientContract extends Contract {
     // Read patient record given patient name
     @Transaction(false)
     private async ReadPatient(ctx: Context, username: string): Promise<string> {
-        const assetJSON = await ctx.stub.getState(username); // get the asset from chaincode state
+        const assetJSON = await ctx.stub.getPrivateData(this.col_name, username); // get the asset from chaincode state
         if (!assetJSON || assetJSON.length === 0) {
             throw new Error(`The asset ${username} does not exist`);
         }
@@ -112,7 +114,14 @@ export class PatientContract extends Contract {
     // AssetExists returns true when asset with given ID exists in world state.
     @Transaction(false)
     @Returns('boolean')
-    private async AssetExists(ctx: Context, username: string): Promise<boolean> {
+    private async PatientExists(ctx: Context, username: string): Promise<boolean> {
+        const assetJSON = await ctx.stub.getPrivateData(this.col_name, username);
+        return assetJSON && assetJSON.length > 0;
+    }
+
+    @Transaction(false)
+    @Returns('boolean')
+    private async OperatorExists(ctx: Context, username: string): Promise<boolean> {
         const assetJSON = await ctx.stub.getState(username);
         return assetJSON && assetJSON.length > 0;
     }
@@ -122,7 +131,7 @@ export class PatientContract extends Contract {
     @Returns('boolean')
     public async IsAuthorized(ctx: Context, patient_username: string, doctor_username: string): Promise<boolean> {
 
-        const exists = await this.AssetExists(ctx, doctor_username);
+        const exists = await this.OperatorExists(ctx, doctor_username);
 
         if (!exists) {
             throw new Error(`The asset ${doctor_username} does not exist`);
@@ -168,7 +177,7 @@ export class PatientContract extends Contract {
 
     @Transaction(false)
     public async patientQuery(ctx: Context, username: string): Promise<string> {
-        const assetJSON = await ctx.stub.getState(username); // get the asset from chaincode state
+        const assetJSON = await ctx.stub.getPrivateData(this.col_name,username); // get the asset from chaincode state
         if (!assetJSON || assetJSON.length === 0) {
             throw new Error(`The asset ${username} does not exist`);
         }
@@ -180,7 +189,13 @@ export class PatientContract extends Contract {
     public async GetAll(ctx: Context): Promise<string> {
         const allResults = [];
         // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
-        const iterator = await ctx.stub.getStateByRange('', '');
+        let iterator = await ctx.stub.getPrivateDataByRange(this.col_name, '', '');
+
+        if (!iterator) {
+            console.log(`iterator is not defined`);
+            throw Error('iterator is not defined');
+        }
+        console.log(`iterator in secured getall ${iterator}`);
         let result = await iterator.next();
         while (!result.done) {
             const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
@@ -202,10 +217,10 @@ export class PatientContract extends Contract {
     public async AuthorizeOperator(ctx: Context, patient_username: string, operator_username: string): Promise<void> {
         
         // check if operator exists
-        let isExists = await this.AssetExists(ctx, operator_username);
+        let isExists = await this.OperatorExists(ctx, operator_username);
 
         if (!isExists) {
-            throw Error(`username ${operator_username} does not exist on authorization list`);
+            throw Error(`username ${operator_username} does not exist`);
         }
         // retriev patient info
         let patient = await this.ReadPatient(ctx, patient_username);
@@ -227,7 +242,7 @@ export class PatientContract extends Contract {
         patient_obj.AuthorizedDoctors.push(operator_username);
         
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-        await ctx.stub.putState(patient_username, Buffer.from(stringify(sortKeysRecursive(patient_obj))));
+        await ctx.stub.putPrivateData(this.col_name, patient_username, Buffer.from(stringify(sortKeysRecursive(patient_obj))));
         // return JSON.stringify(patient);
 
     }
@@ -237,10 +252,10 @@ export class PatientContract extends Contract {
     public async RevokeOperator(ctx: Context, patient_username: string, operator_username: string): Promise<void> {
         
         // check if operator exists
-        let isExists = await this.AssetExists(ctx, operator_username);
+        let isExists = await this.OperatorExists(ctx, operator_username);
 
         if (!isExists) {
-            throw Error(`username ${operator_username} does not exist`);
+            throw Error(`username ${operator_username} does not exist on authorization list`);
         }
         // retriev patient info
         let patient = await this.ReadPatient(ctx, patient_username);
@@ -258,7 +273,7 @@ export class PatientContract extends Contract {
         }
                 
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-        await ctx.stub.putState(patient_username, Buffer.from(stringify(sortKeysRecursive(patient_obj))));
+        await ctx.stub.putPrivateData(this.col_name, patient_username, Buffer.from(stringify(sortKeysRecursive(patient_obj))));
         // return JSON.stringify(patient);
 
     }
