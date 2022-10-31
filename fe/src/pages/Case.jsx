@@ -6,8 +6,8 @@ import './Case.css'
 
 const Case = () => {
 
-    const {id} = useParams();
-    const {data, error, isPending} = useFetch('http://localhost:8080/record/query/' + id);
+    const {username} = useParams();
+    const {data: Case, error, isPending} = useFetch('http://localhost:8080/patient/query/' + username);
     return(
         <div className="box">
             <div>
@@ -15,7 +15,7 @@ const Case = () => {
             </div>
             {isPending && <div> Loading ... </div>}
             {error && <div> {error} </div>}
-            {data && (
+            {Case && (
                 <div className='container'> 
                     <div className='container-title'>
                         <h2>Title</h2>
@@ -23,20 +23,20 @@ const Case = () => {
                     <div className='container-context'>
                     <div className='container-text-box'>Operation Name:
                         <div>
-                            <p className ='container-text'>{data.OperatorName}</p>
+                            <p className ='container-text'>{Case.OperatorName}</p>
                         </div>
                     </div >
                     <div className='container-text-box'>Operation:
-                        <p className ='container-text'>{data.Operation}</p>
+                        <p className ='container-text'>{Case.Operation}</p>
                     </div>
                     <div className='container-text-box'> Role:
-                        <p className ='container-text'>{data.Roles}</p>
+                        <p className ='container-text'>{Case.Roles}</p>
                     </div>
                     <div className='container-text-box'>Record ID:
-                        <p className ='container-text'>{data.Record_ID}</p>
+                        <p className ='container-text'>{Case.Record_ID}</p>
                     </div>
                     <div className='container-text-box'>Time:
-                        <p className ='data-text'>{data.Times}</p>
+                        <p className ='data-text'>{Case.Times}</p>
                     </div>
                     </div>
                 </div>

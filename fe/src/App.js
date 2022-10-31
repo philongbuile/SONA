@@ -6,7 +6,7 @@ import Case from './pages/Case';
 import Navbar from './components/Navbar'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
+
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
       <Routes>
           <Route exact path="/:username/:medicalInfoID" element={<Examination />} />
           <Route exact path="/record" element={<SearchByKeyWord />} />
-          <Route exact path="/record/query/:id" element={<Case />} />
+          <Route exact path="/record/query/:username" element={<Case />} />
       </Routes>
     </BrowserRouter>
   )
