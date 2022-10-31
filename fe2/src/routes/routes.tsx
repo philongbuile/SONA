@@ -11,6 +11,9 @@ import { LoginLayout } from '../pages/LoginLayout';
 import { Register } from '../pages/Register';
 import Login from '../pages/Login';
 import Landingpage from '../pages/Landingpage';
+import Examination from '../pages/Examination';
+import ResearchBoard from '../pages/ResearchBoard';
+import AuthorizationList from '../pages/AuthorizationList';
 
 export default function AppRoute() {
   const AdminGuard: GuardEC = {
@@ -32,12 +35,17 @@ export default function AppRoute() {
             <Route path="/register" element={<Register />} />
           </Route>
 
-          {/* private routes */}
-          <Route element={<UserLayout />}>
-            <Route path="/user" element={<UserProfile />} />
-            <Route path="/user-management" element={<UserManagement />} />
+          {/* user routes */}
+          <Route path="/user/*">
+            <Route element={<UserLayout />}>
+              <Route path="patient/profile" element={<UserProfile />} />
+              <Route path="patient/examination/:username/:medicalinforID" element={<Examination />} />
+              <Route path="operator/patient/operator/queryall" element={<AuthorizationList />} />
+              <Route path="operator/research/queryall" element={<ResearchBoard />} />
+            </Route>
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
-          
+
 
           {/* 404 Not Found */}
           <Route path="*" element={<NotFound404 />} />

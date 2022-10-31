@@ -12,6 +12,7 @@ const MiddleBlock = lazy(
 const Container = lazy(() => import('../components/Container/index'));
 const ScrollToTop = lazy(() => import('../models/ScrollToTop'));
 const ContentBlock = lazy(() => import('../components/contentBlock/index'));
+const Footer = lazy(() => import('../components/Footer'));
 
 const Landingpage = () => {
   return (
@@ -54,6 +55,9 @@ const Landingpage = () => {
         icon="waving.svg"
         id="about"
       />
+        
+      <Footer />
+  
     </Container>
   );
 };
