@@ -63,7 +63,7 @@
 
     <body>
 
-      <form action="/patient/doctor-query" method="POST" enctype="multipart/form-data">
+      <form action="/patient/doctor-query" method="POST">
         <div class="container">
             <label for="uname"><strong>Patient</strong></label>
             <input type="text" placeholder="Enter Patient name" name="patient_username" required>
@@ -72,7 +72,7 @@
             <label for="uname"><strong>Record ID</strong></label>
             <input type="text" placeholder="Enter Record ID" name="record_id" required>
           </div>
-          <button type="submit">Ssubmit</button>
+          <button type="submit">Submit</button>
     </form>
     <div class="container" style="background-color: #eee">
       <h1><%= result %></h1>

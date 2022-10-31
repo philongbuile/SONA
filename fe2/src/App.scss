@@ -1,0 +1,53 @@
+.App {
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.Layout {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+  padding-top: 6rem;
+}
+
+.title {
+  font-size: 36px;
+}
+
+.AppContent {
+  display: flex;
+  align-items: center;
+}
+
+ @media only screen and (max-width: 1050px) {
+  .login {
+    width: 20rem;
+  }
+  .image-visible {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 1050px) {
+  .login {
+    width: 20rem;
+  }
+  .image-visible {
+    margin-left: 1rem;
+    margin-right: 12rem;
+    width: 400px;
+    position: absolute;
+    right: 0;
+  }
+}
+
