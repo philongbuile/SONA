@@ -32,6 +32,13 @@ export default function AppRoute() {
             <Route path="/register" element={<Register />} />
           </Route>
 
+          {/* private routes */}
+          <Route element={<UserLayout />}>
+            <Route path="/user" element={<UserProfile />} />
+            <Route path="/user-management" element={<UserManagement />} />
+          </Route>
+          
+
           {/* 404 Not Found */}
           <Route path="*" element={<NotFound404 />} />
         </Routes>
