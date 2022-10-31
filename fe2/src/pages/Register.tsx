@@ -1,10 +1,8 @@
 import { Divider, Form, Input } from 'antd';
 import React, { useState } from 'react';
 import { authApi } from '../api/authApi';
-import { classApi } from '../api/classApi';
 import { Button, notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { Class } from '../models/Class';
 import './Login.css';
 // toast
 import { toast } from 'react-toastify';

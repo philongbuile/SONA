@@ -108,7 +108,7 @@ function UserProfile() {
                     >
                       <a
                         style={{ color: 'black' }}
-                        href={`/test/${result.testId}/details`}
+                        href={`/usage_record/${result.id}/details`}
                       >
                         <div
                           style={{
@@ -121,9 +121,9 @@ function UserProfile() {
                           }}
                         >
                           <p style={{ fontWeight: 'bold' }}>
-                            {result.testName}
+                            {result.operator_username}
                           </p>
-                          <p>{result.score}/100</p>
+                          <p>{result.operation}/100</p>
                         </div>
                       </a>
                     </div>
