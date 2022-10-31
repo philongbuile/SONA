@@ -15,7 +15,7 @@ function App() {
       <Routes>
           <Route exact path="/:username/:medicalInfoID" element={<Examination />} />
           <Route exact path="/record" element={<SearchByKeyWord />} />
-          <Route exact path="/record/query/:id" element={<Case />} />
+          <Route exact path="/medinfo/patient_query_medicalinfo/:medID" element={<Case />} />
       </Routes>
     </BrowserRouter>
   )

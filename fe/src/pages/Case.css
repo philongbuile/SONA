@@ -19,8 +19,18 @@
 }
 
 .container-context{
+    
+    /* border-bottom-style: solid; */
     margin-bottom: 1rem;
     margin-top: 1rem;
+}
+
+.container-sub-context{
+    padding-top: 0.01px;
+    padding-bottom: 0.01px;
+    border-bottom-color: black;
+    border-bottom-width: 0.01px;
+    border-bottom-style: outset;
 }
 
 .container-text-box{
@@ -30,5 +40,6 @@
 .container-text{
     /* background-color: blanchedalmond; */
     padding: 0.1px;
+    margin-top: 0.25px;
     margin-bottom: 0.25px;
 }
