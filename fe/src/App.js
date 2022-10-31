@@ -1,15 +1,21 @@
 import LoginPage from './pages/LoginPage';
-import UserProfile from './pages/userProfile';
+import UserProfile from './pages/UserProfile';
 import Examination from './pages/Examination';
-import AuthorizationList from './pages/AuthorizationList';
+import SearchByKeyWord from './pages/SearchByKeyWord'
+import Case from './pages/Case';
+import Navbar from './components/Navbar'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+
 
 function App() {
   return (
     <BrowserRouter>
+    <Navbar/>
       <Routes>
-          <Route path="/" element={<AuthorizationList />} />
-          <Route path="/:username/:medicalInfoID" element={<Examination />} />
+          <Route exact path="/:username/:medicalInfoID" element={<Examination />} />
+          <Route exact path="/record" element={<SearchByKeyWord />} />
+          <Route exact path="/record/query/:username" element={<Case />} />
       </Routes>
     </BrowserRouter>
   )
