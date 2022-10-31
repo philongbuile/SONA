@@ -6,8 +6,7 @@ import Case from './pages/Case';
 import Navbar from './components/Navbar'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from './pages/LandingPage';
-
-
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
   return (

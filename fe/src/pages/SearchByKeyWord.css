@@ -1,0 +1,8 @@
+
+.box{
+    margin-top: 1.3cm;
+}
+
+.card-body:hover, .card-body:active{
+    font-size: 150%;
+}
