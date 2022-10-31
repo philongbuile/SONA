@@ -32,27 +32,6 @@ export default function AppRoute() {
             <Route path="/register" element={<Register />} />
           </Route>
 
-          {/* <Route path="/student/*" element={<Guard {...StudentGuard} />}> */}
-          <Route path="/patient/*">
-            <Route element={<UserLayout />}>
-              <Route path="dashboard/*" element={<UserProfile />}>
-                <Route path="*" element={<Navigate to="" replace />} />
-              </Route>
-
-              <Route path="/">
-                <Route path="" />
-                <Route>
-                  <Route path=":id/home" />
-                </Route>
-                <Route path="*" element={<Navigate to="" replace />} />
-              </Route>
-
-              {/* <Route path="account/*" element={<UserProfile />} /> */}
-            </Route>
-
-            <Route path="*" element={<Navigate to="dashboard" replace />} />
-          </Route>
-
           {/* 404 Not Found */}
           <Route path="*" element={<NotFound404 />} />
         </Routes>
