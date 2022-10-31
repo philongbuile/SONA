@@ -1,0 +1,13 @@
+.list {
+    width: 80%;
+    height: 80%;
+    align-items: center;
+
+    border-bottom: 1px solid #eaeaea;
+    background-color: #ffffff;
+    margin-right: 10%;
+}
+
+.table_list {
+    background-color: #ffffff;
+}

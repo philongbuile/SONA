@@ -1,10 +1,12 @@
-import { lazy } from 'react';
+import Navbar from "../components/Navbar";
+import TableList from "../components/TableList/TableList";
 
 const AuthorizationList = () => {
     return (
-        <div>
-        <h1>AuthorizationList</h1>
-        </div>
+        <>
+            <Navbar/>
+            <TableList/>
+        </>
     );
 }
 
