@@ -1,6 +1,6 @@
 import Navbar from '../components/Navbar'
 import { useParams } from 'react-router-dom'
-import useFetch from '../api/UseFetch'
+import useFetch from '../api/useFetch'
 import './Case.css'
 
 
