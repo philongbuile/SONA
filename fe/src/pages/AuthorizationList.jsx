@@ -6,6 +6,7 @@ import useFetch from '../api/useFetch';
 const AuthorizationList = () => {
     const columns = [
         {field: "Authorized Doctors"}
+        
     ];
     
     const {data, error, isPending} = useFetch('http://localhost:8080/patient/query/camtu123')
