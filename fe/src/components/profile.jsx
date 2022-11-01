@@ -5,7 +5,8 @@ import { PersonalInforFetch } from '../api/userApi';
 import { useParams } from 'react-router-dom';
 
 const profile = () => {
-    //const { data: personalData, isPending, error } = PersonalInforFetch(username);
+    const username = useParams();
+    const { data: personalData, isPending, error } = PersonalInforFetch(username);
     return (
         <Card
             hoverable
