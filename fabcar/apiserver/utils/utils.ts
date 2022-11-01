@@ -13,7 +13,7 @@ const ccpPath = path.resolve(
   "connection-org1.json"
 );
 let ccp = JSON.parse(fs.readFileSync(ccpPath, "utf8"));
-const userID = "camtu123";
+// const userID = "camtu123";
 const asLocalhost = false;
 
 export async function getWallet(): Promise<Wallet> {
@@ -26,7 +26,7 @@ export async function getWallet(): Promise<Wallet> {
 }
     
 
-export async function checkUserEnrolled(wallet: Wallet): Promise<boolean> {
+export async function checkUserEnrolled(wallet: Wallet, userID): Promise<boolean> {
     // Check to see if we've already enrolled the user.
     const identity = await wallet.get(userID);
     if (!identity) {
@@ -40,7 +40,7 @@ export async function checkUserEnrolled(wallet: Wallet): Promise<boolean> {
 
 
 // ccp is path to the connection-org.json file
-export async function getGateway(wallet: Wallet, asLocalhost): Promise<Gateway>{
+export async function getGateway(wallet: Wallet, asLocalhost: boolean, userID: string): Promise<Gateway>{
 
    // Create a new gateway for connecting to our peer node.
    const gateway = new Gateway();
@@ -50,7 +50,7 @@ export async function getGateway(wallet: Wallet, asLocalhost): Promise<Gateway>{
 }
 
  
-export async function getNetwork(gateway: Gateway, wallet: Wallet): Promise<Network> {
+export async function getNetwork(gateway: Gateway, wallet: Wallet, userID: string): Promise<Network> {
   const identity = await wallet.get(userID);
   if (!identity) {
     console.log(

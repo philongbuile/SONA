@@ -1,3 +1,4 @@
+
 import UserProfile from "./pages/UserProfile";
 import Examination from "./pages/Examination";
 import SearchByKeyWord from "./pages/SearchByKeyWord";
@@ -11,10 +12,7 @@ import SearchByKeyWord from "./pages/SearchByKeyWord";
 import Case from "./pages/Case";
 import AuthorizationList from "./pages/AuthorizationList";
 import Navbar from "./components/navbar";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-
 function App() {
   return (
     <BrowserRouter>

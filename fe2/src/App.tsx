@@ -14,7 +14,7 @@ import CaseForm from './components/forms/CaseForm';
 
 function App() {
   return (
-    <div className="App">
+  <div className="App">  
       <ToastContainer
         position="top-center"
         autoClose={2500}
@@ -26,7 +26,7 @@ function App() {
         draggable
       /> 
       <AppRoute />
-      </div>
+    </div>
   );
 }
 

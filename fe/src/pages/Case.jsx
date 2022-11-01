@@ -1,4 +1,4 @@
-import Navbar from '../components/navbar'
+import Navbar from '../components/Navbar'
 import { useParams } from 'react-router-dom'
 import useFetch from '../api/useFetch'
 import './Case.css'
@@ -7,22 +7,20 @@ import { PersonalInforFetch } from '../api/userApi';
 const Case = () => {
 
     const {id} = useParams();
-    const {data, error, isPending} = useFetch('http://localhost:8080/record/query/' + id);
-    const { data: personalData, isPendingP, errorP } = PersonalInforFetch('philong123');
+    // const {data, error, isPending} = useFetch('http://localhost:8080/record/query/' + id);
+    const { data, error, isPending } = PersonalInforFetch('philong123');
 
     console.log(data);
-    console.log(personalData);
+    // console.log(personalData);
     return(
         <div className="box">
-            <Navbar/>
             {isPending && <div className='loader'> </div>}
             {error && <div> {error} </div>}
-            {case_ && 
+            {data && (
                 <div className='container'> 
                     <div className='container-title'>
-                        <h2>CASE ID: {case_.response.ID}</h2>
+                        <h2>Title</h2>
                     </div>
-
                     <div className='container-context'>
                     <div className='container-text-box'>Operation Name:
                         <div>
@@ -38,11 +36,8 @@ const Case = () => {
                     <div className='container-text-box'>Record ID:
                         <p className ='container-text'>{data.response[0].Record_ID}</p>
                     </div>
-                    <div className='container-text-box'>Time:
+                    {/* <div className='container-text-box'>Time:
                         <p className ='data-text'>{data.response[0].Time}</p>
-
-
-
 
                         <p className ='data-text'>{personalData.response.Username}</p>
 
@@ -50,10 +45,10 @@ const Case = () => {
 
                         <p className ='data-text'>{personalData.response.Medicalinfo_ID}</p>
 
-                    </div>
+                    </div> */}
                     </div>
                 </div>
-            }
+            )}
         </div>
     )
 }
