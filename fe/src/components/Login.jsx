@@ -15,19 +15,30 @@ const Login = () => {
   const history = useNavigate()
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    // e.preventDefault();
     const userInfo = {userName, password}
-
-    fetch('http://locahost:8080/login', {
-      method: "POST",
-      header: {"Content-Type": "application/json"},
-      body: JSON.stringify(userInfo)
-    }).then(() => {
-      console.log('AUTHENTICATING USER: VALID')
-      history.push('/record')
-    })
+    console.log(userInfo)
+    // fetch('http://locahost:8080/login', {
+    //   method: "POST",
+    //   header: {
+    //     "Content-Type": "application/json",
+    //     Accept: "application/json",
+    //     "Access-Control-Allow-Origin": "*",
+    //   },
+    //   body: JSON.stringify(userInfo)
+    // }).then(() => {
+    //   console.log('AUTHENTICATING USER: VALID')
+    //   history.push('/userprofile')
+    // })
+    // .then((res) => res.json())
+    // .then((data) => {
+    //   console.log(data, "AUTHENTICATED")
+    //   if(data.status == "ok") {
+    //     alert("login successful");
+    //     window.localStorage.setItem("username", data.userName);
+    //   }
+    // })
   }
-
 
   return (
     <div className="login">
@@ -37,9 +48,9 @@ const Login = () => {
       initialValues={{
         remember: true,
       }}
-      action='/login'
-      onFinish={onFinish}
-      onSubmit={handleSubmit}
+      // action='/login'
+      // onFinish={onFinish}
+      onFinish={handleSubmit}
     >
       <Form.Item
         name="username"

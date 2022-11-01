@@ -1,4 +1,4 @@
-import useFetch from "./UseFetch";
+import useFetch from "./useFetch";
 
 const PersonalInforFetch = (username) => {
     const { data: personalData, isPending, error } = useFetch('http://localhost:8080/patient/query/' + username);

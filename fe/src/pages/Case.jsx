@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import Navbar from '../components/Navbar'
-=======
-import Navbar from '../components/navbar'
->>>>>>> 3d4494e8 (Nothing has changed)
 import { useParams } from 'react-router-dom'
 import useFetch from '../api/useFetch'
 import './Case.css'
@@ -12,19 +8,19 @@ const Case = () => {
 
     const {id} = useParams();
     const {data, error, isPending} = useFetch('http://localhost:8080/record/query/' + id);
-    const { data: personalData, isPendingP, errorP } = PersonalInforFetch('philong123');
+    // const { data: personalData, isPendingP, errorP } = PersonalInforFetch('philong123');
 
     console.log(data);
-    console.log(personalData);
+    // console.log(personalData);
     return(
         <div className="box">
             <Navbar/>
             {isPending && <div className='loader'> </div>}
             {error && <div> {error} </div>}
-            {case_ && 
+            {data && 
                 <div className='container'> 
                     <div className='container-title'>
-                        <h2>MEDICAL ID: {case_.response.ID}</h2>
+                        <h2>MEDICAL ID: {data.response.ID}</h2>
                     </div>
 
                     <div className='container-context'>
