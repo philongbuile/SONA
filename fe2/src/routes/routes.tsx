@@ -14,6 +14,7 @@ import Landingpage from '../pages/Landingpage';
 import Examination from '../pages/Examination';
 import ResearchBoard from '../pages/ResearchBoard';
 import AuthorizationList from '../pages/AuthorizationList';
+import CaseForm from '../components/forms/CaseForm';
 import UserTable from '../components/UserTable';
 
 export default function AppRoute() {
@@ -47,8 +48,7 @@ export default function AppRoute() {
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
-
-
+          <Route path="/addcase/:medinfo_id" element={<CaseForm />} />
           {/* 404 Not Found */}
           <Route path="*" element={<NotFound404 />} />
         </Routes>

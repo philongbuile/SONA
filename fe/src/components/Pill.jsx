@@ -1,4 +1,6 @@
-import './navbar.css';
+
+import './Pill.css';
+import './Navbar.css';
 
 const Pill = () => {
   return (
