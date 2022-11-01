@@ -1,24 +1,13 @@
 import './AuthorizationList.css';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/navbar';
 import AuthorizationTable from '../components/AuthorizationTable';
 
 const AuthorizationList = () => {
     const columns = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-        },
+        {field: "key"},
+        {field: "name"},
+        {field: "age"},
+        {field: "address"}
     ];
 
     const data = [
@@ -34,12 +23,46 @@ const AuthorizationList = () => {
             age: 42,
             address: 'London No. 1 Lake Park',
         },
+        {
+            key: '3',
+            name: 'Jim Green',
+            age: 42,
+            address: 'London No. 1 Lake Park',
+        },  
+        {
+            key: '4',
+            name: 'Jim Green',
+            age: 42,
+            address: 'London No. 1 Lake Park',
+        },
+        {
+            key: '5',
+            name: 'Jim Green',
+            age: 42,
+            address: 'London No. 1 Lake Park',
+        },
+        {
+            key: '6',
+            name: 'Jim Green',
+            age: 42,
+            address: 'London No. 1 Lake Park',
+        },
+        {
+            key: '7',
+            name: 'Jim Green',
+            age: 42,
+            address: 'London No. 1 Lake Park',
+        }
     ]
 
     return (
         <div className="AuthorizationList">
             <Navbar />
-            <AuthorizationTable column={columns} row={data} />
+            <div className='body'>
+                <div className='container'>
+                    <AuthorizationTable data={data} columns={columns}/>
+                </div>
+            </div>
         </div>
         
     );
