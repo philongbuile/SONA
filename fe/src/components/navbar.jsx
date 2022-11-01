@@ -1,7 +1,7 @@
-import './Navbar.css';
+import './navbar.css';
 import { BellOutlined } from '@ant-design/icons';
 import  {Button , Layout} from 'antd';
-import logo from '../assets/logo.svg';
+// import logo from '../assets/logo.svg';
 
 const AppNavbar = () => {
     return (

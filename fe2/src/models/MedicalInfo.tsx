@@ -12,5 +12,4 @@ interface Case {
     };
 }
 
-
-export type { MedicalInfo };
+export type { MedicalInfo, Case};
