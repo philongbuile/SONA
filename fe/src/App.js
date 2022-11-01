@@ -1,7 +1,7 @@
-import LoginPage from './pages/LoginPage';
-import UserProfile from './pages/userProfile';
+import UserProfile from './pages/UserProfile';
 import Examination from './pages/Examination';
-import AuthorizationList from './pages/AuthorizationList';
+import SearchByKeyWord from './pages/SearchByKeyWord'
+import Case from './pages/Case';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from './pages/LandingPage';
 
@@ -9,8 +9,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-          <Route path="/" element={<AuthorizationList />} />
-          <Route path="/:username/:medicalInfoID" element={<Examination />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/userprofile" element={<UserProfile />} />
+          <Route exact path="/:username/:medicalInfoID" element={<Examination />} />
+          <Route exact path="/record" element={<SearchByKeyWord />} />
+          <Route exact path="/record/query/:username" element={<Case />} />
       </Routes>
     </BrowserRouter>
   )

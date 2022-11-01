@@ -37,7 +37,6 @@ app.get('/', function(request, response, next){
 		</div>
 	`);
 
-
 });
 
 app.post('/', function(request, response, next){
