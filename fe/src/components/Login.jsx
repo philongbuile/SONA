@@ -1,34 +1,11 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import './Login.css';
-import { useNavigate} from 'react-router-dom'
-
-
 const Login = () => {
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
   };
-
-  const [userName, setUserName] = useState('');
-  const [password, setPassword] = useState('');
-  const history = useNavigate()
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const userInfo = {userName, password}
-
-    fetch('http://locahost:8080/login', {
-      method: "POST",
-      header: {"Content-Type": "application/json"},
-      body: JSON.stringify(userInfo)
-    }).then(() => {
-      console.log('AUTHENTICATING USER: VALID')
-      history.push('/record')
-    })
-  }
-
-
   return (
     <div className="login">
     <Form
@@ -37,9 +14,7 @@ const Login = () => {
       initialValues={{
         remember: true,
       }}
-      action='/login'
       onFinish={onFinish}
-      onSubmit={handleSubmit}
     >
       <Form.Item
         name="username"
@@ -50,8 +25,7 @@ const Login = () => {
           },
         ]}
       >
-        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" 
-                value={userName} onChange={(e) => setUserName(e.target.value)}/>
+        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
       </Form.Item>
       <Form.Item
         name="password"
@@ -66,7 +40,6 @@ const Login = () => {
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
           placeholder="Password"
-          value={password} onChange={(e) => setPassword(e.target.value)}
         />
       </Form.Item>
       <Form.Item>

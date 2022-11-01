@@ -93,9 +93,12 @@ export async function queryByKeywords(req, res){
           "MedicalInfoContract"
         );
 
+        
+        console.log(req.body.keywords);
+
         const result = await medInfoContract.submitTransaction(
           "QueryByKeyWord",
-          req.params.keywords.toLowerCase()
+          JSON.stringify(req.body.keywords)
         );
         console.log(
           `Transaction has been evaluated, result is: ${result.toString()}`
@@ -127,10 +130,10 @@ export async function addCase(req, res){
         await medInfoContract.submitTransaction(
           "AddCase",
           case_id,
-          req.body.infoID,
-          req.body.examination.testresult,
-          req.body.examination.diagnosis,
-          req.body.examination.treatment,
+          req.body.info_id,
+          req.body.test_result,
+          req.body.diagnosis,
+          req.body.treatment,
           req.body.operator_username,
           req.body.patient_username,
           uuidv4(),
