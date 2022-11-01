@@ -6,6 +6,7 @@ import { authApi } from '../api/authApi';
 import { useNavigate } from 'react-router-dom';
 import { roleFunc } from '../utils/Roles';
 import './Login.css';
+import MockUser from '../api/MockUser.json';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -18,8 +19,8 @@ const Login = () => {
 
 
   const handleLogin = () => {
-    if (username === 'philong123' || password === '123') {
-      navigate('/user/patient/profile');
+    if (username === MockUser.username || password === MockUser.password) {
+      navigate('/user/patient/profile/' + username);
     }
   };
 

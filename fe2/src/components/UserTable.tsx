@@ -7,7 +7,8 @@ interface UserData {
   key: number;
   username: string;
   fullname: string;
-  email: string;
+  phone: string;
+  address: string;
 }
 
 const UserTable: React.FC = () => {
@@ -24,9 +25,10 @@ const UserTable: React.FC = () => {
     data.forEach((user, index) => {
       let tempt: UserData = {
         key: index + 1,
-        username: user.username,
-        fullname: user.fullname,
-        email: user.email,
+        username: user.Username,
+        fullname: user.FullName,
+        phone: user.Phone,
+        address: user.Address,
       };
 
       newUser.push(tempt);

@@ -1,14 +1,13 @@
 interface User {
-  id: string;
-  fullname: string;
-  username: string;
+  FullName: string;
+  Username: string;
   password: string;
-  email: string;
-  phone: string;
-  dob: string;
-  medicalInfoID: string;
-  authorizedDoctors: string[];
-  gender: 'male' | 'female' | 'others';
+  Address: string;
+  Phone: string;
+  DoB: string;
+  MedicalInfo_ID: string;
+  AuthorizedDoctors: string[];
+  Gender: string;
 }
 
 export type { User };

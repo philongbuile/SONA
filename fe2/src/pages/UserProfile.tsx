@@ -3,36 +3,39 @@ import UserProfileCard from '../components/UserFrofile/UserProfileCard';
 import styles from '../assets/css/UserProfilePage.module.css';
 import { Layout, Divider, Typography } from 'antd';
 import { userApi } from '../api/userApi';
-import { authApi } from '../api/authApi';
+import { useParams } from 'react-router-dom';
 import { UsageRecord } from '../models/UsageRecord';
 import { User } from '../models/User';
+import {Link} from 'react-router-dom';
 
 const { Title } = Typography;
 
 function UserProfile() {
-  const [user, setUser] = useState<User>();
-  const [results, setResults] = useState<UsageRecord[]>([] as UsageRecord[]);
-
-  const getData = async () => {
-    const id = (await authApi.getUsername()) as string;
-    const userData = (await userApi.getInfoByUsername(id.toString())) as User[];
-
-    setUser(userData[0]);
-
-    const testResult = (await userApi.getUsageRecords(id.toString())) as UsageRecord[];
-
-    let res: UsageRecord[] = [];
-    testResult.forEach((item, index) => {
-      if (index + 1 > testResult.length - 3) {
-        res.push(item);
-      }
-    });
-
-    setResults(res);
+  type userParams = {
+    username: string;
   };
 
+
+  const {username} = useParams<userParams>()
+  const {medical_id} = useParams()
+
+  const [user, setUser] = useState<User>();
+
   useEffect(() => {
-    getData();
+    fetch(`http://localhost:8080/patient/query/${username}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          },
+          })
+      .then((response) => response.json())
+      .then((data) => {
+        setUser(data.response);
+      }).
+      catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   return (
@@ -56,12 +59,12 @@ function UserProfile() {
         </Divider>
         <div className={styles.content}>
           <UserProfileCard
-            id={user?.id as string}
-            fullname={"Phi Long Bui Le" as string}
-            username={"philong123" as string}
-            email={"philong@gmail.com" as string}
-            gender={"male" as string}
-            dob={"1/1/2001" as string}
+            fullname= {user?.FullName as string}
+            username={user?.Username as string}
+            phone={user?.Phone as string}
+            gender={user?.Gender as string}
+            dob={user?.DoB as string}
+            address={user?.Address as string}
             avatar={undefined}
           />
 
@@ -73,11 +76,8 @@ function UserProfile() {
               Your personal medical information
             </Title>
             <p style={{ marginLeft: '100px', fontWeight: 'Roboto' }}>
-              Peekaboo is a magical application. It was a question of which of
-              the two she preferred. On the one hand, the choice seemed simple.
-              The more expensive one with a brand name would be the choice of
-              most. It was the easy choice. The safe choice. But she wasn't sure
-              she actually preferred it.
+              <Link to={`/medical-info/${user?.MedicalInfo_ID}`}>Medical ID: {user?.MedicalInfo_ID}</Link>
+
             </p>
 
 
@@ -89,46 +89,22 @@ function UserProfile() {
               }}
             >
               <Title level={4} style={{ textDecoration: 'underline' }}>
-                Most Recent Test Results
+                Your authorized doctors
               </Title>
+              <p style={{ fontWeight: 'Roboto' }}>  
+
+                {user?.AuthorizedDoctors.map((doctor) => (
+                  <Link style = {
+                    {
+                      display: 'block',
+                      marginTop: '10px',
+                      textDecoration: 'none',
+                    }
+                  } to={`/doctor/${doctor}`}>username: {doctor}</Link>
+                ))}
+              </p>
 
               <div className={styles.recent_test}>
-                {results.map((result, resultIndex) => {
-                  return (
-                    <div
-                      key={resultIndex}
-                      style={{
-                        width: 220,
-                        height: 50,
-                        border: '1px solid',
-                        borderColor: '#8e9599',
-                        borderRadius: '5px',
-                        marginRight: '15px',
-                      }}
-                    >
-                      <a
-                        style={{ color: 'black' }}
-                        href={`/usage_record/${result.id}/details`}
-                      >
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginTop: '12px',
-                            marginRight: '15px',
-                            marginLeft: '15px',
-                          }}
-                        >
-                          <p style={{ fontWeight: 'bold' }}>
-                            {result.operator_username}
-                          </p>
-                          <p>{result.operation}/100</p>
-                        </div>
-                      </a>
-                    </div>
-                  );
-                })}
               </div>
             </div>
           </div>

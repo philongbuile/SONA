@@ -5,22 +5,22 @@ import styles from '../../assets/css/UserProfile.module.css';
 const { Title, Text } = Typography;
 
 interface UserCardProps {
-  id: string;
   fullname: string;
   username: string;
-  email: string;
   gender: string;
   dob: string;
+  phone: string;
+  address: string;
   avatar: React.ReactNode;
 }
 
 const UserProfileCard: React.FC<UserCardProps> = ({
-  id,
   fullname,
   username,
   gender,
-  email,
+  phone,
   dob,
+  address,
 }) => {
   return (
     <div className={styles.content}>
@@ -34,11 +34,10 @@ const UserProfileCard: React.FC<UserCardProps> = ({
         <Title level={3}>@{username}</Title>
         <p style={{ fontSize: '20px', color: '#49484a' }}>{fullname}</p>
         <Space direction="vertical">
-          <Text strong>Fullname: {fullname}</Text>
-          <Text strong>Username: {username}</Text>
-          <Text strong>Email: {email}</Text>
+          <Text strong>Phone: {phone}</Text>
           <Text strong>DoB: {dob}</Text>
           <Text strong>Gender: {gender}</Text>
+          <Text strong>Address: {address}</Text>
         </Space>
       </div>
     </div>
