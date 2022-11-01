@@ -24,7 +24,7 @@ const CaseForm = () => {
                     treatment: treatment,
                 }
         console.log(examination);
-        medinfoApi.addCase(examination, 'Doctor1', 'camtu123', 'medical1');
+        medinfoApi.addCase(examination, 'Doctor1', 'peter123', '58ac5bd0-5670-11ed-81f7-057484e78b65');
     };
 
 
@@ -79,23 +79,10 @@ const CaseForm = () => {
                     type="primary"
                     htmlType="submit"
                 >
-                    Submit
+                    Add New Case
                 </Button>
             </Form.Item >
-
-        {/* <Form className={styles.case_form}>
-            <Form.Item>
-                <TextArea rows={5} placeholder="test result"/>
-            </Form.Item>
-
-            <Form.Item>
-                <TextArea rows={5} placeholder="diagnosis"/>
-            </Form.Item>
-
-            <Form.Item>
-                <TextArea rows={5} placeholder="treatment"/>
-            </Form.Item>*/}
-        </Form> 
+        </Form>
         </Card>
     )
 }

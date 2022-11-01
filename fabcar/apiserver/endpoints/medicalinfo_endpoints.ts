@@ -153,15 +153,14 @@ export async function appendCase(req, res){
           chaincodename,
           "MedicalInfoContract"
         );
-        //const case_id = uuidv1();
   
         await medInfoContract.submitTransaction(
           "AppendCase",
-          req.body.info_id,
-          req.body.case_id,
-          req.body.test_result,
-          req.body.diagnosis,
-          req.body.treatment,
+          req.body.infoID,
+          req.body.caseID,
+          req.body.examination.testresult,
+          req.body.examination.diagnosis,
+          req.body.examination.treatment,
           req.body.operator_username,
           req.body.patient_username,
           uuidv4(),
@@ -170,7 +169,7 @@ export async function appendCase(req, res){
         console.log(`Transaction has been submitted`);
         res
           .status(200)
-          .json({ response: `Successfully append case: ${req.body.case_id} ` });
+          .json({ response: `Successfully append case: ${req.body.caseID} ` });
   
         // Disconnect from the gateway.
         await gateway.disconnect();

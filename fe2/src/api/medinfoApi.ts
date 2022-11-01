@@ -18,12 +18,19 @@ const apiUrl = `${BASE_API}/medinfo`;
 export const medinfoApi = {
 
 
-  updateCase: async () => {
-    const payload = 'newcase';
+  updateCase: async (examination: any, operator: string, patient: string, infoID: string, caseID: string) => {
 
+    const payload = {
+      examination: examination,
+      operator_username : operator,
+      patient_username: patient,
+      infoID : infoID,
+      caseID : caseID
+    }
+
+    
     const response = await fetch(`${apiUrl}/appendCase/`, {
       method: 'POST',
-      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -87,74 +94,6 @@ export const medinfoApi = {
 
         const response: number = data.data;
         return response;
-      })
-      .catch((err) => {
-        return err;
-      });
-
-    return response;
-  },
-
-  getUsageRecords: async (id: string) => {
-    const user_id = id.toString();
-
-    const response = await fetch(
-      `${apiUrl}/usage_record?` + new URLSearchParams({ user_id }),
-      {
-        method: 'GET',
-        credentials: 'include',
-      }
-    )
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-
-        throw new Error('Network response was not ok.');
-      })
-      .then((data) => {
-        console.log(data);
-        const err: AppError = data.error;
-        if (err.errorCode !== 0) {
-          throw new Error(err.errorMsg + ' ++ ' + err.errorField);
-        }
-
-        const results: UsageRecord[] = data.data;
-        return results;
-      })
-      .catch((err) => {
-        return err;
-      });
-
-    return response;
-  },
-
-  getAuthorizationList: async (id: string) => {
-    const user_id = id.toString();
-
-    const response = await fetch(
-      `${apiUrl}/authorization_list?` + new URLSearchParams({ user_id }),
-      {
-        method: 'GET',
-        credentials: 'include',
-      }
-    )
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-
-        throw new Error('Network response was not ok.');
-      })
-      .then((data) => {
-        console.log(data);
-        const err: AppError = data.error;
-        if (err.errorCode !== 0) {
-          throw new Error(err.errorMsg + ' ++ ' + err.errorField);
-        }
-
-        const results: Operator[] = data.data;
-        return results;
       })
       .catch((err) => {
         return err;

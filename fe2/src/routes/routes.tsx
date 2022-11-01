@@ -16,6 +16,7 @@ import ResearchBoard from '../pages/ResearchBoard';
 import AuthorizationList from '../pages/AuthorizationList';
 import CaseForm from '../components/forms/CaseForm';
 import UserTable from '../components/UserTable';
+import ExaminationForm from '../components/forms/ExaminationForm';
 
 export default function AppRoute() {
   const AdminGuard: GuardEC = {
@@ -49,6 +50,7 @@ export default function AppRoute() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
           <Route path="/addcase/:medinfo_id" element={<CaseForm />} />
+          <Route path="/appendcase/:medinfo_id/:case_id" element={<ExaminationForm />} />
           {/* 404 Not Found */}
           <Route path="*" element={<NotFound404 />} />
         </Routes>
