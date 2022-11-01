@@ -1,19 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
-const { Wallets, Gateway } = require('fabric-network');
-const fs = require('fs');
-const path = require('path');
 
 const app = express();
 
 app.use(bodyParser.json());
-app.set("views", path.resolve(__dirname, "views"));
+// app.set("views", path.resolve(__dirname, "views"));
 app.set("view engine", "ejs");
 
 // Setting for Hyperledger Fabric
-
-const ccpPath = path.resolve(__dirname, '..', '..','sample', 'application-typescript','org', 'connection-org1.json');
+const { Wallets, Gateway } = require('fabric-network');
+const fs = require('fs');
+const path = require('path');
+const ccpPath = path.resolve(__dirname, '..', '..','SONA','sample', 'application-typescript','org', 'connection-org1.json');
 let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
 const PORT = 8080
@@ -31,22 +30,22 @@ app.get('/patient/queryall', async (req, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('minhleUser');
+        const identity = await wallet.get('userOne');
         if (!identity) {
-            console.log('An identity for the user "minhleUser" does not exist in the wallet');
+            console.log('An identity for the user "userOne" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'minhleUser', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'userOne', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
 
         // Get the contract from the network.
-        const patientContract = network.getContract('sona', 'PatientContract');
+        const patientContract = network.getContract('fabcar', 'PatientContract');
         const result = await patientContract.evaluateTransaction('GetAll');
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
         res.status(200).json({response: result.toString()});
@@ -72,22 +71,22 @@ app.get('/patient/query/:username', async (req, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('minhleUser');
+        const identity = await wallet.get('userOne');
         if (!identity) {
-            console.log('An identity for the user "minhleUser" does not exist in the wallet');
+            console.log('An identity for the user "userOne" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'minhleUser', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'userOne', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
 
         // Get the contract from the network.
-        const patientContract = network.getContract('sona', 'PatientContract');
+        const patientContract = network.getContract('fabcar', 'PatientContract');
 
         const result = await patientContract.evaluateTransaction('patientQuery', req.params.username);
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
@@ -103,19 +102,7 @@ app.get('/patient/query/:username', async (req, res) => {
     }
 })
 
-app.get('/patient/doctoc-query', async (req, res, next) => {
-    try{
-        let result = 'Doctor List';
-        res.render('form', {
-            result: result
-        });
-    } catch (error) {
-        res.status(500).json({error: error});
-        process.exit(1);
-    }
-})
-
-app.post('/patient/doctor-query', async (req, res, next) => {
+app.post('/patient/doctor-query', async (req, res) => {
     try {
 
         let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
@@ -126,26 +113,22 @@ app.post('/patient/doctor-query', async (req, res, next) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('minhleUser');
+        const identity = await wallet.get('userOne');
         if (!identity) {
-            console.log('An identity for the user "minhleUser" does not exist in the wallet');
+            console.log('An identity for the user "userOne" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'minhleUser', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'userOne', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
 
         // Get the contract from the network.
-        const patientContract = network.getContract('sona', 'PatientContract');
-        const usageRecordContract = network.getContract('sona', 'UsageRecordContract');
-
-        await patientContract.submitTransaction('InitLedger');
-        await usageRecordContract.submitTransaction('InitLedger');
+        const patientContract = network.getContract('fabcar', 'PatientContract');
 
         let patient_username = req.body.username
         let doctor_username = req.body.doctor_username
