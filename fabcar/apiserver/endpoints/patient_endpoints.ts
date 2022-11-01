@@ -138,7 +138,7 @@ export async function createPatient(req ,res) {
     await registerUser(req.body.username);                                                                        
     // console.log(result)
     // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-     res.status(200).json(`${req.params.fullname}`);
+    res.status(200).json(`${req.params.fullname}`);
 
     // Disconnect from the gateway.
     await gateway.disconnect();
@@ -147,8 +147,7 @@ export async function createPatient(req ,res) {
     console.error(`Failed to evaluate transaction: ${error}`);
     res.status(500).json({error: error});
 
-
-}
+  }
 }
 
 export async function authorizeDoctor(req , res){

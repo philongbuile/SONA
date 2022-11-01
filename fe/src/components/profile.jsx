@@ -1,8 +1,13 @@
 import { Card } from 'antd';
-import './profile.css';
+import './Profile.css';
+// import avatar from '../assets/avatar.png';
 import avatar from '../assets/avatar.png';
+import { PersonalInforFetch } from '../api/userApi';
+import { useParams } from 'react-router-dom';
 
 const profile = () => {
+    const username = useParams();
+    const { data: personalData, isPending, error } = PersonalInforFetch(username);
     return (
         <Card
             hoverable
@@ -10,7 +15,7 @@ const profile = () => {
             cover={
             <img
                 alt="example"
-                src={ avatar }
+                
                 className="image_cover"
                 style={{ alignItems: 'center', borderRadius: 10 }}
             ></img>
@@ -19,13 +24,13 @@ const profile = () => {
                 Bio
             </div>
             <div className="profile_info_bio_content">
+                <p>Name: Long Trung Nguyen</p>
+                <p>Dob: 1/1/2021</p>
+                <p>Phone: 0123456789</p>
                 <div>Name: Long Trung Nguyen</div>
-<<<<<<< HEAD
                 <div>Dob: 12/12/2001</div>
                 <div>Email: longtrung@gmail.com</div>
-=======
                 <div>Dob: 1/1/2021</div>
->>>>>>> edc5742258e43d351f66ab39c15e98f0c1d86c2d
                 <div>Phone: 0123456789</div>
             </div>
 
