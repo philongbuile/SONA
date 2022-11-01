@@ -28,6 +28,20 @@ const Landingpage = () => {
                 icon={"graphs.svg"}
                 id="intro"
             />
+            <ContentBlock
+                type="right"
+                title={'Mission'}
+                content={'We are here to help you secure your medical information.'}
+                icon="product-launch.svg"
+                id="mission"
+            />
+            <ContentBlock
+                type="left"
+                title={'Who are we?'}
+                content={'We are Sona.'}
+                icon="waving.svg"
+                id="about"
+            />
         </Container>
     )
 }
