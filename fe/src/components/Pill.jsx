@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-
-import './Pill.css';
->>>>>>> origin
 import './Navbar.css';
 
 const Pill = () => {
