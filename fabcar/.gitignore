@@ -1,2 +1,10 @@
+<<<<<<< HEAD
 /node_modules/
 /hfc-key-store/
+<<<<<<< HEAD
+=======
+node_modules/
+/hfc-key-store/
+>>>>>>> 6a26f964 (add node_modules)
+=======
+>>>>>>> origin

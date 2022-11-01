@@ -1,9 +1,22 @@
 import './AuthorizationList.css';
 import Navbar from '../components/navbar';
 import AuthorizationTable from '../components/AuthorizationTable';
+import useFetch from '../api/useFetch';
 
 const AuthorizationList = () => {
     const columns = [
+<<<<<<< HEAD
+        {field: "Authorized Doctors"}
+    ];
+    
+    const {data, error, isPending} = useFetch('http://localhost:8080/patient/query/camtu123')
+
+    return (
+        <div className="AuthorizationList">
+            <div className='body'>
+                <div className='container'>
+                    <AuthorizationTable data={data.response} columns={columns}/>
+=======
         {field: "key"},
         {field: "name"},
         {field: "age"},
@@ -61,6 +74,7 @@ const AuthorizationList = () => {
             <div className='body'>
                 <div className='container'>
                     <AuthorizationTable data={data} columns={columns}/>
+>>>>>>> origin
                 </div>
             </div>
         </div>
