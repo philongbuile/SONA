@@ -1,4 +1,4 @@
-import Navbar from '../components/Navbar.jsx';
+import Navbar from '../components/navbar.jsx';
 import Board from '../components/Board.jsx';
 
 const Examination = () => {

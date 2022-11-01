@@ -16,6 +16,7 @@ const PORT = 8080;
 app.listen(PORT, () => {
   console.log("App listening on port " + PORT);
 });
+
 const operator = require("./endpoints/operator_endpoints.ts");
 const patient = require("./endpoints/patient_endpoints.ts");
 const record = require("./endpoints/usage_record_endpoints.ts");
@@ -82,6 +83,7 @@ app.get(
 ///////////////////////////////////////////////////
 
 // operator query
+
 app.get("/operator/query/:username", async (req, res) => {
   await operator.queryOperator(req, res);
 });
@@ -119,7 +121,7 @@ app.get(
   }
 );
 // medical info query by keyword
-app.post("/medinfo/query_by_keyword/", async (req, res) => {
+app.get("/medinfo/query_by_keyword/:keywords", async (req, res) => {
   await medical.queryByKeywords(req, res);
 });
 
