@@ -1,7 +1,10 @@
 import { Card } from 'antd';
 import './Profile.css';
+<<<<<<< HEAD
 // import avatar from '../assets/avatar.png';
+=======
 import avatar from '../assets/avatar.png';
+>>>>>>> origin
 import { PersonalInforFetch } from '../api/userApi';
 import { useParams } from 'react-router-dom';
 
@@ -27,11 +30,6 @@ const profile = () => {
                 <p>Name: Long Trung Nguyen</p>
                 <p>Dob: 1/1/2021</p>
                 <p>Phone: 0123456789</p>
-                <div>Name: Long Trung Nguyen</div>
-                <div>Dob: 12/12/2001</div>
-                <div>Email: longtrung@gmail.com</div>
-                <div>Dob: 1/1/2021</div>
-                <div>Phone: 0123456789</div>
             </div>
 
         </Card>      
