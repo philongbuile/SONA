@@ -12,14 +12,16 @@
     padding-right: 30px;
     padding-top: 20px;
     font-family: Roboto;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 
-
-.pill li a {
-    color: #000000;
+.pill li p {
+    color: #0a6e85;
     font-size: 30px;
     display: flex;
+    align-items: center;
 
 }
 
@@ -28,6 +30,7 @@
     font-size: 30px;
     display: flex;
     align-items: center;
+
 }
     
 li {

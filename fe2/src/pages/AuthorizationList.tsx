@@ -1,12 +1,13 @@
 import Navbar from "../components/Navbar";
 import TableList from "../components/TableList/TableList";
+import styles from '../assets/css/AuthorizationList.module.css'
+import {Card} from 'antd'
 
 const AuthorizationList = () => {
     return (
-        <>
-            <Navbar/>
+        <Card className={styles.cover}>
             <TableList/>
-        </>
+        </Card>
     );
 }
 
