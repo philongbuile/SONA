@@ -1,5 +1,5 @@
 import { Card } from 'antd';
-import './profile.css';
+import './Profile.css';
 import avatar from '../assets/avatar.png';
 import { PersonalInforFetch } from '../api/userApi';
 

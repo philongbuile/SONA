@@ -139,19 +139,6 @@ const Login = () => {
                 Forgot Password?
               </a>
             </p>
-            |{' '}
-            <p>
-              <a
-                style={{
-                  color: '#8172d5',
-                  textDecoration: 'underline',
-                  fontFamily: 'Roboto',
-                  fontSize: '14px',
-                }}
-              >
-                Forgot Username?
-              </a>
-            </p>
           </div>
           <Divider>Or</Divider>
           <Form.Item>
@@ -168,7 +155,7 @@ const Login = () => {
                 lineHeight: '14px',
               }}
             >
-              TEMPORARY ACCOUNT
+              CREATE AN ACCOUNT
             </button>
           </Form.Item>
         </Form>
