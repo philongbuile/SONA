@@ -33,7 +33,7 @@ const AuthorizationTable = ({
               ))}
           </tbody>
         </table>
-        {data ? null : <p>No Row to show :)</p>}
+        {data ? null : <p>PLEASE WAIT FOR A MOMENT</p>}
       </div>
     );
   };

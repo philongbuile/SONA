@@ -7,14 +7,13 @@ import { PersonalInforFetch } from '../api/userApi';
 const Case = () => {
 
     const {id} = useParams();
-    const {data, error, isPending} = useFetch('http://localhost:8080/medinfo/query_by_keyword/' + id);
-    // const { data: personalData, isPendingP, errorP } = PersonalInforFetch('philong123');
+    // const {data, error, isPending} = useFetch('http://localhost:8080/record/query/' + id);
+    const { data, error, isPending } = PersonalInforFetch('philong123');
 
     console.log(data);
     // console.log(personalData);
     return(
         <div className="box">
-            <Navbar/>
             {isPending && <div className='loader'> </div>}
             {error && <div> {error} </div>}
             {data && (

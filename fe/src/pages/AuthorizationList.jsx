@@ -8,7 +8,7 @@ const AuthorizationList = () => {
         {field: "Authorized Doctors"}
     ];
     
-    const {data, error, isPending} = useFetch('http://localhost:8080/patient/query/philong123')
+    const {data, error, isPending} = useFetch('http://localhost:8080/patient/query/camtu123')
 
     return (
         <div className="AuthorizationList">
