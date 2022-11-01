@@ -1,4 +1,5 @@
 import {Table} from 'antd';
+import './AuthorizationTable.css'
 
 const AuthorizationTable = (props) => {   
     return (

@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
  
+import Navbar from '../components/Navbar'
+
 const SearchByKeyWord = () => {
     const [keywords, setKeywords] = useState('[]');
     const [cards, setCards] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:8080/medinfo/query_by_keyword/' + keywords,
-        )
+        fetch('http://localhost:8080/medinfo/query_by_keyword/')
             .then(res => {
                 return res.json()
             })
@@ -22,6 +23,7 @@ const SearchByKeyWord = () => {
 
     return(
         <div className=''>
+            <Navbar/>
             {cards && <section className='py-4 container'>
                 <div className='row justify-content-center'> 
                     <div className='col-12 mb-5'>
@@ -48,7 +50,14 @@ const SearchByKeyWord = () => {
                         </div>
                     </div>
 
-                    {cards.response.map((item, index) => {
+                    {cards.response.filter((res) => {
+                        if(filter === ''){
+                            return res
+                        }else if(res.OperatorName.toLowerCase().includes(filter.toLowerCase()) || 
+                                    res.Record_ID.toLowerCase().includes(filter.toLowerCase())){
+                            return res
+                        }
+                    }).map((item, index) => {
                         return(
                             <div className='col-12 col-md-6 col-lg-3 mx-0 mb-4' >
                                 {<div className='card p-0 overflow-hidden h-100 shadow'>
