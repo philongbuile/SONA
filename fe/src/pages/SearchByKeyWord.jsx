@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
+import Navbar from '../components/navbar'
  
-import Navbar from '../components/Navbar'
-
 const SearchByKeyWord = () => {
     const [keywords, setKeywords] = useState('[]');
     const [cards, setCards] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:8080/medinfo/query_by_keyword/')
+        fetch('http://localhost:8080/medinfo/query_by_keyword/' + keywords,
+        )
             .then(res => {
                 return res.json()
             })
@@ -23,19 +23,19 @@ const SearchByKeyWord = () => {
 
     return(
         <div className=''>
-            <Navbar/>
+            <Navbar />
             {cards && <section className='py-4 container'>
                 <div className='row justify-content-center'> 
                     <div className='col-12 mb-5'>
                         <div className='mb-3 col-4 mx-auto text-center'>
                         <form class="form-inline">
                                 
-                                <div class="form-group mx-sm-3 mb-2">
-                                    <label class="sr-only">Query By Keywords</label>
-                                    <input class="form-control" id="search-box" placeholder="ex: cancer, diabete"/>
+                                <div className="form-group mx-sm-3 mb-2">
+                                    <label className="sr-only">Query By Keywords</label>
+                                    <input className="form-control" id="search-box" placeholder="ex: cancer, diabete"/>
                                 </div>
                                
-                                <button type='button' class="btn btn-primary mb-2" onClick={ () => {
+                                <button type='button' className="btn btn-primary mb-2" onClick={ () => {
                                     console.log('button clicked');
                                     let kw_str = document.getElementById("search-box").value;
                                     kw_str = kw_str.trim();
@@ -50,14 +50,7 @@ const SearchByKeyWord = () => {
                         </div>
                     </div>
 
-                    {cards.response.filter((res) => {
-                        if(filter === ''){
-                            return res
-                        }else if(res.OperatorName.toLowerCase().includes(filter.toLowerCase()) || 
-                                    res.Record_ID.toLowerCase().includes(filter.toLowerCase())){
-                            return res
-                        }
-                    }).map((item, index) => {
+                    {cards.response.map((item, index) => {
                         return(
                             <div className='col-12 col-md-6 col-lg-3 mx-0 mb-4' >
                                 {<div className='card p-0 overflow-hidden h-100 shadow'>

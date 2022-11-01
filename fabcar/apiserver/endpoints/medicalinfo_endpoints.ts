@@ -89,8 +89,6 @@ export async function queryByKeywords(req, res){
           "MedicalInfoContract"
         );
 
-        
-
         const result = await medInfoContract.submitTransaction(
           "QueryByKeyWord",
           req.params.keywords.toLowerCase()

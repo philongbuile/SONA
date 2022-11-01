@@ -1,10 +1,40 @@
-import {Table} from 'antd';
 import './AuthorizationTable.css'
 
-const AuthorizationTable = (props) => {   
+const AuthorizationTable = ({
+    data = null,
+    columns = null,
+    hover = true,
+    striped = true,
+  }) => {
+    const getCaps = (head, field) => {
+      if (head) return head.toUpperCase();
+      return field.toUpperCase();
+    };
     return (
-        <Table className = 'authorizationTable' columns={props.column} dataSource={props.row} />
+      <div>
+        <table>
+          <thead>
+            <tr>
+              {columns &&
+                columns.map((head) => (
+                  <th>{getCaps(head.header, head.field)}</th>
+                ))}
+            </tr>
+          </thead>
+          <tbody>
+            {data &&
+              data.map((row) => (
+                <tr className={`${hover && "hover"} ${striped && "striped"}`}>
+                  {columns.map((col) => (
+                    <td>{row[col.field]}</td>
+                  ))}
+                </tr>
+              ))}
+          </tbody>
+        </table>
+        {data ? null : <p>No Row to show :)</p>}
+      </div>
     );
-}
-
+  };
+  
 export default AuthorizationTable;
