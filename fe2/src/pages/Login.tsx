@@ -1,6 +1,7 @@
+import { lazy } from 'react';
 import { Form, Layout, Button, Input, Divider } from 'antd';
 // import logo from '../../assets/logo-1.svg';
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { authApi } from '../api/authApi';
 import { useNavigate } from 'react-router-dom';
 import { roleFunc } from '../utils/Roles';
@@ -15,40 +16,11 @@ const Login = () => {
 
   let navigate = useNavigate();
 
-  // check if already log-in with JWT
-  useEffect(() => {
-    checkLogin();
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      document.body.style.overflow = 'scroll';
-    };
-  });
-
-  const routeChange = async (path: string) => {
-    const role = await roleFunc.getRole().then((res) => {
-      navigate(`/${res}/${path}`);
-    });
-  };
-
-  const checkLogin = async () => {
-    let data = await authApi.getId();
-    if (data !== null && data !== 0) {
-      routeChange('dashboard');
-    }
-  };
 
   const handleLogin = () => {
-    let data = authApi.login({ username, password }).then((res) => {
-      if (res.id !== 0) {
-        routeChange('dashboard');
-      } else {
-        alert('Invalid username or password');
-      }
-      return res;
-    });
-    return data;
+    if (username === 'philong123' || password === '123') {
+      navigate('/user/patient/profile');
+    }
   };
 
   return (

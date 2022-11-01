@@ -14,6 +14,7 @@ import Landingpage from '../pages/Landingpage';
 import Examination from '../pages/Examination';
 import ResearchBoard from '../pages/ResearchBoard';
 import AuthorizationList from '../pages/AuthorizationList';
+import UserTable from '../components/UserTable';
 
 export default function AppRoute() {
   const AdminGuard: GuardEC = {
@@ -40,6 +41,7 @@ export default function AppRoute() {
             <Route element={<UserLayout />}>
               <Route path="patient/profile" element={<UserProfile />} />
               <Route path="patient/examination/:username/:medicalinforID" element={<Examination />} />
+              <Route path="admin/user_management" element={<UserTable />} />
               <Route path="operator/patient/operator/queryall" element={<AuthorizationList />} />
               <Route path="operator/research/queryall" element={<ResearchBoard />} />
             </Route>
