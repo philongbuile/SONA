@@ -28,10 +28,6 @@ const CaseForm = () => {
     };
 
 
-    const onChange = (e) => {
-        
-    };
-
     return ( 
         
 
