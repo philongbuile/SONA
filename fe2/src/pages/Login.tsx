@@ -6,6 +6,7 @@ import { authApi } from '../api/authApi';
 import { useNavigate } from 'react-router-dom';
 import { roleFunc } from '../utils/Roles';
 import './Login.css';
+import Long from '../api/Long.json';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -18,8 +19,10 @@ const Login = () => {
 
 
   const handleLogin = () => {
-    if (username === 'philong123' || password === '123') {
-      navigate('/user/patient/profile');
+    if (username === Long.username && password === Long.password) {
+      navigate('/user/patient/profile/' + username + '/' + "medical1");
+    } else {
+      alert("incorrect username or password");
     }
   };
 

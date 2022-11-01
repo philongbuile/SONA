@@ -3,19 +3,17 @@ import { User } from '../models/User';
 import { MedicalInfo } from '../models/MedicalInfo';
 import { UsageRecord } from '../models/UsageRecord';
 import { Operator } from '../models/Operator';
-import { stringify } from 'querystring';
 
-const BASE_API = process.env.REACT_APP_BASE_API || 'http://localhost:8080';
-const apiUrl = `${BASE_API}/api/v1/user`;
+const BASE_API = 'http://localhost:8080';
+const apiUrl = `${BASE_API}`;
 
 /**
  * fetches for user data.
  */
 export const userApi = {
   getAllUsers: async () => {
-    const response = await fetch(`${apiUrl}/queryall`, {
+    const response = await fetch(`${apiUrl}/patient/queryall`, {
       method: 'GET',
-      credentials: 'include',
     })
       .then((res) => {
         if (res.ok) {
@@ -43,10 +41,9 @@ export const userApi = {
 
   getInfoByUsername: async (username: string) => {
     const response = await fetch(
-      `${apiUrl}/?` + new URLSearchParams({ username }),
+      `${apiUrl}/patient/query/` + username,
       {
         method: 'GET',
-        credentials: 'include',
       }
     )
       .then((res) => {
@@ -73,12 +70,11 @@ export const userApi = {
     return response;
   },
 
-  getMedicalInfo: async (userId: string) => {
+  getMedicalInfo: async (id: string) => {
     const response = await fetch(
-      `${apiUrl}/,medicalInfo?` + new URLSearchParams({ user_id: userId }),
+      `${apiUrl}/medinfo/patient_query_medicalinfo/`,  
       {
         method: 'GET',
-        credentials: 'include',
       }
     )
       .then((res) => {
@@ -110,7 +106,6 @@ export const userApi = {
 
     const response = await fetch(`${apiUrl}`, {
       method: 'PUT',
-      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -141,13 +136,10 @@ export const userApi = {
   },
 
   getUsageRecords: async (id: string) => {
-    const user_id = id.toString();
-
     const response = await fetch(
-      `${apiUrl}/usage_record?` + new URLSearchParams({ user_id }),
+      `${apiUrl}/record/query/` + id.toString(),
       {
         method: 'GET',
-        credentials: 'include',
       }
     )
       .then((res) => {

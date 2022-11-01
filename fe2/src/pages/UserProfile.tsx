@@ -6,29 +6,22 @@ import { userApi } from '../api/userApi';
 import { authApi } from '../api/authApi';
 import { UsageRecord } from '../models/UsageRecord';
 import { User } from '../models/User';
+import { useParams } from 'react-router-dom';
 
 const { Title } = Typography;
 
 function UserProfile() {
+  const username = useParams();
+  const medicalinforID = useParams();
   const [user, setUser] = useState<User>();
-  const [results, setResults] = useState<UsageRecord[]>([] as UsageRecord[]);
-
+  const [record, setRecord] = useState<UsageRecord>();
   const getData = async () => {
-    const id = (await authApi.getUsername()) as string;
-    const userData = (await userApi.getInfoByUsername(id.toString())) as User[];
-
+    const userData = (await userApi.getInfoByUsername("philong123")) as User[];
     setUser(userData[0]);
 
-    const testResult = (await userApi.getUsageRecords(id.toString())) as UsageRecord[];
+    const recordData = (await userApi.getUsageRecords("medical1") as UsageRecord[]);
 
-    let res: UsageRecord[] = [];
-    testResult.forEach((item, index) => {
-      if (index + 1 > testResult.length - 3) {
-        res.push(item);
-      }
-    });
-
-    setResults(res);
+    setRecord(recordData[0]);
   };
 
   useEffect(() => {
@@ -57,11 +50,11 @@ function UserProfile() {
         <div className={styles.content}>
           <UserProfileCard
             id={user?.id as string}
-            fullname={"Phi Long Bui Le" as string}
-            username={"philong123" as string}
-            email={"philong@gmail.com" as string}
-            gender={"male" as string}
-            dob={"1/1/2001" as string}
+            fullname={user?.fullname as string}
+            username={user?.username as string}
+            email={user?.email as string}
+            gender={user?.gender as string}
+            dob={user?.dob as string}
             avatar={undefined}
           />
 
@@ -93,10 +86,7 @@ function UserProfile() {
               </Title>
 
               <div className={styles.recent_test}>
-                {results.map((result, resultIndex) => {
-                  return (
                     <div
-                      key={resultIndex}
                       style={{
                         width: 220,
                         height: 50,
@@ -108,7 +98,7 @@ function UserProfile() {
                     >
                       <a
                         style={{ color: 'black' }}
-                        href={`/usage_record/${result.id}/details`}
+                        //href={`/usage_record/${record.id}/details`}
                       >
                         <div
                           style={{
@@ -121,14 +111,13 @@ function UserProfile() {
                           }}
                         >
                           <p style={{ fontWeight: 'bold' }}>
-                            {result.operator_username}
+                            {record?.operator_username}
                           </p>
-                          <p>{result.operation}/100</p>
+                          <p>{record?.operation}/100</p>
                         </div>
                       </a>
                     </div>
                   );
-                })}
               </div>
             </div>
           </div>

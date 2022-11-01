@@ -39,7 +39,7 @@ export default function AppRoute() {
           {/* user routes */}
           <Route path="/user/*">
             <Route element={<UserLayout />}>
-              <Route path="patient/profile" element={<UserProfile />} />
+              <Route path="patient/profile/:username/:medicalinforID" element={<UserProfile />} />
               <Route path="patient/examination/:username/:medicalinforID" element={<Examination />} />
               <Route path="admin/user_management" element={<UserTable />} />
               <Route path="operator/patient/operator/queryall" element={<AuthorizationList />} />
