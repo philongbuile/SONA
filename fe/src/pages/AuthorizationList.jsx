@@ -1,5 +1,5 @@
 import './AuthorizationList.css';
-import Navbar from '../components/navbar';
+import Navbar from '../components/Navbar';
 import AuthorizationTable from '../components/AuthorizationTable';
 
 const AuthorizationList = () => {

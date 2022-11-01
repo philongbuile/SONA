@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import Navbar from '../components/navbar'
+import Navbar from '../components/Navbar'
  
 const SearchByKeyWord = () => {
     const [keywords, setKeywords] = useState('[]');
@@ -56,7 +56,7 @@ const SearchByKeyWord = () => {
                                 {<div className='card p-0 overflow-hidden h-100 shadow'>
                                     {/* <img src={item.img} alt="" className='card-img-top img-fluid'/> */}
                                     <div className='card-body' key={item.ID}>
-                                        <Link to={`/record/query/${item.ID}`}>
+                                        <Link to={`/medinfo/query_by_keyword/${item.ID}`}>
                                         <h5 className='card-title'>{item.ID}</h5>
                                             <div className='panel-body'>
                                                 {/* <p className ='card-text'>{item.docType}</p>                                     */}
