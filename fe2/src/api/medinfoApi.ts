@@ -1,11 +1,13 @@
 import { AppError } from '../models/Error';
-import { User } from '../models/User';
+import { Case } from '../models/MedicalInfo';
 import { MedicalInfo } from '../models/MedicalInfo';
 import { UsageRecord } from '../models/UsageRecord';
 import { Operator } from '../models/Operator';
 import { stringify } from 'querystring';
 
-const BASE_API = process.env.REACT_APP_BASE_API || 'http://localhost:8080';
+// const BASE_API = process.env.REACT_APP_BASE_API || 'http://localhost:8080';
+const BASE_API = 'http://localhost:8080';
+
 // const apiUrl = `${BASE_API}/api/`;
 const apiUrl = `${BASE_API}/medinfo`;
 // "/medinfo/operator_query_medicalinfo/:medicalinfo_id/:operator_username"
@@ -16,8 +18,8 @@ const apiUrl = `${BASE_API}/medinfo`;
 export const medinfoApi = {
 
 
-  updateCase: async (parameter: MedicalInfo) => {
-    const payload = parameter;
+  updateCase: async () => {
+    const payload = 'newcase';
 
     const response = await fetch(`${apiUrl}/appendCase/`, {
       method: 'POST',
@@ -51,16 +53,23 @@ export const medinfoApi = {
     return response;
   },
 
-  addCase: async (parameter: MedicalInfo) => {
-    const payload = parameter;
+  addCase: async (examination: any, operator: string, patient: string, infoID: string) => {
 
+    const payload = {
+      examination: examination,
+      operator_username : operator,
+      patient_username: patient,
+      infoID : infoID
+    }
+
+    console.log(`${apiUrl}/addCase/`);
     const response = await fetch(`${apiUrl}/addCase/`, {
       method: 'POST',
-      credentials: 'include',
+      // credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payload)
     })
       .then((res) => {
         if (res.ok) {
