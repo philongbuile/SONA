@@ -1,46 +1,50 @@
-import Navbar from '../components/Navbar'
 import { useParams } from 'react-router-dom'
 import useFetch from '../api/useFetch'
 import './Case.css'
 
-
 const Case = () => {
 
-    const {username} = useParams();
-    const {data: Case, error, isPending} = useFetch('http://localhost:8080/patient/query/' + username);
+    const {medID} = useParams();
+    const {data: case_, error, isPending} = useFetch('http://localhost:8080/medinfo/patient_query_medicalinfo/' + medID);
+
+
     return(
         <div className="box">
-            <div>
-
-            </div>
-            {isPending && <div> Loading ... </div>}
+            {isPending && <div className='loader'> </div>}
             {error && <div> {error} </div>}
-            {Case && (
+            {case_ && 
                 <div className='container'> 
                     <div className='container-title'>
-                        <h2>Title</h2>
+                        <h2>CASE ID: {case_.response.ID}</h2>
                     </div>
+
                     <div className='container-context'>
-                    <div className='container-text-box'>Operation Name:
-                        <div>
-                            <p className ='container-text'>{Case.OperatorName}</p>
-                        </div>
-                    </div >
-                    <div className='container-text-box'>Operation:
-                        <p className ='container-text'>{Case.Operation}</p>
-                    </div>
-                    <div className='container-text-box'> Role:
-                        <p className ='container-text'>{Case.Roles}</p>
-                    </div>
-                    <div className='container-text-box'>Record ID:
-                        <p className ='container-text'>{Case.Record_ID}</p>
-                    </div>
-                    <div className='container-text-box'>Time:
-                        <p className ='data-text'>{Case.Times}</p>
-                    </div>
+                        {case_.response.Cases.map(Case => (
+                            <div className='container-context'>
+                               <div className='container-title'>
+                                <p className ='container-text' key={Case.Case_ID}>Case ID: {Case.Case_ID}</p>
+                               </div>
+                                {Case.Examinations.map(exam => {
+                                    return(
+                                        <div className='container-sub-context'>
+                                            <div className='container-text-box' >
+                                                <p className ='container-text' key={Case.Case_ID}>Diagnosis: {exam.Diagnosis}</p>
+                                            </div >
+                                            <div className='container-text-box'>
+                                                <p className ='container-text' key={Case.Case_ID}>Test result: {exam.TestResult}</p>
+                                            </div >
+                                            <div className='container-text-box'>
+                                                <p className ='container-text' key={Case.Case_ID}>Treatment: {exam.Treatment}</p>
+                                            </div > 
+                                    </div>
+                                    )
+                                })}
+                            
+                            </div>
+                        ))}
                     </div>
                 </div>
-            )}
+            }
         </div>
     )
 }

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
- 
+
 const SearchByKeyWord = () => {
     const [filter, setFilter] = useState('');
     const [cards, setCards] = useState(null);
@@ -38,7 +38,8 @@ const SearchByKeyWord = () => {
                     {cards.response.filter((res) => {
                         if(filter == ''){
                             return res
-                        }else if(res.title.toLowerCase().includes(filter.toLowerCase())){
+                        }else if(res.OperatorName.toLowerCase().includes(filter.toLowerCase()) || 
+                                    res.Record_ID.toLowerCase().includes(filter.toLowerCase())){
                             return res
                         }
                     }).map((item, index) => {
