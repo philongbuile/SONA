@@ -1,24 +1,13 @@
 import './AuthorizationList.css';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/navbar';
 import AuthorizationTable from '../components/AuthorizationTable';
 
 const AuthorizationList = () => {
     const columns = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-        },
+        {field: "key"},
+        {field: "name"},
+        {field: "age"},
+        {field: "address"}
     ];
 
     const data = [
@@ -71,7 +60,7 @@ const AuthorizationList = () => {
             <Navbar />
             <div className='body'>
                 <div className='container'>
-                    <AuthorizationTable column={columns} row={data} />
+                    <AuthorizationTable data={data} columns={columns}/>
                 </div>
             </div>
         </div>

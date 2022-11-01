@@ -4,8 +4,6 @@ import useFetch from '../api/UseFetch'
 import './Case.css'
 import { PersonalInforFetch } from '../api/userApi';
 
-import Navbar from '../components/Navbar'
-
 const Case = () => {
 
     const {id} = useParams();
@@ -16,15 +14,8 @@ const Case = () => {
     console.log(personalData);
     return(
         <div className="box">
-<<<<<<< HEAD
-            <div>
-
-            </div>
-            {isPending && <div> Loading ... </div>}
-=======
             <Navbar/>
             {isPending && <div className='loader'> </div>}
->>>>>>> 0dd99b79 (..)
             {error && <div> {error} </div>}
             {data && (
                 <div className='container'> 
