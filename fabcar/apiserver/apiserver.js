@@ -5,28 +5,17 @@ const express = require("express");
 const ejs = require("ejs");
 const util = require("util");
 const cors = require("cors");
-const mongoose = require('mongoose')
-
 const app = express();
-
-const User = require('./model/User')
 
 // app.use(express.bodyParser());
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors());
 
-
-mongoose.connect('mongodb://localhost:27017/blockchain').then(
-  () => {console.log('Successfully connect to MONGODB')},
-  err => console.log(err)
-)
-
 const PORT = 8080;
 app.listen(PORT, () => {
   console.log("App listening on port " + PORT);
 });
-
 const operator = require("./endpoints/operator_endpoints.ts");
 const patient = require("./endpoints/patient_endpoints.ts");
 const record = require("./endpoints/usage_record_endpoints.ts");
@@ -34,9 +23,6 @@ const medical = require("./endpoints/medicalinfo_endpoints.ts");
 const utils = require("./utils/utils.ts");
 const wallet = require("./utils/registerUser.ts");
 // const wallet = require("./utils/registerUser.ts")
-
-
-
 ////////////////////////////////////////////////////////////
 ////////// register the user to the network
 ////////////////////////////////////////////////////////////
@@ -88,7 +74,6 @@ app.get(
 ///////////////////////////////////////////////////
 
 // operator query
-
 app.get("/operator/query/:username", async (req, res) => {
   await operator.queryOperator(req, res);
 });
@@ -126,7 +111,7 @@ app.get(
   }
 );
 // medical info query by keyword
-app.get("/medinfo/query_by_keyword/:keywords", async (req, res) => {
+app.post("/medinfo/query_by_keyword/", async (req, res) => {
   await medical.queryByKeywords(req, res);
 });
 

@@ -1,0 +1,83 @@
+@media only screen and (min-width: 1024px) {
+  .container header .header-nav-area #nav_container  {
+    display:flex;
+  }
+}
+
+.container{
+    position:relative;
+    margin-left:auto;
+    margin-right:auto;
+    padding-right:15px;
+    padding-left:15px
+  }
+  @media (min-width: 476px){
+    .container{
+      padding-right:15px;
+      padding-left:15px
+    }
+  }
+  @media (min-width: 768px){
+    .container{
+      padding-right:15px;
+      padding-left:15px
+    }
+  }
+  @media (min-width: 992px){
+    .container{
+      padding-right:15px;
+      padding-left:15px
+    }
+  }
+  @media (min-width: 1200px){
+    .container{
+      padding-right:15px;
+      padding-left:15px
+    }
+  }
+  @media (min-width: 476px){
+    .container{
+      width:100%
+    }
+  }
+  @media (min-width: 768px){
+    .container{
+      width:720px;
+      max-width:100%
+    }
+  }
+  @media (min-width: 992px){
+    .container{
+      width:960px;
+      max-width:100%
+    }
+  }
+  @media (min-width: 1200px){
+    .container{
+      width:1140px;
+      max-width:100%
+    }
+  }
+  @media (min-width: 1400px){
+    .container{
+      width:1340px;
+      max-width:100%
+    }
+}
+
+.user_profile_container {
+    display: flex;
+    box-sizing: border-box;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.user_profile_personal {
+  padding-left: 100px;
+}
+
+.user_profile_medical {
+  padding-left: 100px;
+}
