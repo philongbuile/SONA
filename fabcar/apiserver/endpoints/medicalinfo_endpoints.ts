@@ -89,12 +89,9 @@ export async function queryByKeywords(req, res){
           "MedicalInfoContract"
         );
 
-        
-        console.log(req.body.keywords);
-
         const result = await medInfoContract.submitTransaction(
           "QueryByKeyWord",
-          JSON.stringify(req.body.keywords)
+          req.params.keywords.toLowerCase()
         );
         console.log(
           `Transaction has been evaluated, result is: ${result.toString()}`

@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 import './Pill.css';
-=======
-import './navbar.css';
->>>>>>> 05acefb770752bfbf0d9fae8b82ace3e5ee42e4a
-=======
-import './Pill.css';
->>>>>>> main
+import './Navbar.css';
 
 const Pill = () => {
   return (
