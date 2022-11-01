@@ -23,11 +23,12 @@ const AuthorizationTable = ({
           </thead>
           <tbody>
             {data &&
-              data.map((row) => (
+              data.AuthorizedDoctors.map((row) => (
                 <tr className={`${hover && "hover"} ${striped && "striped"}`}>
-                  {columns.map((col) => (
-                    <td>{row[col.field]}</td>
-                  ))}
+                  {/* {columns.map((col) => (
+                    <td></td>
+                  ))} */}
+                  {row}
                 </tr>
               ))}
           </tbody>

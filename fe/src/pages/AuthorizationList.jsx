@@ -1,66 +1,20 @@
 import './AuthorizationList.css';
 import Navbar from '../components/Navbar';
 import AuthorizationTable from '../components/AuthorizationTable';
+import useFetch from '../api/useFetch';
 
 const AuthorizationList = () => {
     const columns = [
-        {field: "key"},
-        {field: "name"},
-        {field: "age"},
-        {field: "address"}
+        {field: "Authorized Doctors"}
     ];
-
-    const data = [
-        {
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-        },
-        {
-            key: '3',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-        },  
-        {
-            key: '4',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-        },
-        {
-            key: '5',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-        },
-        {
-            key: '6',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-        },
-        {
-            key: '7',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-        }
-    ]
+    
+    const {data, error, isPending} = useFetch('http://localhost:8080/patient/query/philong123')
 
     return (
         <div className="AuthorizationList">
-            <Navbar />
             <div className='body'>
                 <div className='container'>
-                    <AuthorizationTable data={data} columns={columns}/>
+                    <AuthorizationTable data={data.response} columns={columns}/>
                 </div>
             </div>
         </div>
