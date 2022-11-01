@@ -1,10 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-<<<<<<< HEAD
-import Navbar from '../components/Navbar'
-=======
 import Navbar from '../components/navbar'
->>>>>>> origin
  
 const SearchByKeyWord = () => {
     const [keywords, setKeywords] = useState('[]');
@@ -27,10 +23,7 @@ const SearchByKeyWord = () => {
 
     return(
         <div className=''>
-<<<<<<< HEAD
-=======
             <Navbar />
->>>>>>> origin
             {cards && <section className='py-4 container'>
                 <div className='row justify-content-center'> 
                     <div className='col-12 mb-5'>
@@ -63,11 +56,7 @@ const SearchByKeyWord = () => {
                                 {<div className='card p-0 overflow-hidden h-100 shadow'>
                                     {/* <img src={item.img} alt="" className='card-img-top img-fluid'/> */}
                                     <div className='card-body' key={item.ID}>
-<<<<<<< HEAD
-                                        <Link to={`/medinfo/query_by_keyword/${item.ID}`}>
-=======
                                         <Link to={`/record/query/${item.ID}`}>
->>>>>>> origin
                                         <h5 className='card-title'>{item.ID}</h5>
                                             <div className='panel-body'>
                                                 {/* <p className ='card-text'>{item.docType}</p>                                     */}
