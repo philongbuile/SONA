@@ -23,17 +23,29 @@ const AuthorizationTable = ({
           </thead>
           <tbody>
             {data &&
+<<<<<<< HEAD
               data.AuthorizedDoctors.map((row) => (
                 <tr className={`${hover && "hover"} ${striped && "striped"}`}>
                   {/* {columns.map((col) => (
                     <td></td>
                   ))} */}
                   {row}
+=======
+              data.map((row) => (
+                <tr className={`${hover && "hover"} ${striped && "striped"}`}>
+                  {columns.map((col) => (
+                    <td>{row[col.field]}</td>
+                  ))}
+>>>>>>> origin
                 </tr>
               ))}
           </tbody>
         </table>
+<<<<<<< HEAD
         {data ? null : <p>PLEASE WAIT FOR A MOMENT</p>}
+=======
+        {data ? null : <p>No Row to show :)</p>}
+>>>>>>> origin
       </div>
     );
   };

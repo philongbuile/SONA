@@ -1,6 +1,10 @@
 
 .box{
+<<<<<<< HEAD
     margin-top: 0.1px;
+=======
+    margin-top: 1.3cm;
+>>>>>>> origin
 }
 
 
@@ -19,10 +23,26 @@
 }
 
 .container-context{
+<<<<<<< HEAD
+=======
+    
+    /* border-bottom-style: solid; */
+>>>>>>> origin
     margin-bottom: 1rem;
     margin-top: 1rem;
 }
 
+<<<<<<< HEAD
+=======
+.container-sub-context{
+    padding-top: 0.01px;
+    padding-bottom: 0.01px;
+    border-bottom-color: black;
+    border-bottom-width: 0.01px;
+    border-bottom-style: outset;
+}
+
+>>>>>>> origin
 .container-text-box{
     margin-top:0.1px;
 }
@@ -30,5 +50,26 @@
 .container-text{
     /* background-color: blanchedalmond; */
     padding: 0.1px;
+<<<<<<< HEAD
     margin-bottom: 0.25px;
 }
+=======
+    margin-top: 0.25px;
+    margin-bottom: 0.25px;
+}
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+>>>>>>> origin

@@ -1,10 +1,12 @@
+import { lazy } from 'react';
 import { Form, Layout, Button, Input, Divider } from 'antd';
 // import logo from '../../assets/logo-1.svg';
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { authApi } from '../api/authApi';
 import { useNavigate } from 'react-router-dom';
 import { roleFunc } from '../utils/Roles';
 import './Login.css';
+import Long from '../api/Long.json';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -15,40 +17,13 @@ const Login = () => {
 
   let navigate = useNavigate();
 
-  // check if already log-in with JWT
-  useEffect(() => {
-    checkLogin();
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      document.body.style.overflow = 'scroll';
-    };
-  });
-
-  const routeChange = async (path: string) => {
-    const role = await roleFunc.getRole().then((res) => {
-      navigate(`/${res}/${path}`);
-    });
-  };
-
-  const checkLogin = async () => {
-    let data = await authApi.getId();
-    if (data !== null && data !== 0) {
-      routeChange('dashboard');
-    }
-  };
 
   const handleLogin = () => {
-    let data = authApi.login({ username, password }).then((res) => {
-      if (res.id !== 0) {
-        routeChange('dashboard');
-      } else {
-        alert('Invalid username or password');
-      }
-      return res;
-    });
-    return data;
+    if (username === Long.username && password === Long.password) {
+      navigate('/user/patient/profile/' + username + '/' + "medical1");
+    } else {
+      alert("incorrect username or password");
+    }
   };
 
   return (
@@ -139,19 +114,6 @@ const Login = () => {
                 Forgot Password?
               </a>
             </p>
-            |{' '}
-            <p>
-              <a
-                style={{
-                  color: '#8172d5',
-                  textDecoration: 'underline',
-                  fontFamily: 'Roboto',
-                  fontSize: '14px',
-                }}
-              >
-                Forgot Username?
-              </a>
-            </p>
           </div>
           <Divider>Or</Divider>
           <Form.Item>
@@ -168,7 +130,7 @@ const Login = () => {
                 lineHeight: '14px',
               }}
             >
-              TEMPORARY ACCOUNT
+              CREATE AN ACCOUNT
             </button>
           </Form.Item>
         </Form>
