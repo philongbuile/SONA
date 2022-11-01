@@ -1,21 +1,33 @@
 const { v4: uuidv4 } = require("uuid"); // for record_id
 const { v1: uuidv1 } = require("uuid"); // for case_id
 const express = require("express");
-// const bodyParser = require('body-parser');
+const expressSession = require('express-session')
+const mongoose = require('mongoose')
 const ejs = require("ejs");
 const util = require("util");
 const cors = require("cors");
 const app = express();
 
+const User = require('./model/User')
+
 // app.use(express.bodyParser());
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors());
+app.use(expressSession({
+  secret: 'sona-health-care'
+}))
 
 const PORT = 8080;
+
 app.listen(PORT, () => {
   console.log("App listening on port " + PORT);
 });
+mongoose.connect('mongodb://localhost/blockchain', { useNewUrlParser: true }, () => {
+  console.log("Connection to database established successfully!!!")
+})
+
+
 const operator = require("./endpoints/operator_endpoints.ts");
 const patient = require("./endpoints/patient_endpoints.ts");
 const record = require("./endpoints/usage_record_endpoints.ts");
@@ -27,6 +39,20 @@ const wallet = require("./utils/registerUser.ts");
 ////////// register the user to the network
 ////////////////////////////////////////////////////////////
 //
+
+app.get('/login', (req, res) => {
+  console.log('AUTHENTICATING USER AT ' + Date())
+})
+
+app.post('/login', (req, res) => {
+  let {username, password } = req.body
+  User.findOne({ username: username }, (error, user) => {
+    if (user) {
+        req.session.userId = user._id
+    }
+    console.log(user + " is not exist in the system")
+  })
+})
 
 // register user to the network
 app.get("/wallet/register/:username", async (req, res) => {

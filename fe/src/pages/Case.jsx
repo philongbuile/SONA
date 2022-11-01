@@ -4,6 +4,7 @@ import useFetch from '../api/UseFetch'
 import './Case.css'
 import { PersonalInforFetch } from '../api/userApi';
 
+import Navbar from '../components/Navbar'
 
 const Case = () => {
 
@@ -15,10 +16,15 @@ const Case = () => {
     console.log(personalData);
     return(
         <div className="box">
+<<<<<<< HEAD
             <div>
 
             </div>
             {isPending && <div> Loading ... </div>}
+=======
+            <Navbar/>
+            {isPending && <div className='loader'> </div>}
+>>>>>>> 0dd99b79 (..)
             {error && <div> {error} </div>}
             {data && (
                 <div className='container'> 
