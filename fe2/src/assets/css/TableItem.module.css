@@ -15,12 +15,19 @@
 
 }
 
+
 .name {
     display:inline;
     margin-left: 15%;
 }
 
-.phone {
+.id {
     display:inline;
-    margin-left: 50%;
+    margin-left: 30%;
+}
+
+
+.revoke {
+    display:inline;
+    margin-left: 15%;
 }

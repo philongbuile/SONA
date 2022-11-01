@@ -8,13 +8,12 @@ const TableList = () => {
     return (
         <div className={styles.table_list}>
 
-            <Divider orientation="left">Authorization List</Divider> 
+            <Divider orientation="left"style={{fontSize: 40}}>Authorization List</Divider> 
 
         <Card className={styles.list} >
             <TableItem/>
             <TableItem/>
         </Card>
-
         </div>
     )
 }
