@@ -11,21 +11,21 @@
     padding-left: 30px;
     padding-right: 30px;
     padding-top: 2px;
-    font-family: sans-serif;
+    font-family: Roboto;
 }
 
 
 
 .pill li p {
     color: #000000;
-    font-size: 20px;
+    font-size: 30px;
     display: flex;
 
 }
 
 .pill li h1{
     color: #0a6e85;
-    font-size: 30px;
+    font-size: 40px;
     display: flex;
     align-items: center;
 }

@@ -1,59 +1,46 @@
-import Navbar from '../components/navbar'
+import Navbar from '../components/Navbar'
 import { useParams } from 'react-router-dom'
-import useFetch from '../api/useFetch'
+import useFetch from '../api/UseFetch'
 import './Case.css'
-import { PersonalInforFetch } from '../api/userApi';
+
 
 const Case = () => {
 
-    const {id} = useParams();
-    const {data, error, isPending} = useFetch('http://localhost:8080/record/query/' + id);
-    const { data: personalData, isPendingP, errorP } = PersonalInforFetch('philong123');
-
-    console.log(data);
-    console.log(personalData);
+    const {username} = useParams();
+    const {data: Case, error, isPending} = useFetch('http://localhost:8080/patient/query/' + username);
     return(
         <div className="box">
-            <Navbar/>
-            {isPending && <div className='loader'> </div>}
+            <div>
+
+            </div>
+            {isPending && <div> Loading ... </div>}
             {error && <div> {error} </div>}
-            {case_ && 
+            {Case && (
                 <div className='container'> 
                     <div className='container-title'>
-                        <h2>CASE ID: {case_.response.ID}</h2>
+                        <h2>Title</h2>
                     </div>
-
                     <div className='container-context'>
                     <div className='container-text-box'>Operation Name:
                         <div>
-                            <p className ='container-text'>{data.response[0].OperatorName}</p>
+                            <p className ='container-text'>{Case.OperatorName}</p>
                         </div>
                     </div >
                     <div className='container-text-box'>Operation:
-                        <p className ='container-text'>{data.response[0].Operation}</p>
+                        <p className ='container-text'>{Case.Operation}</p>
                     </div>
                     <div className='container-text-box'> Role:
-                        <p className ='container-text'>{data.response[0].Roles}</p>
+                        <p className ='container-text'>{Case.Roles}</p>
                     </div>
                     <div className='container-text-box'>Record ID:
-                        <p className ='container-text'>{data.response[0].Record_ID}</p>
+                        <p className ='container-text'>{Case.Record_ID}</p>
                     </div>
                     <div className='container-text-box'>Time:
-                        <p className ='data-text'>{data.response[0].Time}</p>
-
-
-
-
-                        <p className ='data-text'>{personalData.response.Username}</p>
-
-                        <p className ='data-text'>{personalData.response.FullName}</p>
-
-                        <p className ='data-text'>{personalData.response.Medicalinfo_ID}</p>
-
+                        <p className ='data-text'>{Case.Times}</p>
                     </div>
                     </div>
                 </div>
-            }
+            )}
         </div>
     )
 }
