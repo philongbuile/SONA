@@ -3,7 +3,7 @@ import { Divider, Card, Form, Input } from 'antd'
 
 const {TextArea} = Input;
 
-const CaseForm = () => {
+const ExaminationForm = () => {
     return ( 
         <Card className={styles.cover}>
 
@@ -26,4 +26,4 @@ const CaseForm = () => {
     )
 }
 
-export default CaseForm;
+export default ExaminationForm;
