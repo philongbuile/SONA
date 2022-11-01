@@ -8,26 +8,28 @@
     align-items: center;
     margin: 0 auto;
     margin-top: 40px;
-    padding-left: 30px;
-    padding-right: 30px;
     padding-top: 30px;
     font-family: Roboto;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 
 
 .pill li p {
-    color: #000000;
+    color: #0a6e85;
     font-size: 30px;
     display: flex;
+    align-items: center;
 
 }
 
 .pill li h1{
     color: #0a6e85;
-    font-size: 40px;
+    font-size: 30px;
     display: flex;
     align-items: center;
+
 }
     
 li {

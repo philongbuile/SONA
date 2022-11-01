@@ -12,13 +12,14 @@ import AppRoute from './routes/routes';
 import TableList from './components/TableList/TableList';
 import AppNavbar from './components/Navbar';
 import AuthorizationList from './pages/AuthorizationList';
+import Landingpage from './pages/Landingpage';
 
 
 
 function App() {
   return (
     <>
-    <TableList/>
+    <Landingpage/>
       {/* <ToastContainer
         position="top-center"
         autoClose={2500}
