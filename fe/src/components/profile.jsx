@@ -1,6 +1,6 @@
 import { Card } from 'antd';
 import './Profile.css';
-// import avatar from '../assets/avatar.png';
+import avatar from '../assets/avatar.png';
 import { PersonalInforFetch } from '../api/userApi';
 import { useParams } from 'react-router-dom';
 
