@@ -58,7 +58,7 @@ export const Styles = createGlobalStyle`
     h5,
     h6 {
         font-family: 'Roboto', serif;
-        color: #8172d5;
+        color: #72c6d5;
         font-size: 56px;
         line-height: 1.18;
 
@@ -77,17 +77,23 @@ export const Styles = createGlobalStyle`
         line-height: 1.41;
     }
 
+    button {
+        color: #18216d;
+        font-size: 20px;        
+        line-height: 1.41;
+    }
+
     h1 {
-        font-weight: 600;
+        font-weight: 700;
     }
 
     a {
         text-decoration: none;
         outline: none;
-        color: #8172d5;
+        color: #72c6d5;
 
         :hover {
-            color: #8172d5;
+            color: #72c6d5;
         }
     }
     

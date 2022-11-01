@@ -57,11 +57,11 @@ function UserProfile() {
         <div className={styles.content}>
           <UserProfileCard
             id={user?.id as string}
-            fullname={user?.fullname as string}
-            username={user?.username as string}
-            email={user?.email as string}
-            gender={user?.gender as string}
-            dob={user?.dob as string}
+            fullname={"Phi Long Bui Le" as string}
+            username={"philong123" as string}
+            email={"philong@gmail.com" as string}
+            gender={"male" as string}
+            dob={"1/1/2001" as string}
             avatar={undefined}
           />
 
@@ -70,7 +70,7 @@ function UserProfile() {
               level={4}
               style={{ marginLeft: '100px', textDecoration: 'underline' }}
             >
-              Welcome to Peekaboo
+              Your personal medical information
             </Title>
             <p style={{ marginLeft: '100px', fontWeight: 'Roboto' }}>
               Peekaboo is a magical application. It was a question of which of

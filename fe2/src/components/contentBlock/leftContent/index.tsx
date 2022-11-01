@@ -35,7 +35,7 @@ const LeftContentBlock = ({
                       <Col key={id} span={11}>
                         <SvgIcon src={item.icon} width="60px" height="60px" />
                         <MinTitle>{item.title}</MinTitle>
-                        <MinPara>{item.content}</MinPara>
+                        <MinPara>s{item.content}</MinPara>
                       </Col>
                     );
                   })}
