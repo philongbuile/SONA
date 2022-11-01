@@ -13,13 +13,14 @@ import TableList from './components/TableList/TableList';
 import AppNavbar from './components/Navbar';
 import AuthorizationList from './pages/AuthorizationList';
 import Landingpage from './pages/Landingpage';
+import CaseForm from './components/forms/CaseForm';
 
 
 
 function App() {
   return (
     <>
-    <Landingpage/>
+    <CaseForm/>
       {/* <ToastContainer
         position="top-center"
         autoClose={2500}
