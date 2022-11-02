@@ -1,0 +1,391 @@
+
+.TestCard {
+    /* Select card test */
+    width: 1096px;
+    border-radius: 20px;
+    border: 20px;
+    height: 113px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cover {
+    /* Overlay */
+    position: absolute;
+    width: 195px;
+    height: 113px;
+    top: 0px;
+    left: 0px;
+    /* background: #3B3735; */
+    /* opacity: 0.2; */
+}
+
+.test_title {
+    /* Title for the card test */
+    display: flex;
+    position: absolute;
+    left: 228px;
+    top: 10px;
+    font-family: Roboto;
+    font-size: 30px;
+    font-weight: bold;
+
+}
+
+.test_description {
+    /* Description for the card test */
+    display: flex;
+    position: absolute;
+    left: 228px;
+    top: 58px;
+    font-family: Roboto;
+    font-size: 11px;
+    padding-right: 50px ;
+    width: 580px;
+    height: 64px;
+
+}
+
+.test_group {
+    /* Group for the card test */
+    display: flex;
+    position: absolute;
+    left: 723px;
+    top: 25px;
+    font-family: Roboto;
+    font-size: 11px;
+
+}
+
+.test_time {
+    /* Time for the card test */
+    display: flex;
+    position: absolute;
+    left: 723px;
+    top: 70px;
+    font-family: Roboto;
+    font-size: 11px;
+
+}
+
+.mail_icon {
+    /* Icon for the card test */
+    display: flex;
+    position: absolute;
+    left: -23px;
+    top: 0px;
+    width: 16.8px;
+    height: 14.83px;
+}
+
+.calendar_icon {
+    /* Icon for the card test */
+    display: flex;
+    position: absolute;
+    left: -23px;
+    top: 0px;
+    width: 16.8px;
+    height: 14.83px;
+}
+
+.content {
+    /* Content for the card test */
+    display: block;
+    align-items: center;
+    justify-content: center;
+    font-family: Roboto;
+    font-size: medium;
+    grid-area: b;
+    align-self: center;
+    justify-self: center;
+}
+
+.btn {
+    /* Button for the card test */
+    display: flex;
+    position: absolute;
+    left: 960px;
+    top: 41px;
+    font-family: Roboto;
+    font-size: 20px;
+    width: 99px;
+    height: 32px;
+    background-color: #8172D5;
+    text-align: center;
+}
+
+.btn_content{
+    /* Button content for the card test */
+    display: flex;
+    position: absolute;
+    left: 30px;
+    top: 1px;
+    font-family: Roboto;
+    font-size: 20px;
+    color: #000000;
+    text-align: center;
+}
+
+@media only screen and (max-width: 1024px) and (min-width: 768px) {
+    .TestCard {
+        /* Select card test */
+        width: 700px;
+        border-radius: 20px;
+        border: 20px;
+        height: 113px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cover {
+    
+        /* Overlay */
+        position: absolute;
+        width: 150px;
+        height: 113px;
+        top: 0px;
+        left: 0px;
+        /* background: #3B3735; */
+        /* opacity: 0.2; */
+    }
+    
+    .test_title {
+        /* Title for the card test */
+        display: flex;
+        position: absolute;
+        left: 178px;
+        top: 10px;
+        font-family: Roboto;
+        font-size: 30px;
+        font-weight: bold;
+    
+    }
+    
+    .test_description {
+        /* Description for the card test */
+        display: flex;
+        position: absolute;
+        left: 178px;
+        top: 58px;
+        font-family: Roboto;
+        font-size: 11px;
+        padding-right: 50px;
+        width: 330px;
+        height: 64px;
+    
+    }
+    
+    .test_group {
+        /* Group for the card test */
+        display: flex;
+        position: absolute;
+        left: 500px;
+        top: 25px;
+        font-family: Roboto;
+        font-size: 11px;
+    
+    }
+    
+    .test_time {
+        /* Time for the card test */
+        display: flex;
+        position: absolute;
+        left: 500px;
+        top: 70px;
+        font-family: Roboto;
+        font-size: 11px;
+    
+    }
+    
+    .mail_icon {
+        /* Icon for the card test */
+        display: flex;
+        position: absolute;
+        left: -23px;
+        top: 0px;
+        width: 16.8px;
+        height: 14.83px;
+    }
+    
+    .calendar_icon {
+        /* Icon for the card test */
+        display: flex;
+        position: absolute;
+        left: -23px;
+        top: 0px;
+        width: 16.8px;
+        height: 14.83px;
+    }
+    
+    .content {
+        /* Content for the card test */
+        display: block;
+        align-items: center;
+        justify-content: center;
+        font-family: Roboto;
+        font-size: medium;
+        grid-area: b;
+        align-self: center;
+        justify-self: center;
+    }
+    
+    .btn {
+        /* Button for the card test */
+        display: flex;
+        position: absolute;
+        left: 600px;
+        top: 41px;
+        font-family: Roboto;
+        font-size: 20px;
+        width: 90px;
+        height: 32px;
+        background-color: #8172D5;
+        text-align: center;
+    }
+    
+    .btn_content{
+        /* Button content for the card test */
+        display: flex;
+        position: absolute;
+        left: 25px;
+        top: 1px;
+        font-family: Roboto;
+        font-size: 20px;
+        color: #000000;
+        text-align: center;
+    }
+    
+
+
+  }
+
+  @media only screen and (max-width: 768px) {
+    .TestCard {
+        /* Select card test */
+        width: 500px;
+        border-radius: 20px;
+        border: 20px;
+        height: 113px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cover {
+    
+        /* Overlay */
+        position: absolute;
+        width: 100px;
+        height: 113px;
+        top: 0px;
+        left: 0px;
+        /* background: #3B3735; */
+        /* opacity: 0.2; */
+    }
+    
+    .test_title {
+        /* Title for the card test */
+        display: flex;
+        position: absolute;
+        left: 118px;
+        top: 5px;
+        font-family: Roboto;
+        font-size: 30px;
+        font-weight: bold;
+    
+    }
+    
+    .test_description {
+        /* Description for the card test */
+        display: flex;
+        position: absolute;
+        left: 118px;
+        top: 45px;
+        font-family: Roboto;
+        font-size: 11px;
+        width: 200px;
+        height: 64px;
+    }
+    
+    .test_group {
+        /* Group for the card test */
+        display: flex;
+        position: absolute;
+        left: 350px;
+        top: 25px;
+        font-family: Roboto;
+        font-size: 11px;
+    
+    }
+    
+    .test_time {
+        /* Time for the card test */
+        display: flex;
+        position: absolute;
+        left: 350px;
+        top: 70px;
+        font-family: Roboto;
+        font-size: 11px;
+    
+    }
+    
+    .mail_icon {
+        /* Icon for the card test */
+        display: flex;
+        position: absolute;
+        left: -23px;
+        top: 0px;
+        width: 16.8px;
+        height: 14.83px;
+    }
+    
+    .calendar_icon {
+        /* Icon for the card test */
+        display: flex;
+        position: absolute;
+        left: -23px;
+        top: 0px;
+        width: 16.8px;
+        height: 14.83px;
+    }
+    
+    .content {
+        /* Content for the card test */
+        display: block;
+        align-items: center;
+        justify-content: center;
+        font-family: Roboto;
+        font-size: medium;
+        grid-area: b;
+        align-self: center;
+        justify-self: center;
+    }
+    
+    .btn {
+        /* Button for the card test */
+        display: flex;
+        position: absolute;
+        left: 420px;
+        top: 41px;
+        font-family: Roboto;
+        font-size: 20px;
+        width: 70px;
+        height: 32px;
+        background-color: #8172D5;
+        text-align: center;
+    }
+    
+    .btn_content{
+        /* Button content for the card test */
+        display: flex;
+        position: absolute;
+        left: 18px;
+        top: 1px;
+        font-family: Roboto;
+        font-size: 20px;
+        color: #000000;
+        text-align: center;
+    }
+  }

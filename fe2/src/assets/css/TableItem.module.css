@@ -1,0 +1,33 @@
+.item {
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50;
+    padding: 0.5rem;
+    border: 1px solid #eaeaea;
+    border-radius: 0.5rem;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+    font-size: 20px;
+
+}
+
+
+.name {
+    display:inline;
+    margin-left: 15%;
+}
+
+.id {
+    display:inline;
+    margin-left: 30%;
+}
+
+
+.revoke {
+    display:inline;
+    margin-left: 15%;
+}
