@@ -17,11 +17,8 @@ import AuthorizationList from '../pages/AuthorizationList';
 import CaseForm from '../components/forms/CaseForm';
 import UserTable from '../components/UserTable';
 import ExaminationForm from '../components/forms/ExaminationForm';
-<<<<<<< HEAD
 import DoctorPage from '../pages/DoctorPage';
-=======
 import SearchByKeyWord from '../pages/SearchByKeyWord';
->>>>>>> 716b5feade2c2752a64456afab492efd8be9ba47
 
 export default function AppRoute() {
   const AdminGuard: GuardEC = {
