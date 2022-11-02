@@ -11,12 +11,11 @@ const { time } = require("console");
 
 const {registerUser} = require('../utils/registerUser');
 
-// const userID = "camtu123";
+const userID = "camtu123";
 const asLocalhost = false;
 
 export async function queryOperator(req, res): Promise<void> {
     try {
-      const userID = req.params.username;
       const wallet = await utils.getWallet();
       const gateway = await utils.getGateway(wallet, asLocalhost,userID );
       const network = await utils.getNetwork(gateway, wallet, userID);
@@ -44,7 +43,6 @@ export async function queryOperator(req, res): Promise<void> {
 
 export async function createOperator(req, res) {
   try {
-    const userID = req.body.username;
     const wallet = await utils.getWallet();
     const gateway = await utils.getGateway(wallet, asLocalhost,userID );
     const network = await utils.getNetwork(gateway, wallet, userID);

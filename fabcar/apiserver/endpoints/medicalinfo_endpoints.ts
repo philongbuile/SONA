@@ -11,13 +11,12 @@ const { time } = require("console");
 const { v4: uuidv4 } = require("uuid"); // for record_id
 const { v1: uuidv1 } = require("uuid"); // for case_id
 
-// const userID = "camtu123";
+const userID = "camtu123";
 const asLocalhost = false;
 
 
 export async function queryMedicalInfo(req, res){
     try {
-        const userID = req.params.operator_username;
         const wallet = await utils.getWallet();
         const gateway = await utils.getGateway(wallet, asLocalhost,userID );
         const network = await utils.getNetwork(gateway, wallet, userID);
@@ -52,7 +51,6 @@ export async function queryMedicalInfo(req, res){
 export async function patientQuery(req, res) {
     try {
 
-        const userID = req.body.username;
         const wallet = await utils.getWallet();
         const gateway = await utils.getGateway(wallet, asLocalhost,userID );
         const network = await utils.getNetwork(gateway, wallet, userID);
@@ -83,7 +81,6 @@ export async function patientQuery(req, res) {
 
 export async function queryByKeywords(req, res){
     try {
-      const userID = req.body.operator_username;
       const wallet = await utils.getWallet();
       const gateway = await utils.getGateway(wallet, asLocalhost,userID );
       const network = await utils.getNetwork(gateway, wallet, userID);
@@ -116,7 +113,6 @@ export async function queryByKeywords(req, res){
 
 export async function addCase(req, res){
     try {
-      const userID = req.body.operator_username;
       const wallet = await utils.getWallet();
       const gateway = await utils.getGateway(wallet, asLocalhost,userID );
       const network = await utils.getNetwork(gateway, wallet, userID);
@@ -153,7 +149,6 @@ export async function addCase(req, res){
 
 export async function appendCase(req, res){
     try {
-      const userID = req.body.operator_username;
       const wallet = await utils.getWallet();
       const gateway = await utils.getGateway(wallet, asLocalhost,userID );
       const network = await utils.getNetwork(gateway, wallet, userID);

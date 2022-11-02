@@ -9,13 +9,12 @@ const fs = require("fs");
 const path = require("path");
 const { time } = require("console");
 
-// const userID = "camtu123";
+const userID = "camtu123";
 const asLocalhost = false;
 
 
 export async function queryAll(req, res) {
     try {
-      const userID = req.body.username;
       const wallet = await utils.getWallet();
       const gateway = await utils.getGateway(wallet, asLocalhost,userID );
       const network = await utils.getNetwork(gateway, wallet, userID);
@@ -44,7 +43,6 @@ export async function queryAll(req, res) {
 
 export async function queryMedIdUsage(req, res){
     try {
-      const userID = req.body.username;
       const wallet = await utils.getWallet();
       const gateway = await utils.getGateway(wallet, asLocalhost,userID );
       const network = await utils.getNetwork(gateway, wallet, userID);
