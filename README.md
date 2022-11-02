@@ -125,9 +125,6 @@
 
 - GET /medinfo/patient_query_medicalinfo/:medicalinfo_id/
     - return 1 medicalinfo object
-    - remember to add patient_username to request body
-        req.body.username
-
     {
         ID: 'medical1',
         Cases: [
