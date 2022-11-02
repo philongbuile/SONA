@@ -11,7 +11,7 @@ const path = require("path");
 const { time } = require("console");
 
 const chaincodename='sona';
-const userID = "camtu123";
+const userID = "peter123";
 const asLocalhost = false;
 const {registerUser} = require('../utils/registerUser');
 

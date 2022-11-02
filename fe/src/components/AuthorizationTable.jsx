@@ -1,5 +1,6 @@
 import './AuthorizationTable.css'
 import {useState, useRef} from 'react'
+import {useNavigate} from 'react-router-dom'
 
 const AuthorizationTable = ({
     data = null,
@@ -12,14 +13,32 @@ const AuthorizationTable = ({
       return field.toUpperCase();
     };
     
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true)
+
     let revokeDoctor = (doctor) => {
       return (() => {
-        fetch('http://localhost:8080/patient/revoke_doctor/camtu123/' + doctor)
+        fetch('http://localhost:8080/patient/revoke_doctor/peter123/' + doctor)
         .then(()=> {
           console.log('REVOKE SUCCESSFULLY ' + doctor)
         })
+        .then(res => navigate(0))
       })
     }
+
+    // useEffect(() => {
+    //   const timer = setTimeout(() => {
+    //     setLoading(false)
+    //   })}, []);
+      
+    // let refreshPage = (e) => {
+    //   // window.location.reload(false);
+    //   e.preventDefault();
+    //   window.onload = function () {
+    //     alert('Hello!') // it will not work!!!
+    //   }
+    //   navigate(0)
+    // }
 
     return (
       <div>
@@ -28,14 +47,14 @@ const AuthorizationTable = ({
             <tr>
               {columns &&
                 columns.map((head) => (
-                  <th>{getCaps(head.header, head.field)}</th>
+                  <th><h2>{getCaps(head.header, head.field)}</h2></th>
                 ))}
             </tr>
           </thead>
           <tbody>
             {data &&
               data.AuthorizedDoctors.map((row) => (
-                <tr className={`${hover && "hover"} ${striped && "striped"}`} onClick={revokeDoctor(row)} >
+                <tr className={`${hover && "hover"} ${striped && "striped"}`} onClick={revokeDoctor(row)}  >
                   <td>{row}</td>
                   <td><button>Remove</button></td>
                 </tr>

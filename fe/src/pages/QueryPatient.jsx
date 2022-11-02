@@ -30,10 +30,6 @@ const QueryPatient = () => {
                             </Link>
                     </div>
                     </div>
-{/* 
-                    <div className='box-body'>
-                        <QueryPatientContext data={patient} />
-                    </div> */}
                 </div>
             </div>
         </div>

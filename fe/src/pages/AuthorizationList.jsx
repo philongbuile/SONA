@@ -9,7 +9,7 @@ const AuthorizationList = () => {
         
     ];
     
-    const {data, error, isPending} = useFetch('http://localhost:8080/patient/query/camtu123')
+    const {data, error, isPending} = useFetch('http://localhost:8080/patient/query/peter123')
 
     return (
         <div className="AuthorizationList">
