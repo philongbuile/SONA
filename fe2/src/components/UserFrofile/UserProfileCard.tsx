@@ -1,4 +1,3 @@
-import React from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Card, Image, Typography, Space } from 'antd';
 import styles from '../../assets/css/UserProfile.module.css';

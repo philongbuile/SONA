@@ -9,6 +9,10 @@ import { User } from '../models/User';
 import {Case} from '../models/MedicalInfo';
 import {Link} from 'react-router-dom';
 import { Button } from '../components/Button/index2';
+import CaseTable from '../components/CaseTable';
+import UsageRecordTable from '../components/UsageRecordTable';
+import ScrollToTop from '../models/ScrollToTop';
+import DoctorTable from '../components/DoctorTable';
 
 const { Title } = Typography;
 
@@ -44,12 +48,10 @@ function UserProfile() {
     catch((error) => {
       console.log(error);
     });
-
-    
-
   }
 
   const getCases = () => {
+    console.log(medical_id);
     fetch(`http://localhost:8080/medinfo/patient_query_medicalinfo/${medical_id}`,
     {
       method: 'GET',
@@ -97,12 +99,11 @@ function UserProfile() {
         <Divider
           orientation="left"
           style={{
-            fontSize: '56px',
+            fontSize: '20px',
             fontFamily: 'Roboto',
-            color: '#8172d5',
+            color: '#72c6d5',
           }}
         >
-          User Profile
         </Divider>
         <div className={styles.content}>
           <UserProfileCard
@@ -124,9 +125,11 @@ function UserProfile() {
             </Title>
             <p style={{ marginLeft: '100px', fontWeight: 'Roboto' }}>
               <Link to={`/medical-info/${user?.MedicalInfo_ID}`}>Medical ID: {user?.MedicalInfo_ID}</Link>
-
             </p>
-
+            <div style={{ marginLeft: '100px', fontWeight: 'Roboto' }}>
+              <CaseTable/>
+            </div>
+            
 
             <div
               style={{
@@ -136,33 +139,42 @@ function UserProfile() {
               }}
             >
               <Title level={4} style={{ textDecoration: 'underline' }}>
+                Your usage history here
+              </Title>
+              
+              <div style={{ marginTop: '5px' }}>
+                <UsageRecordTable />
+              </div>
+
+              <Title level={4} style={{ textDecoration: 'underline' }}>
                 Your authorized doctors
               </Title>
               <p style={{ display: "flex",
                           justifyContent: "space-between",
                           fontWeight: 'Roboto' }}>  
-
+              
               {user?.AuthorizedDoctors.map((doctor) => (
-                <Row>
-                  <Col span={12}>
-                    <Link style = {
-                      {
-                        display: 'block',
-                        marginTop: '10px',
-                        textDecoration: 'none',
-                      }
-                    } to={`/doctor/${doctor}`}>username: {doctor}</Link>
-                  </Col>
-                  <Col span={12}>
-                    <Button
-                      onClick={() => handleRevoke(doctor)}
-                    >Revoke</Button>
-                  </Col>
-                </Row>
+                  <Row>
+                    <Col span={12}>
+                      <Link style = {
+                        {
+                          display: 'block',
+                          marginTop: '10px',
+                          textDecoration: 'none',
+                        }
+                      } to={`/doctor/${doctor}`}>username: {doctor}</Link>
+                    </Col>
+                    <Col span={12}>
+                      <Button
+                        onClick={() => handleRevoke(doctor)}
+                      >Revoke</Button>
+                    </Col>
+                  </Row>
               ))}                
               </p>
 
               <div className={styles.recent_test}>
+                  <DoctorTable />
               </div>
             </div>
           </div>

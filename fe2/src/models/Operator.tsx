@@ -1,7 +1,7 @@
 interface Operator {
     id: string;
-    username: string;
-    role: string;
+    Username: string;
+    Role: string;
 }
 
 export type { Operator };

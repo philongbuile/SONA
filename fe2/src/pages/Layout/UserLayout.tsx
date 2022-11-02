@@ -28,7 +28,7 @@ const UserLayout = () => {
 
   const defaultSelectedKeys = () => {
     let pathname = window.location.pathname;
-    if (pathname === 'classroom') {
+    if (pathname === '/user/patient/profile') {
       return ['2'];
     } else {
       return ['1'];
@@ -55,13 +55,13 @@ const UserLayout = () => {
             paddingLeft: '8vw',
           }}
         >
-          <a href="/">
-            <img
-              src={logo}
-              alt="logo"
-              width="80px"
-              style={{ marginTop: '20px' }}
-            ></img>
+          <a href="/"
+            style={{
+              fontSize: '2rem',
+              fontWeight: 'bold',
+              color: '#72c6d5',
+            }}>
+            Sona
           </a>
           <Menu
             defaultSelectedKeys={defaultSelectedKeys()}
@@ -70,10 +70,10 @@ const UserLayout = () => {
             _internalDisableMenuItemTitleTooltip={true}
             disabledOverflow={true}
           >
-            <Menu.Item key="2" onClick={() => navigate('classroom')}>
+            <Menu.Item key="2" onClick={() => navigate('/user/admin/user_management')}>
               <div className="flex justify-center items-center">
                 <AppstoreOutlined className="mr-2" />
-                Class
+                Notification
               </div>
             </Menu.Item>
 
@@ -82,7 +82,7 @@ const UserLayout = () => {
                 placement="bottom"
                 overlay={
                   <Menu>
-                    <Menu.Item key="1" onClick={() => navigate('account')}>
+                    <Menu.Item key="1" onClick={() => navigate('/user/patient/profile/philong123/medical2')}>
                       <div className="flex justify-center items-center">
                         <UserOutlined className="mr-2" />
                         Profile

@@ -3,9 +3,8 @@ import './configs/antd/customized.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import AppRoute from './routes/routes';
-import TableList from './components/TableList/TableList';
 import AppNavbar from './components/Navbar';
-import AuthorizationList from './pages/AuthorizationList';
+import AuthorizationList from './pages/CaseDetail';
 import Landingpage from './pages/Landingpage';
 import CaseForm from './components/forms/CaseForm';
 

@@ -3,6 +3,7 @@ import { Form, Input, Button, FormInstance} from 'antd'
 import { Case } from '../../models/MedicalInfo';
 import { medinfoApi } from '../../api/medinfoApi';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Divider, Card} from 'antd'
 
@@ -13,6 +14,9 @@ const CaseForm = () => {
     const [testresult, setTestresult] = useState('');
     const [diagnosis, setDiagnosis] = useState('');
     const [treatment, setTreatment] = useState('');
+    const [medical_id, setMedicationId] = useState('');
+
+    const navigate = useNavigate();
 
 
     const onFinish = (e) => {
@@ -25,6 +29,8 @@ const CaseForm = () => {
                 }
         console.log(examination);
         medinfoApi.addCase(examination, 'Doctor1', 'peter123', '58ac5bd0-5670-11ed-81f7-057484e78b65');
+        navigate('/user/operator/profile/Doctor1');
+
     };
 
 
@@ -40,6 +46,16 @@ const CaseForm = () => {
             onFinish={onFinish}
 
         >
+            <Form.Item>
+                <TextArea 
+                    rows={5}
+                    placeholder="medical infor" 
+                    id="medical_infor" 
+                    value={medical_id}
+                    onChange={(e) => setMedicationId(e.target.value)}
+
+                />
+            </Form.Item>
             <Form.Item>
                 <TextArea 
                     rows={5}

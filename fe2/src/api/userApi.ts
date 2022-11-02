@@ -13,9 +13,8 @@ const apiUrl = `${BASE_API}/`;
  */
 export const userApi = {
   getAllUsers: async () => {
-    const response = await fetch(`${apiUrl}/patient/queryall`, {
+    const response = await fetch(`${apiUrl}patient/queryall`, {
       method: 'GET',
-      credentials: 'include',
     })
       .then((res) => {
         if (res.ok) {
@@ -31,7 +30,7 @@ export const userApi = {
           throw new Error(err.errorMsg + ' ++ ' + err.errorField);
         }
 
-        const users: User[] = data.data;
+        const users: User[] = data.response;
         return users;
       })
       .catch((err) => {

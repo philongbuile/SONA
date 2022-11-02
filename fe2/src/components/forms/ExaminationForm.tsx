@@ -2,6 +2,7 @@ import styles from '../../assets/css/CaseForm.module.css';
 import { Divider, Card, Form, Input , Button} from 'antd'
 import { useState } from 'react';
 import { medinfoApi } from '../../api/medinfoApi';
+import { useNavigate } from 'react-router-dom';
 
 const {TextArea} = Input;
 
@@ -23,7 +24,7 @@ const ExaminationForm = () => {
         }
 
         console.log(examination);
-        medinfoApi.updateCase(examination, 'Doctor1', 'peter123', '58ac5bd0-5670-11ed-81f7-057484e78b65', '74f65340-59e0-11ed-a681-43b5da6416ff');
+        medinfoApi.updateCase(examination, 'Doctor1', 'philong123', '58ac5bd0-5670-11ed-81f7-057484e78b65', '74f65340-59e0-11ed-a681-43b5da6416ff');
     };
 
 

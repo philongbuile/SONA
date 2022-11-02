@@ -18,9 +18,24 @@ const Login = () => {
   let navigate = useNavigate();
 
 
-  const handleLogin = () => {
-    if (username === MockUser.username || password === MockUser.password) {
-      navigate('/user/patient/profile/' + username);
+  const handleLogin = async() => {
+    if (username !== MockUser.username || password !== MockUser.password) {
+      alert('Wrong username or password');
+      return;
+    } else {
+      await fetch(`http://localhost:8080/patient/query/${username}`, {
+        method: 'GET'
+        })
+        .then((response) => 
+          response.json()
+        )
+        .then((data) => {
+          console.log(data.response.MedicalInfo_ID);
+          navigate('/user/patient/profile/' + username + '/' + data.response.MedicalInfo_ID);
+        }).catch((error) => {
+          console.log(error);
+        }
+      );
     }
   };
 

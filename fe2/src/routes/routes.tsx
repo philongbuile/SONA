@@ -5,7 +5,6 @@ import UserLayout from '../pages/Layout/UserLayout';
 import Guard from '../guards/AuthGuard';
 import NotFound404 from '../pages/NotFound404';
 import UserProfile from '../pages/UserProfile';
-import UserManagement from '../pages/UserManagement';
 import { AdminEC, StudentEC } from '../models/Guard';
 import { LoginLayout } from '../pages/LoginLayout';
 import { Register } from '../pages/Register';
@@ -13,11 +12,17 @@ import Login from '../pages/Login';
 import Landingpage from '../pages/Landingpage';
 import Examination from '../pages/Examination';
 import ResearchBoard from '../pages/ResearchBoard';
-import AuthorizationList from '../pages/AuthorizationList';
+import AuthorizationList from '../pages/CaseDetail';
 import CaseForm from '../components/forms/CaseForm';
-import UserTable from '../components/UserTable';
 import ExaminationForm from '../components/forms/ExaminationForm';
-import SearchByKeyWord from '../pages/SearchByKeyWord';
+import SearchByKeyWord from '../pages/SearchByKeyword';
+import Pill from '../components/Pill';
+import PatientList from '../pages/PatientList';
+import CaseDetail from '../pages/CaseDetail';
+import DoctorProfile from '../pages/DoctorProfile';
+import FindDoctor from '../pages/FindDoctor';
+
+
 
 export default function AppRoute() {
   const AdminGuard: GuardEC = {
@@ -44,14 +49,17 @@ export default function AppRoute() {
             <Route element={<UserLayout />}>
               <Route path="patient/profile/:username/:medical_id" element={<UserProfile />} />
               <Route path="patient/examination/:username/:medicalinforID" element={<Examination />} />
-              <Route path="admin/user_management" element={<UserTable />} />
-              <Route path="operator/patient/operator/queryall" element={<AuthorizationList />} />
-              <Route path="operator/research/queryall" element={<ResearchBoard />} />
+              <Route path="patient/authorization_list" element={<AuthorizationList />} />
+              <Route path="operator/profile/:username" element={<DoctorProfile />} />
+              <Route path="patient/case/:medical_id" element={<CaseDetail/>} />
+              <Route path="patient/find/doctor/" element={<FindDoctor />} />
+
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
-          <Route path="/addcase/:medinfo_id" element={<CaseForm />} />
-          <Route path="/appendcase/:medinfo_id/:case_id" element={<ExaminationForm />} />
+          <Route path="/operator/addcase/" element={<CaseForm />} />
+          <Route path="/operator/appendcase/" element={<ExaminationForm />} />
+          <Route path="/operator/patient/list" element={<PatientList/>} />
           <Route path="/operator/search/" element={<SearchByKeyWord/>} />
           {/* 404 Not Found */}
           <Route path="*" element={<NotFound404 />} />
