@@ -11,14 +11,14 @@ const path = require("path");
 const { time } = require("console");
 
 const chaincodename='sona';
-// const userID = "camtu123";
+const userID = "camtu123";
 const asLocalhost = false;
 const {registerUser} = require('../utils/registerUser');
 
 
 export async function patientQuery(req, res) {
     try {
-      const userID = req.params.username;
+      // const userID = req.params.username;
       const wallet = await utils.getWallet();
       const gateway = await utils.getGateway(wallet, asLocalhost,userID );
       const network = await utils.getNetwork(gateway, wallet, userID);
@@ -47,7 +47,7 @@ export async function patientQuery(req, res) {
 
 export async function queryAll(req, res) {
     try {
-      const userID = req.body.username;
+      // const userID = req.body.username;
       const wallet = await utils.getWallet();
       const gateway = await utils.getGateway(wallet, asLocalhost,userID );
       const network = await utils.getNetwork(gateway, wallet, userID);
@@ -71,7 +71,7 @@ export async function queryAll(req, res) {
 
 export async function doctorQuery(req, res) {
   try {
-    const userID = req.params.doctor_username;
+    // const userID = req.params.doctor_username;
       const wallet = await utils.getWallet();
       const gateway = await utils.getGateway(wallet, asLocalhost,userID );
       const network = await utils.getNetwork(gateway, wallet, userID);
@@ -115,7 +115,7 @@ export async function doctorQuery(req, res) {
 export async function createPatient(req ,res) {
   try {
 
-    const userID = req.body.operator_username;
+    // const userID = req.body.operator_username;
       const wallet = await utils.getWallet();
       const gateway = await utils.getGateway(wallet, asLocalhost,userID );
       const network = await utils.getNetwork(gateway, wallet, userID);
@@ -153,8 +153,8 @@ export async function createPatient(req ,res) {
 export async function authorizeDoctor(req , res){
   try {
     const wallet = await utils.getWallet();
-    const gateway = await utils.getGateway(wallet, asLocalhost);
-    const network = await utils.getNetwork(gateway, wallet);
+    const gateway = await utils.getGateway(wallet, asLocalhost, userID);
+    const network = await utils.getNetwork(gateway, wallet, userID);
 
     // Get the contract from the network.
     const patientContract = network.getContract(chaincodename, "PatientContract");
@@ -188,8 +188,8 @@ export async function authorizeDoctor(req , res){
 export async function revokeOperator(req, res) {
   try {
     const wallet = await utils.getWallet();
-    const gateway = await utils.getGateway(wallet, asLocalhost);
-    const network = await utils.getNetwork(gateway, wallet);
+    const gateway = await utils.getGateway(wallet, asLocalhost, userID);
+    const network = await utils.getNetwork(gateway, wallet, userID);
 
     // Get the contract from the network.
     const patientContract = network.getContract(chaincodename, "PatientContract");

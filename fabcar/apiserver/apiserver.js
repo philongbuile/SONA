@@ -42,7 +42,7 @@ const wallet = require("./utils/registerUser.ts");
 
 app.post('/login', async (req, res) => {
   const {username, password} = req.body
-  User.findOne({username: username, password: password}, (error, user) => {
+  User.create({username: username, password: password}, (error, user) => {
     if(!user){
       return res.json({ error: "User Not found" })
     }

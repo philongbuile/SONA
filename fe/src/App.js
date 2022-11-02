@@ -18,8 +18,8 @@ function App() {
           <Route path ="/authlist" element={<AuthorizationList />} />
           <Route path="/userprofile" element={<UserProfile />} />
           <Route exact path="/:username/:medicalInfoID" element={<Examination />} />
-          <Route exact path="/record" element={<SearchByKeyWord />} />
-          <Route exact path="/medinfo/patient_query_medicalinfo/:medID" element={<Case />} />
+          <Route exact path="/medinfo/query_by_keyword/" element={<SearchByKeyWord />} />
+          <Route exact path="/medinfo/query_by_keyword/:medID" element={<Case />} />
       </Routes>
     </BrowserRouter>
   );

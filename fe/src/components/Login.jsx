@@ -18,26 +18,26 @@ const Login = () => {
     // e.preventDefault();
     const userInfo = {userName, password}
     console.log(userInfo)
-    // fetch('http://locahost:8080/login', {
-    //   method: "POST",
-    //   header: {
-    //     "Content-Type": "application/json",
-    //     Accept: "application/json",
-    //     "Access-Control-Allow-Origin": "*",
-    //   },
-    //   body: JSON.stringify(userInfo)
-    // }).then(() => {
-    //   console.log('AUTHENTICATING USER: VALID')
-    //   history.push('/userprofile')
-    // })
-    // .then((res) => res.json())
-    // .then((data) => {
-    //   console.log(data, "AUTHENTICATED")
-    //   if(data.status == "ok") {
-    //     alert("login successful");
-    //     window.localStorage.setItem("username", data.userName);
-    //   }
-    // })
+    fetch('http://locahost:8080/login', {
+      method: "POST",
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        // Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(userInfo)
+    }).then(() => {
+      console.log('AUTHENTICATING USER: VALID')
+      history.push('/userprofile')
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        console.log(data, "AUTHENTICATED")
+        if(data.status == "ok") {
+          alert("login successful");
+          window.localStorage.setItem("username", data.userName);
+        }
+    })
   }
 
   return (

@@ -19,8 +19,7 @@
 }
 
 .container-context{
-    
-    /* border-bottom-style: solid; */
+    border-bottom-style: outset;
     margin-bottom: 1rem;
     margin-top: 1rem;
 }
