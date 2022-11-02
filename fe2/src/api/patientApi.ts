@@ -21,15 +21,8 @@ export const patientApi = {
 
   getPatientsofDoctor: async (doctor_username: string) => {
 
-    const payload = '';
     
-    const response = await fetch(`${apiUrl}/queryall/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
+    const response = await fetch(`${apiUrl}/queryall/`)
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -38,7 +31,17 @@ export const patientApi = {
         throw new Error('Network response was not ok.');
       })
       .then((data) => {
-        console.log(data);
+        const patients = data.response.filter( (obj) => {
+            return obj.docType === "patient";
+        });
+
+        const authorized_patients = patients.filter((patient) => {
+             return patient.AuthorizedDoctors.includes(doctor_username);
+        })
+
+        console.log(authorized_patients);
+
+
         const err: AppError = data.error;
         if (err.errorCode !== 0) {
           throw new Error(err.errorMsg + ' ++ ' + err.errorField);
@@ -54,45 +57,4 @@ export const patientApi = {
     return response;
   },
 
-  addCase: async (examination: any, operator: string, patient: string, infoID: string) => {
-
-    const payload = {
-      examination: examination,
-      operator_username : operator,
-      patient_username: patient,
-      infoID : infoID
-    }
-
-    console.log(`${apiUrl}/addCase/`);
-    const response = await fetch(`${apiUrl}/addCase/`, {
-      method: 'POST',
-      // credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload)
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-
-        throw new Error('Network response was not ok.');
-      })
-      .then((data) => {
-        console.log(data);
-        const err: AppError = data.error;
-        if (err.errorCode !== 0) {
-          throw new Error(err.errorMsg + ' ++ ' + err.errorField);
-        }
-
-        const response: number = data.data;
-        return response;
-      })
-      .catch((err) => {
-        return err;
-      });
-
-    return response;
-  }
 };
