@@ -9,16 +9,15 @@ const fs = require("fs");
 const path = require("path");
 const { time } = require("console");
 
-// const userID = "camtu123";
+const userID = "camtu123";
 const asLocalhost = false;
 
 
 export async function queryAll(req, res) {
     try {
-    
-        const wallet = await utils.getWallet();
-        const gateway = await utils.getGateway(wallet, asLocalhost);
-        const network = await utils.getNetwork(gateway, wallet);
+      const wallet = await utils.getWallet();
+      const gateway = await utils.getGateway(wallet, asLocalhost,userID );
+      const network = await utils.getNetwork(gateway, wallet, userID);
     
         // Get the contract from the network.
         const usageRecordContract = network.getContract(
@@ -44,9 +43,9 @@ export async function queryAll(req, res) {
 
 export async function queryMedIdUsage(req, res){
     try {
-        const wallet = await utils.getWallet();
-        const gateway = await utils.getGateway(wallet, asLocalhost);
-        const network = await utils.getNetwork(gateway, wallet);
+      const wallet = await utils.getWallet();
+      const gateway = await utils.getGateway(wallet, asLocalhost,userID );
+      const network = await utils.getNetwork(gateway, wallet, userID);
     
         // Get the contract from the network.
         const usageRecordContract = network.getContract(
