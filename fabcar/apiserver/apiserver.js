@@ -1,20 +1,21 @@
 const { v4: uuidv4 } = require("uuid"); // for record_id
 const { v1: uuidv1 } = require("uuid"); // for case_id
 const express = require("express");
-const expressSession = require('express-session')
-// const bodyParser = require('body-parser');
+// const expressSession = require('express-session')
+const bodyParser = require('body-parser');
+
 const ejs = require("ejs");
 const util = require("util");
 const cors = require("cors");
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
 const app = express();
-
+const bcrypt = require('bcrypt')
 const User = require('./model/User')
 
-// app.use(express.bodyParser());
-app.use(express.json());
-app.use(express.urlencoded());
+app.use(bodyParser.json());
+
+// app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false}));
 app.use(cors());
 
 
@@ -40,14 +41,19 @@ const wallet = require("./utils/registerUser.ts");
  * FOR USER LOGIN
  */
 
-app.post('/login', async (req, res) => {
+app.post('/login', (req, res, next) => {
+  let result = req
   const {username, password} = req.body
-  User.create({username: username, password: password}, (error, user) => {
+  // let result = JSON.parse(req.body)
+  // const username = result.userName 
+  // const password = result.password
+  console.log(req.body)
+  User.findOne({username: username, password: password}, (error, user) => {
     if(!user){
       return res.json({ error: "User Not found" })
     }
     if(res.status(201)){
-      return res.json({status: "OK", data: bcrypt(username+password+ Date())})
+      return res.json({status: "OK", data: bcrypt.hash(username+password+ Date(), 10)})
     }
   })
 })

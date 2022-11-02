@@ -2,7 +2,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import React, { useState } from 'react';
 import './Login.css';
-import { useNavigate} from 'react-router-dom'
+import { Navigate, redirect, Route, useNavigate } from 'react-router-dom'
 
 
 const Login = () => {
@@ -12,32 +12,34 @@ const Login = () => {
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const history = useNavigate()
 
   const handleSubmit = (e) => {
     // e.preventDefault();
     const userInfo = {userName, password}
     console.log(userInfo)
-    fetch('http://locahost:8080/login', {
+    console.log(typeof(userInfo))
+    fetch('http://localhost:8080/login', {
       method: "POST",
       header: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        // Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(userInfo)
-    }).then(() => {
-      console.log('AUTHENTICATING USER: VALID')
-      history.push('/userprofile')
+      body: JSON.stringify({
+        "username": userName,
+        "password": password
+      }),
     })
-    .then((res) => res.json())
+    .then((res) =>{
+      console.log(res)
+      return res.json()
+    })
     .then((data) => {
-        console.log(data, "AUTHENTICATED")
-        if(data.status == "ok") {
-          alert("login successful");
+        if(data){
+          console.log(data)
           window.localStorage.setItem("username", data.userName);
+          <Route path='/userprofile' element={<Navigate to='/' />} />
+        }    
         }
-    })
+    )
   }
 
   return (
