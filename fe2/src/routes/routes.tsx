@@ -17,7 +17,11 @@ import AuthorizationList from '../pages/AuthorizationList';
 import CaseForm from '../components/forms/CaseForm';
 import UserTable from '../components/UserTable';
 import ExaminationForm from '../components/forms/ExaminationForm';
+<<<<<<< HEAD
 import DoctorPage from '../pages/DoctorPage';
+=======
+import SearchByKeyWord from '../pages/SearchByKeyWord';
+>>>>>>> 716b5feade2c2752a64456afab492efd8be9ba47
 
 export default function AppRoute() {
   const AdminGuard: GuardEC = {
@@ -42,7 +46,7 @@ export default function AppRoute() {
           {/* user routes */}
           <Route path="/user/*">
             <Route element={<UserLayout />}>
-              <Route path="patient/profile/:username" element={<UserProfile />} />
+              <Route path="patient/profile/:username/:medical_id" element={<UserProfile />} />
               <Route path="patient/examination/:username/:medicalinforID" element={<Examination />} />
               <Route path="admin/user_management" element={<UserTable />} />
               <Route path="operator/patient/operator/queryall" element={<AuthorizationList />} />
@@ -53,6 +57,7 @@ export default function AppRoute() {
           <Route path="/addcase/:medinfo_id" element={<CaseForm />} />
           <Route path="/appendcase/:medinfo_id/:case_id" element={<ExaminationForm />} />
           <Route path="/doctor/:doctor_username" element={<DoctorPage />} />
+          <Route path="/operator/search/" element={<SearchByKeyWord/>} />
           {/* 404 Not Found */}
           <Route path="*" element={<NotFound404 />} />
         </Routes>

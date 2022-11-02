@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import UserProfileCard from '../components/UserFrofile/UserProfileCard';
 import styles from '../assets/css/UserProfilePage.module.css';
-import { Layout, Divider, Typography } from 'antd';
+import {Divider, Typography, Row, Col } from 'antd';
 import { userApi } from '../api/userApi';
 import { useParams } from 'react-router-dom';
 import { UsageRecord } from '../models/UsageRecord';
 import { User } from '../models/User';
+import {Case} from '../models/MedicalInfo';
 import {Link} from 'react-router-dom';
+import { Button } from '../components/Button/index2';
 
 const { Title } = Typography;
 
@@ -15,28 +17,73 @@ function UserProfile() {
     username: string;
   };
 
+  type medicalParams = {
+    medical_id: string;
+  }
+
 
   const {username} = useParams<userParams>()
-  const {medical_id} = useParams()
+  const {medical_id} = useParams<medicalParams>()
 
   const [user, setUser] = useState<User>();
+  const [cases, setCase] = useState<Case>();
+
+  const getPersonalInfo = () => {
+    fetch(`http://localhost:8080/patient/query/${username}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        },
+        })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      setUser(data.response);
+    }).
+    catch((error) => {
+      console.log(error);
+    });
+
+    
+
+  }
+
+  const getCases = () => {
+    fetch(`http://localhost:8080/medinfo/patient_query_medicalinfo/${medical_id}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        },
+        })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      setCase(data.response);
+    }).
+    catch((error) => {
+      console.log(error);
+    });
+  }
 
   useEffect(() => {
-    fetch(`http://localhost:8080/patient/query/${username}`,
+    getPersonalInfo();
+    getCases();
+  }, []);
+
+  const handleRevoke = async(doctor_username) => {
+    await fetch(`http://localhost:8080/patient/revoke_doctor/${username}/${doctor_username}`,
       {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          },
-          })
+        })
       .then((response) => response.json())
       .then((data) => {
-        setUser(data.response);
+        console.log(data);
       }).
       catch((error) => {
         console.log(error);
       });
-  }, []);
+  }
 
   return (
     <div
@@ -91,17 +138,28 @@ function UserProfile() {
               <Title level={4} style={{ textDecoration: 'underline' }}>
                 Your authorized doctors
               </Title>
-              <p style={{ fontWeight: 'Roboto' }}>  
+              <p style={{ display: "flex",
+                          justifyContent: "space-between",
+                          fontWeight: 'Roboto' }}>  
 
-                {user?.AuthorizedDoctors.map((doctor) => (
-                  <Link style = {
-                    {
-                      display: 'block',
-                      marginTop: '10px',
-                      textDecoration: 'none',
-                    }
-                  } to={`/doctor/${doctor}`}>username: {doctor}</Link>
-                ))}
+              {user?.AuthorizedDoctors.map((doctor) => (
+                <Row>
+                  <Col span={12}>
+                    <Link style = {
+                      {
+                        display: 'block',
+                        marginTop: '10px',
+                        textDecoration: 'none',
+                      }
+                    } to={`/doctor/${doctor}`}>username: {doctor}</Link>
+                  </Col>
+                  <Col span={12}>
+                    <Button
+                      onClick={() => handleRevoke(doctor)}
+                    >Revoke</Button>
+                  </Col>
+                </Row>
+              ))}                
               </p>
 
               <div className={styles.recent_test}>
