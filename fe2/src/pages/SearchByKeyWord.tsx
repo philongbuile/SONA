@@ -9,14 +9,30 @@ const SearchByKeyWord = () => {
     const [keyword, setKeyword] = useState<any>();
     const [result, setResult] = useState<any>();
 
+    
+
+    function getKWArrayJson(keywords: string) {
+
+        // remove all whitespace
+        const kw_array = keywords.split(',');
+
+        
+        // split the keywords
+
+        return JSON.stringify(kw_array.map((item) => item.trim()));
+    }
+
+
     const handleSearch = async() => {
-        await fetch(`http://localhost:8080/medinfo/query_by_keyword/["${keyword}"]`, {
+        const kw = getKWArrayJson(keyword);
+        console.log(kw);
+        await fetch(`http://localhost:8080/medinfo/query_by_keyword/${kw}`, {
             method: 'GET'
         })
         .then((response) => response.json())
         .then((data) => {
             console.log(data)
-            setResult(data.response[0]);
+            setResult(data.response);
         }).catch((error) => {
             console.log(error);
         });
@@ -52,10 +68,12 @@ const SearchByKeyWord = () => {
         onClick={() => {handleSearch()}}>
         Shoot it! 
         </Button>
-        {result && 
-            <Link to={"medicalinfo/table/" + result.ID}>
-                <MedicalInfoCard medical_id={result.ID} tag={keyword}/>
+        {result && result.map((meditem) => 
+            <Link to={"medicalinfo/table/" + meditem.ID}>
+                <MedicalInfoCard medical_id={meditem.ID} tag={keyword}/>
             </Link>
+        )
+            
         }
         </Card>
     )
