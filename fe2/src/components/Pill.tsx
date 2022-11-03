@@ -5,8 +5,12 @@ import {Link} from 'react-router-dom';
 const Pill = () => {
   return (
       <div className={styles.pill}> 
-          <li><p>About us</p></li>
-          <li><p>Guideline</p></li>
+          <li><p>
+              <Link to="/">About us</Link>
+          </p></li>
+          <li><p>
+              <Link to="/">Guideline</Link>  
+          </p></li>
           <li><h1>Sona System</h1></li>
           <li><p>
             <Link to="/login">Login</Link>
