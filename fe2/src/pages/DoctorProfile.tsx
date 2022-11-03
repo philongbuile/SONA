@@ -90,13 +90,13 @@ function DoctorProfile() {
             }}
           >
             <Button>
-                <Link to="/operator/addcase/medical1">Create Case</Link>
+                <Link to={"/operator/addcase/" + operator?.Username}>Create Case</Link>
             </Button>
             <Button>
-                <Link to="/operator/appendcase/medical1/case1">Add Case</Link>
+                <Link to={"/operator/appendcase/" + operator?.Username}>Add Case</Link>
             </Button>
             <Button>
-                <Link to="/operator/search/cancer">Search Case</Link>
+                <Link to="/operator/search/">Search Med Info</Link>
             </Button>
           </div>
 

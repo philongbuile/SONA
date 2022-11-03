@@ -21,7 +21,8 @@ import PatientList from '../pages/PatientList';
 import CaseDetail from '../pages/CaseDetail';
 import DoctorProfile from '../pages/DoctorProfile';
 import FindDoctor from '../pages/FindDoctor';
-
+import AnotherProfile from '../pages/AnotherProfile';
+import CaseTable from '../components/CaseTable';
 
 
 export default function AppRoute() {
@@ -49,18 +50,19 @@ export default function AppRoute() {
             <Route element={<UserLayout />}>
               <Route path="patient/profile/:username/:medical_id" element={<UserProfile />} />
               <Route path="patient/examination/:username/:medicalinforID" element={<Examination />} />
-              <Route path="patient/authorization_list" element={<AuthorizationList />} />
               <Route path="operator/profile/:username" element={<DoctorProfile />} />
-              <Route path="patient/case/:medical_id" element={<CaseDetail/>} />
-              <Route path="patient/find/doctor/" element={<FindDoctor />} />
+              <Route path="operator/patient/info/:username/:medical_id" element={<AnotherProfile />} />
+              <Route path="patient/case/:medical_id/:case_id" element={<CaseDetail/>} />
+              <Route path="patient/authorize/:username/:medical_id" element={<FindDoctor />} />
 
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
-          <Route path="/operator/addcase/" element={<CaseForm />} />
-          <Route path="/operator/appendcase/" element={<ExaminationForm />} />
+          <Route path="/operator/addcase/:doctor_username" element={<CaseForm />} />
+          <Route path="/operator/appendcase/:doctor_username" element={<ExaminationForm />} />
           <Route path="/operator/patient/list" element={<PatientList/>} />
           <Route path="/operator/search/" element={<SearchByKeyWord/>} />
+          <Route path="/operator/search/medicalinfo/table/:medical_id" element={<CaseTable/>} />
           {/* 404 Not Found */}
           <Route path="*" element={<NotFound404 />} />
         </Routes>

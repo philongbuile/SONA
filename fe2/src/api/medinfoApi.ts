@@ -17,8 +17,37 @@ const apiUrl = `${BASE_API}/medinfo`;
  */
 export const medinfoApi = {
 
+  queryCase: async(medical_id) => {
+    const response = await fetch(`${apiUrl}/patient_query/${medical_id}/operator1`, {
+      method: 'GET',
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
 
-  updateCase: async (examination: any, operator: string, patient: string, infoID: string, caseID: string) => {
+        throw new Error('Network response was not ok.');
+      })
+      .then((data) => {
+        console.log(data);
+        const err: AppError = data.error;
+        if (err.errorCode !== 0) {
+          throw new Error(err.errorMsg + ' ++ ' + err.errorField);
+        }
+
+        const cases: Case[] = data.response;
+        return cases;
+      })
+      .catch((err) => {
+        return err;
+      });
+
+    return response;
+
+  },
+
+
+  updateCase: async (examination: any, operator: any, patient: string, infoID: string, caseID: string) => {
 
     const payload = {
       examination: examination,
@@ -60,7 +89,7 @@ export const medinfoApi = {
     return response;
   },
 
-  addCase: async (examination: any, operator: string, patient: string, infoID: string) => {
+  addCase: async (examination: any, operator: any, patient: string, infoID: string) => {
 
     const payload = {
       examination: examination,

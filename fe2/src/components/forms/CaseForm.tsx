@@ -4,17 +4,24 @@ import { Case } from '../../models/MedicalInfo';
 import { medinfoApi } from '../../api/medinfoApi';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { Divider, Card} from 'antd'
+import { useParams } from 'react-router-dom';
 
 const {TextArea} = Input;
 
 const CaseForm = () => {
 
+    type doctorParams = {
+        doctor_username: string
+    }
+
+    const {doctor_username} = useParams<doctorParams>();
+
     const [testresult, setTestresult] = useState('');
     const [diagnosis, setDiagnosis] = useState('');
     const [treatment, setTreatment] = useState('');
     const [medical_id, setMedicationId] = useState('');
+    const [username, setUsername] = useState('');
 
     const navigate = useNavigate();
 
@@ -23,13 +30,13 @@ const CaseForm = () => {
         console.log('finish');
         
         let examination = {
-                    testresult: testresult ,
+                    testresult: testresult,
                     diagnosis: diagnosis,
                     treatment: treatment,
                 }
         console.log(examination);
-        medinfoApi.addCase(examination, 'Doctor1', 'peter123', '58ac5bd0-5670-11ed-81f7-057484e78b65');
-        navigate('/user/operator/profile/Doctor1');
+        medinfoApi.addCase(examination, doctor_username, username, medical_id);
+        navigate('/user/operator/profile/' + doctor_username);
 
     };
 
@@ -46,6 +53,17 @@ const CaseForm = () => {
             onFinish={onFinish}
 
         >
+            <Form.Item>
+                <TextArea 
+                    rows={5}
+                    placeholder="username" 
+                    id="username" 
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+
+                />
+            </Form.Item>
+
             <Form.Item>
                 <TextArea 
                     rows={5}

@@ -19,9 +19,7 @@ export const patientApi = {
 
 // return arrays of patients of that doctor
 
-  getPatientsofDoctor: async (doctor_username: string) => {
-
-    
+  getPatientsofDoctor: async (doctor_username: any) => {
     const response = await fetch(`${apiUrl}/queryall/`)
       .then((res) => {
         if (res.ok) {
@@ -35,20 +33,9 @@ export const patientApi = {
             return obj.docType === "patient";
         });
 
-        const authorized_patients = patients.filter((patient) => {
-             return patient.AuthorizedDoctors.includes(doctor_username);
-        })
-
-        console.log(authorized_patients);
-
-
-        const err: AppError = data.error;
-        if (err.errorCode !== 0) {
-          throw new Error(err.errorMsg + ' ++ ' + err.errorField);
-        }
-
-        const response: number = data.data;
-        return response;
+        const authorized_patients = patients.filter((patient) => patient.AuthorizedDoctors.includes(doctor_username));
+        console.log(authorized_patients)
+        return authorized_patients;
       })
       .catch((err) => {
         return err;

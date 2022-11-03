@@ -3,15 +3,24 @@ import { Divider, Card, Form, Input , Button} from 'antd'
 import { useState } from 'react';
 import { medinfoApi } from '../../api/medinfoApi';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const {TextArea} = Input;
 
 const ExaminationForm = () => {
+    const navigate = useNavigate();
 
+    type doctorParams = {
+        doctor_username: string
+    }
+    const {doctor_username} = useParams<doctorParams>();
 
+    const [medical_id, setMedicalId] = useState('');
+    const [case_id, setCaseId] = useState('');
     const [testresult, setTestresult] = useState('');
     const [diagnosis, setDiagnosis] = useState('');
     const [treatment, setTreatment] = useState('');
+    const [username, setUsername] = useState('');
 
 
     const onFinish = (e) => {
@@ -24,7 +33,8 @@ const ExaminationForm = () => {
         }
 
         console.log(examination);
-        medinfoApi.updateCase(examination, 'Doctor1', 'philong123', '58ac5bd0-5670-11ed-81f7-057484e78b65', '74f65340-59e0-11ed-a681-43b5da6416ff');
+        medinfoApi.updateCase(examination, doctor_username, username , medical_id, case_id);
+        navigate(`/user/operator/profile/${doctor_username}`);
     };
 
 
@@ -39,6 +49,37 @@ const ExaminationForm = () => {
             onFinish={onFinish}
 
         >
+            <Form.Item>
+            <TextArea 
+                rows={5}
+                placeholder="Username" 
+                id="username" 
+                value={username} 
+                onChange={(e) => setUsername(e.target.value)}
+
+            />
+            </Form.Item>
+            <Form.Item>
+            <TextArea 
+                rows={5}
+                placeholder="medical infor id" 
+                id="medical_id" 
+                value={medical_id} 
+                onChange={(e) => setMedicalId(e.target.value)}
+
+            />
+            </Form.Item>
+            <Form.Item>
+                <TextArea 
+                    rows={5}
+                    placeholder="case id" 
+                    id="case_id" 
+                    value={case_id} 
+                    onChange={(e) => setCaseId(e.target.value)}
+
+                />
+            </Form.Item>
+
             <Form.Item>
                 <TextArea 
                     rows={5}
@@ -77,7 +118,7 @@ const ExaminationForm = () => {
                 <Button 
                     type="primary"
                     htmlType="submit"
-                >
+                >   
                     Append Case
                 </Button>
             </Form.Item >

@@ -8,10 +8,11 @@ export const LoginLayout = () => {
     <Layout className="App" style={{ backgroundColor: 'white' }}>
       <header
         style={{
-          height: '54px',
+          height: '24px',
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
+          justifyContent: 'center'
         }}
       >
         <h1 style={{ width: '254px', paddingLeft: '22px', marginTop: '1em' }}>

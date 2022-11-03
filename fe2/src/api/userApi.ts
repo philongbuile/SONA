@@ -40,7 +40,7 @@ export const userApi = {
     return response;
   },
 
-  getInfoByUsername: async (username: string) => {
+  getId: async (username: any) => {
     const response = await fetch(
       `${apiUrl}patient/query/` + username,
       {
@@ -61,9 +61,7 @@ export const userApi = {
           throw new Error(err.errorMsg + ' ++ ' + err.errorField);
         }
 
-        
-        const user = data
-        return user;
+        return data.response.MedicalInfo_ID;
       })
       .catch((err) => {
         return err;
@@ -74,7 +72,7 @@ export const userApi = {
 
   getMedicalInfo: async (id: string) => {
     const response = await fetch(
-      `${apiUrl}/medinfo/patient_query_medicalinfo/` + id,
+      `${apiUrl}/medinfo/patient_query_medicalifo/` + id,
       {
         method: 'GET',
       }

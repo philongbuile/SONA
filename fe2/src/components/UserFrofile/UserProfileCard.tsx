@@ -25,8 +25,7 @@ const UserProfileCard: React.FC<UserCardProps> = ({
     <div className={styles.content}>
       <Image
         width={250}
-        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-        style={{ borderRadius: '50%' }}
+        src="https://static2.yan.vn/YanNews/2167221/202102/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg"
       />
 
       <div className={styles.info}>

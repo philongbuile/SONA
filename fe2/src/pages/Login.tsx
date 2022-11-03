@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { roleFunc } from '../utils/Roles';
 import './Login.css';
 import MockUser from '../api/MockUser.json';
+import MockSearch from '../api/MockSearch.json';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -43,7 +44,7 @@ const Login = () => {
     <div>
       <h6
         className="login__title"
-        style={{ color: '#8172d5', marginLeft: '20px' }}
+        style={{ color: '#72c6d5', marginLeft: '20px' }}
       >
         Sign In
       </h6>
@@ -51,7 +52,7 @@ const Login = () => {
         <Form>
           <Form.Item>
             <label
-              style={{ fontSize: 20, fontWeight: '700', color: '#8172d5' }}
+              style={{ fontSize: 20, fontWeight: '700', color: '#72c6d5' }}
             >
               Username
             </label>
@@ -69,7 +70,7 @@ const Login = () => {
           </Form.Item>
           <Form.Item>
             <label
-              style={{ fontSize: 20, fontWeight: '700', color: '#8172d5' }}
+              style={{ fontSize: 20, fontWeight: '700', color: '#72c6d5' }}
             >
               Password
             </label>
@@ -97,10 +98,11 @@ const Login = () => {
                 height: '50px',
                 borderRadius: '32px',
                 paddingTop: '4px',
-                border: '2px solid #8172d5',
+                border: '2px solid #72c6d5',
                 paddingBottom: '4px',
                 lineHeight: '14px',
                 fontSize: '20px',
+                backgroundColor: '#72c6d5',
               }}
             >
               Login
@@ -118,7 +120,7 @@ const Login = () => {
             <p>
               <a
                 style={{
-                  color: '#8172d5',
+                  color: '#72c6d5',
                   textDecoration: 'underline',
                   fontFamily: 'Roboto',
                   fontSize: '14px',
@@ -137,10 +139,12 @@ const Login = () => {
                 width: '100%',
                 height: '40px',
                 borderRadius: '32px',
-                border: '2px solid #8172d5',
+                border: '2px solid #72c6d5',
                 paddingTop: '4px',
                 paddingBottom: '4px',
                 lineHeight: '14px',
+                backgroundColor: '#72c6d5',
+                color: '#fff',
               }}
             >
               CREATE AN ACCOUNT

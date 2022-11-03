@@ -1,7 +1,7 @@
 .item {
-
-    flex-direction: column;
-    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
     align-items: center;
     width: 90%;
     height: 50;
@@ -18,18 +18,14 @@
 }
 
 
-.name {
-    display:inline;
-    margin-left: 15%;
+.testresult {
+
+    
 }
 
-.id {
-    display:inline;
-    margin-right: 90%;
+.diagnosis {
 }
 
 
-.revoke {
-    display:inline;
-    margin-left: 15%;
+.treatment {
 }

@@ -3,7 +3,7 @@ import UserProfileCard from '../components/UserFrofile/UserProfileCard';
 import styles from '../assets/css/UserProfilePage.module.css';
 import {Divider, Typography, Row, Col } from 'antd';
 import { userApi } from '../api/userApi';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { UsageRecord } from '../models/UsageRecord';
 import { User } from '../models/User';
 import {Case} from '../models/MedicalInfo';
@@ -17,6 +17,7 @@ import DoctorTable from '../components/DoctorTable';
 const { Title } = Typography;
 
 function UserProfile() {
+  const navigate = useNavigate();
   type userParams = {
     username: string;
   };
@@ -40,38 +41,17 @@ function UserProfile() {
         'Content-Type': 'application/json',
         },
         })
-    .then((response) => response.json())
+    .then((response) => response.json()
     .then((data) => {
-      console.log(data);
       setUser(data.response);
     }).
     catch((error) => {
       console.log(error);
-    });
-  }
-
-  const getCases = () => {
-    console.log(medical_id);
-    fetch(`http://localhost:8080/medinfo/patient_query_medicalinfo/${medical_id}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        },
-        })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      setCase(data.response);
-    }).
-    catch((error) => {
-      console.log(error);
-    });
+    }));
   }
 
   useEffect(() => {
     getPersonalInfo();
-    getCases();
   }, []);
 
   const handleRevoke = async(doctor_username) => {
@@ -81,6 +61,9 @@ function UserProfile() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+      }).
+      then(() => {
+        navigate(0);
       }).
       catch((error) => {
         console.log(error);
@@ -95,6 +78,7 @@ function UserProfile() {
         justifyContent: 'center',
       }}
     >
+      <ScrollToTop />
       <div>
         <Divider
           orientation="left"
@@ -102,10 +86,11 @@ function UserProfile() {
             fontSize: '20px',
             fontFamily: 'Roboto',
             color: '#72c6d5',
+            position: 'relative',
           }}
         >
         </Divider>
-        <div className={styles.content}>
+        <div>
           <UserProfileCard
             fullname= {user?.FullName as string}
             username={user?.Username as string}
@@ -119,12 +104,12 @@ function UserProfile() {
           <div className={styles.userinfo}>
             <Title
               level={4}
-              style={{ marginLeft: '100px', textDecoration: 'underline' }}
+              style={{ marginLeft: '100px', textDecoration: 'underline', marginTop: "10%" }}
             >
               Your personal medical information
             </Title>
             <p style={{ marginLeft: '100px', fontWeight: 'Roboto' }}>
-              <Link to={`/medical-info/${user?.MedicalInfo_ID}`}>Medical ID: {user?.MedicalInfo_ID}</Link>
+              <Link to={`/user/patient/case/${user?.MedicalInfo_ID}`}>Medical ID: {user?.MedicalInfo_ID}</Link>
             </p>
             <div style={{ marginLeft: '100px', fontWeight: 'Roboto' }}>
               <CaseTable/>
@@ -173,8 +158,10 @@ function UserProfile() {
               ))}                
               </p>
 
-              <div className={styles.recent_test}>
-                  <DoctorTable />
+              <div>
+                  <Button>
+                    <Link to={`/user/patient/authorize/${username}/${medical_id}`}>Add more doctor</Link>
+                  </Button>
               </div>
             </div>
           </div>

@@ -3,7 +3,6 @@ import tableStyles from '../../assets/css/TableList.module.css'
 import { Divider, Card, Button } from 'antd'
 
 interface CaseCardProps {
-  case_id: string;
   testresult: string;
   diagnosis: string;
   treatment: string;
@@ -11,7 +10,6 @@ interface CaseCardProps {
 
 
 const CaseCard: React.FC<CaseCardProps> = ({
-  case_id,
   testresult,
   diagnosis,
   treatment,
@@ -21,11 +19,9 @@ const CaseCard: React.FC<CaseCardProps> = ({
       <div className={tableStyles.table_list}>
 
         <Card className={listStyles.item}>
-          <p className={listStyles.id}> Case_ID: {case_id} </p>
-          <p className={listStyles.name}>{testresult}</p>
-          <p className={listStyles.name}>{diagnosis}</p>
-          <p className={listStyles.name}>{treatment}</p>
-          <Button className={listStyles.revoke} >😭</Button>
+          <p className={listStyles.testresults}>Test Result: {testresult}</p>
+          <p className={listStyles.diagnosis}>Diagnosis: {diagnosis}</p>
+          <p className={listStyles.treatment}>Treatment: {treatment}</p>
         </Card>
       </div>
   )

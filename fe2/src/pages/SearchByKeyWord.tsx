@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import CaseCard from '../components/TableList/CaseCard';
+import MedicalInfoCard from '../components/TableList/MedicalInfoCard';
 import {Card, Input, Divider, Button} from 'antd';
 import styles from '../assets/css/AuthorizationList.module.css'
+import MockSearch from '../api/MockSearch.json'
 
 const SearchByKeyWord = () => {
     const [keyword, setKeyword] = useState<any>();
@@ -14,10 +15,9 @@ const SearchByKeyWord = () => {
         })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data.response)
-            setResult(data.response);
-        }
-        ).catch((error) => {
+            console.log(data)
+            setResult(data.response[0]);
+        }).catch((error) => {
             console.log(error);
         });
         console.log(keyword);
@@ -25,12 +25,12 @@ const SearchByKeyWord = () => {
 
     return (
         <Card className={styles.cover}>
-            <Divider orientation="left"style={{fontSize: 40}}>Search Case</Divider> 
+            <Divider orientation="left"style={{fontSize: 40}}>Search Medical Infor</Divider> 
             {/* <Title>
                 Case_ID: medical1
             </Title> */}
         <Input
-        placeholder="Search a case"
+        placeholder="Enter a medical infor"
         style={{ 
             width: 200,
             height: 40,
@@ -49,18 +49,14 @@ const SearchByKeyWord = () => {
             marginLeft: "10px",
             marginBottom: "20px"
         }}
-        onClick={handleSearch}
-        >
-        Shoot it!
+        onClick={() => {handleSearch()}}>
+        Shoot it! 
         </Button>
-        {result && result.map((cases: any) => (
-            <CaseCard
-                case_id={cases.Case_ID || "medical1"}
-                testresult={cases.TestResult || "cancer"}
-                diagnosis={cases.Diagnosis || "cancer stage 1"}
-                treatment={cases.Treatment || "use medicine "}
-            />
-        ))}
+        {result && 
+            <Link to={"medicalinfo/table/" + result.ID}>
+                <MedicalInfoCard medical_id={result.ID} tag={keyword}/>
+            </Link>
+        }
         </Card>
     )
 

@@ -2,85 +2,75 @@ import { User } from '../models/User';
 import { Table, Button, Popconfirm, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
+import {MedicalInfo} from '../models/MedicalInfo';
+import {userApi} from '../api/userApi';
 
 
 const CaseTable = () => {
-    type medicalParams = {
-        medical_id: string;
+
+    const {username} = useParams<any>();
+    interface caseParams {
+        Case_ID: string;
     }
     const navigate = useNavigate();
-    const {medical_id} = useParams<medicalParams>()
+    const [medical_id, setMedicalID] = useState<any>();
+    const id = userApi.getId(username).then((data) => {
+        setMedicalID(data);
+    });
 
-    interface Params 
-    {
-        case_id: string,
-        diagnosis: string,
-        testresult: string,
-        treatment: string,
-    }
-    
+    const [result, setResult] = useState<any>();
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>('');
+
+    useEffect(() => {
+        fetch(`http://localhost:8080/medinfo/patient_query_medicalinfo/${medical_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data)
+                setResult(data.response.Cases);
+                setLoading(false);
+            }).catch((error) => {
+                console.log(error);
+                setError(error);
+                setLoading(false);
+            });
+    }, [])
+
+
     //create title of columns in user table information
     const columns = [
         {
-        title: 'Case_ID',
-        dataIndex: 'case_id',
-        key: 'case_id',
+        title: 'Case ID',
+        dataIndex: 'Case_ID',
+        key: 'Case_ID',
         },
         {
-        title: 'Diagnosis',
-        dataIndex: 'diagnosis',
-        key: 'diagnosis',
-        },
-        {
-        title: 'Test Result',
-        dataIndex: 'testresult',
-        key: 'testresult',
-        },
-        {
-        title: 'Treatment',
-        dataIndex: 'treatment',
-        key: 'treament',
-        },
-        {
-        render: (text: string, record: Params) => (
+        render: (text: string, record: caseParams) => (
             <Space size="middle">
             <Button onClick={() => {
-                navigate(`/patient/case/${medical_id}`)
+                navigate(`/user/patient/case/${medical_id}/${record.Case_ID}`)
             }}>See more</Button>
             </Space>
         ),
         },
-        {
-            render: (text: string, record: Params) => (
-                <Space size="middle">
-                <Button onClick={() => {
-                    navigate(`/operator/appendcase`)
-                }}>Add Case</Button>
-                </Space>
-            ),
-        }
     ];
-
-    const data: Params[] = [
-        {
-        case_id: '1',
-        diagnosis: 'Diagnosis 1',
-        testresult: 'Test Result 1',
-        treatment: 'Treatment 1',
-        },
-        {
-        case_id: '2',
-        diagnosis: 'Diagnosis 2',
-        testresult: 'Test Result 2',
-        treatment: 'Treatment 2',
-        },
-    ]
 
     
     return (
         <div style={{ padding: 25, background: '#fff', minHeight: '360'}}>
         <span>
-          <Table columns={columns} dataSource={data}></Table>
+          <Table columns={columns} dataSource={
+                result?.map((items: any) => {
+                    return {
+                        Case_ID: items.Case_ID,
+                    }
+                })
+          }></Table>
         </span>
       </div>
     );
