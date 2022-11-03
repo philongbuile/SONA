@@ -22,7 +22,7 @@ import DoctorProfile from '../pages/DoctorProfile';
 import FindDoctor from '../pages/FindDoctor';
 import AnotherProfile from '../pages/AnotherProfile';
 import CaseTable from '../components/CaseTable';
-import SearchByKeyWord from '../pages/SearchByKeyword';
+import SearchByKeyWord from '../pages/SearchByKeyWord';
 
 
 
