@@ -89,7 +89,7 @@ export class SecuredUsageRecordContract extends Contract {
         let selector = {
             selector:  {
                 //MedicalInfo_ID:  { "$eq": "medical1" },
-                docType: {"$eq":'secured_sageRecord'}
+                docType: {"$eq":'secured_usageRecord'}
             }
         };
 
