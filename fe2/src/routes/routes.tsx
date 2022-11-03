@@ -15,7 +15,6 @@ import ResearchBoard from '../pages/ResearchBoard';
 import AuthorizationList from '../pages/CaseDetail';
 import CaseForm from '../components/forms/CaseForm';
 import ExaminationForm from '../components/forms/ExaminationForm';
-import SearchByKeyWord from '../pages/SearchByKeyword';
 import Pill from '../components/Pill';
 import PatientList from '../pages/PatientList';
 import CaseDetail from '../pages/CaseDetail';
@@ -23,6 +22,8 @@ import DoctorProfile from '../pages/DoctorProfile';
 import FindDoctor from '../pages/FindDoctor';
 import AnotherProfile from '../pages/AnotherProfile';
 import CaseTable from '../components/CaseTable';
+import SearchByKeyWord from '../pages/SearchByKeyWord';
+
 
 
 export default function AppRoute() {
