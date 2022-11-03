@@ -103,11 +103,12 @@ async function main() {
             const network = await gateway.getNetwork(channelName);
 
             // Get the contract from the network.
-            const operator = network.getContract(chaincodeName, 'OperatorContract');
-            const medical = network.getContract(chaincodeName, 'MedicalInfoContract');
-            const usage = network.getContract(chaincodeName, 'UsageRecordContract');
-            const patient = network.getContract(chaincodeName, 'PatientContract');
+            // const operator = network.getContract(chaincodeName, 'OperatorContract');
+            // const medical = network.getContract(chaincodeName, 'MedicalInfoContract');
+            // const usage = network.getContract(chaincodeName, 'UsageRecordContract');
+            // const patient = network.getContract(chaincodeName, 'PatientContract');
             const secured_patient = network.getContract(chaincodeName, 'SecuredPatientContract');
+            const secured_usage = network.getContract(chaincodeName, 'SecuredUsageRecordContract');
 
 
             // Initialize a set of asset data on the channel using the cshaincode 'InitLedger' function.
@@ -129,7 +130,8 @@ async function main() {
             // await operator.submitTransaction('InitLedger');
             // await medical.submitTransaction('InitLedger');
             // await usage.submitTransaction('InitLedger');
-            // await secured_patient.submitTransaction('InitLedger');
+            await secured_patient.submitTransaction('InitLedger');
+
             // await patient.submitTransaction('InitLedger');
 
 
@@ -144,9 +146,9 @@ async function main() {
 
             const medid = uuidv4();
             const new_patient = 'suleiman';
-            console.log(`Create patient ${new_patient}`);
-            result = await secured_patient.submitTransaction('CreatePatient', 'tu cam', new_patient, medid, '2463','cat street', '44/3', 'female', 'Doctor1');
-            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+            // console.log(`Create patient ${new_patient}`);
+            // result = await secured_patient.submitTransaction('CreatePatient', 'tu cam', new_patient, medid, '2463','cat street', '44/3', 'female', 'Doctor1');
+            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
             
 
@@ -187,10 +189,13 @@ async function main() {
             // result = await medical.evaluateTransaction('QueryByKeyWord', k2 );
             // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
-            // console.log('\n--> Evaluate Transaction: Query all usage record of medical1');
-            // result = await usage.evaluateTransaction('GetAll');
-            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+            console.log('\n--> Evaluate Transaction: Query all usage collection');
+            result = await secured_usage.evaluateTransaction('GetAll');
+            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
+            console.log('\n--> Evaluate Transaction: Query all patient collection');
+            result = await secured_patient.evaluateTransaction('GetAll');
+            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
         } finally {
             // Disconnect from the gateway when the application is closing

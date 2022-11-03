@@ -8,12 +8,12 @@ import {MedicalInfoContract} from './MedicalInfo_Contract'
 import {OperatorContract} from './MedicalOperator_Contract'
 import { UsageRecordContract } from './UsageRecordContract';
 import {SecuredPatientContract} from './secured_patient_contract';
+import {SecuredUsageRecordContract} from './secured_record_contract';
 
 
-
+export {SecuredUsageRecordContract} from './secured_record_contract';
 export {PatientContract} from './PatientContract';
 export {SecuredPatientContract} from './secured_patient_contract';
-
 export {MedicalInfoContract} from './MedicalInfo_Contract'
 export {OperatorContract} from './MedicalOperator_Contract'
 export { UsageRecordContract } from './UsageRecordContract';
@@ -23,4 +23,4 @@ export { UsageRecordContract } from './UsageRecordContract';
 
 
 
-export const contracts: any[] = [SecuredPatientContract, PatientContract, MedicalInfoContract, OperatorContract, UsageRecordContract];
+export const contracts: any[] = [SecuredPatientContract, PatientContract, MedicalInfoContract, OperatorContract, SecuredUsageRecordContract ];

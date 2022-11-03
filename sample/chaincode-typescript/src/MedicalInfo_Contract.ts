@@ -10,7 +10,7 @@ import {Case, Examination, MedicalInfo} from './asset';
 import { CaseContract } from './caseUtils';
 import { PatientContract } from './PatientContract';
 import { OperatorContract } from './MedicalOperator_Contract';
-import { UsageRecordContract } from './UsageRecordContract';
+import { SecuredUsageRecordContract } from './secured_record_contract';
 
 
 @Info({title: 'MedicalInfo', description: 'Smart contract for trading MedicalInfos'})
@@ -138,7 +138,7 @@ export class MedicalInfoContract extends Contract {
         }
 
          // create usage record
-         let recordContract = new UsageRecordContract();
+         let recordContract = new SecuredUsageRecordContract();
          await recordContract.CreateRecord(ctx, record_id,undefined , id, 'read', operator_username,  time);
 
 
@@ -197,7 +197,7 @@ export class MedicalInfoContract extends Contract {
         await ctx.stub.putState(info_id, Buffer.from(stringify(sortKeysRecursive(infoObject))));
 
         // create usage record
-        let recordContract = new UsageRecordContract();
+        let recordContract = new SecuredUsageRecordContract();
         await recordContract.CreateRecord(ctx,record_id ,new_case.Case_ID, info_id, 'write', operator_username,time);
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
     }
@@ -217,7 +217,7 @@ export class MedicalInfoContract extends Contract {
    
 
         // create usage record
-        let recordContract = new UsageRecordContract();
+        let recordContract = new SecuredUsageRecordContract();
         await recordContract.CreateRecord(ctx,record_id ,case_id, info_id, 'write', operator_username,time);
          }
 

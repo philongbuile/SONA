@@ -9,7 +9,7 @@ import {Patient, MedicalInfo} from './asset';
 import {Case} from './asset';
 import { MedicalInfoContract } from './MedicalInfo_Contract';
 import { OperatorContract } from './MedicalOperator_Contract';
-import { UsageRecordContract } from './UsageRecordContract';
+import { SecuredUsageRecordContract } from './secured_record_contract';
 @Info({title: 'AssetTransfer', description: 'Smart contract for trading assets'})
 export class SecuredPatientContract extends Contract {
     // col_name = '_implicit_org_Org1MSP';
@@ -74,10 +74,10 @@ export class SecuredPatientContract extends Contract {
     // CreateAsset issues a new asset to the world state with given details.
     @Transaction()
     public async CreatePatient(ctx: Context,fullname: string, username: string, medinfo_id: string, phone: string, address: string, dob: string, gender: string, operator_username: string): Promise<void> {
-        const exists = await this.PatientExists(ctx,username);
-        if (exists) {
-            throw new Error(`The asset ${username} already exists`);
-        }
+        // const exists = await this.PatientExists(ctx,username);
+        // if (exists) {
+        //     throw new Error(`The asset ${username} already exists`);
+        // }
         // create medicalinfo for this patient
         await new MedicalInfoContract().CreateMedicalInfo(ctx, medinfo_id);
 
@@ -169,7 +169,7 @@ export class SecuredPatientContract extends Contract {
         
 
         // create usage record
-        let recordContract = new UsageRecordContract();
+        let recordContract = new SecuredUsageRecordContract();
         await recordContract.CreateRecord(ctx, record_id ,undefined, patient_obj.MedicalInfo_ID, 'read patient\'s data', doctor_username, time);
 
         return patient;    
@@ -189,13 +189,10 @@ export class SecuredPatientContract extends Contract {
     public async GetAll(ctx: Context): Promise<string> {
         const allResults = [];
         // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
-        let iterator = await ctx.stub.getPrivateDataByRange(this.col_name, '', '');
+        let response = await ctx.stub.getPrivateDataByRange(this.col_name, '', '');
 
-        if (!iterator) {
-            console.log(`iterator is not defined`);
-            throw Error('iterator is not defined');
-        }
-        console.log(`iterator in secured getall ${iterator}`);
+        console.log(`response in secured getall ${response}`);
+        let iterator = response.iterator;
         let result = await iterator.next();
         while (!result.done) {
             const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
@@ -246,6 +243,7 @@ export class SecuredPatientContract extends Contract {
         // return JSON.stringify(patient);
 
     }
+
 
 
     @Transaction()

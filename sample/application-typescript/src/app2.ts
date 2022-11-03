@@ -107,7 +107,8 @@ async function main() {
             const medical = network.getContract(chaincodeName, 'MedicalInfoContract');
             const usage = network.getContract(chaincodeName, 'UsageRecordContract');
             const patient = network.getContract(chaincodeName, 'PatientContract');
-            const secured_patient = network.getContract(chaincodeName, 'SecuredPatientContract');
+            const patient_contract = network.getContract(chaincodeName, 'SecuredPatientContract');
+            const secured_usage = network.getContract(chaincodeName, 'SecuredUsageRecordContract');
 
 
             // Initialize a set of asset data on the channel using the cshaincode 'InitLedger' function.
@@ -115,54 +116,56 @@ async function main() {
             // deployed the first time. Any updates to the chaincode deployed later would likely not need to run
             // an "init" type function.
             // console.log('\n--> Submit Transaction: InitLedger, function creates the initial set of assets on the ledger');
-            // await operator.submitTransaction('InitLedger');
-            // await medical.submitTransaction('InitLedger');
-            // await usage.submitTransaction('InitLedger');
-            // await secured_patient.submitTransaction('InitLedger');
-            // await patient.submitTransaction('InitLedger');
-
-
-
-
+            await operator.submitTransaction('InitLedger');
+            await medical.submitTransaction('InitLedger');
+            await patient_contract.submitTransaction('InitLedger');
+            await patient.submitTransaction('InitLedger');
             let result;
 
             const new_patient = 'vero';
             const medid = uuidv4();
 
-            console.log(`Create patient ${new_patient}`);
-            result = await secured_patient.submitTransaction('CreatePatient', 'tu cam', new_patient, medid, '2463','cat street', '44/3', 'female', 'Doctor1');
-            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+            // console.log(`Create patient ${new_patient}`);
+
+            // result = await patient_contract.submitTransaction('CreatePatient', 'tu cam', new_patient, medid, '2463','cat street',   '44/3', 'female', 'Doctor1');
+            
+            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
             
             // console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');
-            // result = await secured_patient.evaluateTransaction('GetAll');
+            // result = await patient_contract.evaluateTransaction('GetAll');
             // console.log(`*** getall Result: ${prettyJSONString(result.toString())}`);
     
 
             
 
             // console.log('\n--> Evaluate Transaction: Authorized Doctor2');
-            // result = await secured_patient.submitTransaction('AuthorizeOperator', new_patient, 'Doctor2');
+            // result = await patient_contract.submitTransaction('AuthorizeOperator', new_patient, 'Doctor2');
             // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
 
             // console.log('\n--> Evaluate Transaction: Revoke Authorized Doctor1');
-            // result = await secured_patient.submitTransaction('RevokeOperator', new_patient, 'Doctor1');
+            // result = await patient_contract.submitTransaction('RevokeOperator', new_patient, 'Doctor1');
             // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
-            console.log('\n--> Evaluate Transaction: query patient');
-            result = await secured_patient.evaluateTransaction('patientQuery', new_patient);
-            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+            // console.log('\n--> Evaluate Transaction: query patient');
+            // result = await patient_contract.evaluateTransaction('patientQuery', new_patient);
+            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
     
 
-     
+            let record_id = uuidv4();
+            let time =  new Date().toLocaleString()
+
+            console.log('\n--> Evaluate Transaction: query medicalinfo');
+            result = await medical.evaluateTransaction('operatorQueryMedicalInfo', 'medical1', 'Researcher1', record_id, time);
+            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
             
 
            
 
             // console.log('\n--> Evaluate Transaction: secured GetAllAssets, function returns all the current assets on the ledger');
-            // result = await secured_patient.evaluateTransaction('GetAll');
+            // result = await patient_contract.evaluateTransaction('GetAll');
             // console.log(`*** getall secured Result: ${prettyJSONString(result.toString())}`);
 
             // console.log('\n--> Evaluate Transaction: Query MedicalInfos have diabete and cancer');
