@@ -136,7 +136,6 @@ async function main() {
 
 
 
-            console.log('*** Result: committed');
 
             let result;
 
@@ -173,8 +172,13 @@ async function main() {
             result = await secured_patient.evaluateTransaction('patientQuery', new_patient);
             console.log(`*** Result: ${prettyJSONString(result.toString())}`);
     
-            
+            console.log('\n--> Evaluate Transaction: Query all usage record of medical1');
+            result = await secured_usage.evaluateTransaction('GetAll');
+            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
+            console.log('\n--> Evaluate Transaction: Query all usage record of medical1');
+            result = await secured_usage.evaluateTransaction('QueryRecords', 'medical1');
+            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
            
 
             // console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');

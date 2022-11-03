@@ -1,14 +1,28 @@
 [
-    {
-       "name": "PateintIdentifiableData",
-       "policy": "Or('Org1MSP.member')",
-       "requiredPeerCount": 0,
-       "maxPeerCount": 3,
-       "blockToLive":1000000,
-       "memberOnlyRead": true,
-       "memberOnlyWrite":true,
-       "endorsementPolicy": {
-         "signaturePolicy": "OR('Org1MSP.member')"
-       }
-    }
-   ]
+  {
+     "name": "PateintIdentifiableData",
+     "policy": "Or('Org1MSP.member')",
+     "requiredPeerCount": 0,
+     "maxPeerCount": 3,
+     "blockToLive":1000000,
+     "memberOnlyRead": true,
+     "memberOnlyWrite":true,
+     "endorsementPolicy": {
+       "signaturePolicy": "OR('Org1MSP.member')"
+     }
+  },
+
+  {
+     "name": "UsageRecordData",
+     "policy": "Or('Org1MSP.member')",
+     "requiredPeerCount": 0,
+     "maxPeerCount": 3,
+     "blockToLive":1000000,
+     "memberOnlyRead": true,
+     "memberOnlyWrite": false,
+     "endorsementPolicy": {
+       "signaturePolicy": "AND('Org1MSP.member', 'Org2MSP.member')"
+     }
+  }
+
+]

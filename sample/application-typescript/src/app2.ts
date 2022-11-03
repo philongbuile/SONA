@@ -119,7 +119,6 @@ async function main() {
             await operator.submitTransaction('InitLedger');
             await medical.submitTransaction('InitLedger');
             await patient_contract.submitTransaction('InitLedger');
-            await patient.submitTransaction('InitLedger');
             let result;
 
             const new_patient = 'vero';
@@ -176,9 +175,13 @@ async function main() {
             // result = await medical.evaluateTransaction('QueryByKeyWord', k2 );
             // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
-            // console.log('\n--> Evaluate Transaction: Query all usage record of medical1');
-            // result = await usage.evaluateTransaction('GetAll');
-            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+            console.log('\n--> Evaluate Transaction: Query all usage record of medical1');
+            result = await secured_usage.evaluateTransaction('GetAll');
+            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+
+            console.log('\n--> Evaluate Transaction: Query all usage record of medical1');
+            result = await secured_usage.evaluateTransaction('QueryRecords', 'medical1');
+            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
 
         } finally {
