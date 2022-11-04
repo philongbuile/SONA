@@ -1,6 +1,6 @@
 import listStyles from '../../assets/css/TableItem.module.css'
 import tableStyles from '../../assets/css/TableList.module.css'
-import {Card, Button } from 'antd'
+import {Card, Button, Popover } from 'antd'
 import {useParams, useNavigate} from 'react-router-dom'
 import {useState, useEffect} from 'react'
 
@@ -18,12 +18,21 @@ const DoctorCard: React.FC<DoctorCardProps> = ({
   const {username} = useParams<any>()
 
   const [result, setResult] = useState<any>();
-
+  const [error, setError] = useState<boolean>(false);
   const handleAuthorize = async() => {
     await fetch(`http://localhost:8080/patient/authorize_doctor/${username}/${doctor_username}`, {
-        method: 'GET'
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
     })
-    .then((response) => response.json())
+    .then((response) => {
+        if (response.status === 200) {
+            alert('授权成功');
+        } else {
+            alert('doctor already authorized');
+        }
+    })
     .then((data) => {
         console.log(data);
         setResult(data);
@@ -35,11 +44,13 @@ const DoctorCard: React.FC<DoctorCardProps> = ({
   return (
 
       <div className={tableStyles.table_list}>
-
         <Card className={listStyles.item}>
           <p className={listStyles.id}> Username: {doctor_username} </p>
           <p className={listStyles.name}>Role: {role}</p>
           <Button className={listStyles.revoke} onClick={() => handleAuthorize()}>Authorize</Button>
+          
+          
+          
         </Card>
       </div>
   )
