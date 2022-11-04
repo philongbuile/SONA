@@ -44,13 +44,14 @@ async function main() {
         const medicalContract = network.getContract('sona','MedicalInfoContract');
 
     
-        // await medicalOperatorContract.submitTransaction('InitLedger');
-        // await usageRecordContract.submitTransaction('InitLedger');
+        await medicalContract.submitTransaction('InitLedger');
+        await usageRecordContract.submitTransaction('InitLedger');
+        await patientContract.submitTransaction('InitLedger');
+
 
         // await patientContract.submitTransaction('RevokeOperator', 'philong123', 'Doctor1', )
         // console.log(`Transaction: InitLedger has been submitted`);
-
-        await medicalContract.submitTransaction('AddCase', uuid() , 'medical2', 'new test', 'new diag', 'new treatment', 'Doctor2', 'philong123',uuid(), '11/4/2022');
+        // await medicalContract.submitTransaction('AddCase', 'case1' , 'medical2', 'new test', 'new diag', 'new treatment', 'Doctor2', 'philong123', 'record1', '11/4/2022');
 
          
 
