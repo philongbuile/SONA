@@ -20,26 +20,25 @@ const Login = () => {
 
 
   const handleLogin = async() => {
-    if (username !== MockUser.username || password !== MockUser.password) {
-      alert('Wrong username or password');
-      return;
-    } else {
-      await fetch(`http://localhost:8080/patient/query/${username}`, {
-        method: 'GET'
-        })
-        .then((response) => 
-          response.json()
-        )
-        .then((data) => {
-          console.log(data.response.MedicalInfo_ID);
-          navigate('/user/patient/profile/' + username + '/' + data.response.MedicalInfo_ID);
-        }).catch((error) => {
-          console.log(error);
+    await fetch(`http://localhost:8080/patient/query/${username}`, {
+      method: 'GET'
+      })
+      .then((response) => 
+        {
+          if (response.status === 200 && password === MockUser.password) {
+            return response.json();
+          } else {
+            alert('wrong password or username');
+          }
         }
-      );
+      )
+      .then((data) => {
+        console.log(data.response.MedicalInfo_ID);
+        navigate('/user/patient/profile/' + data.response.Username + '/' + data.response.MedicalInfo_ID);
+      }).catch((error) => {
+        console.log(error);
+      });
     }
-  };
-
   return (
     <div>
       <h6
