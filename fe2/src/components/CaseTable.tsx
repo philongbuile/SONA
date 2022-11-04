@@ -9,15 +9,11 @@ import {userApi} from '../api/userApi';
 const CaseTable = () => {
 
     const {username} = useParams<any>();
+    const {medical_id} = useParams<any>();
     interface caseParams {
         Case_ID: string;
     }
     const navigate = useNavigate();
-    const [medical_id, setMedicalID] = useState<any>();
-    const id = userApi.getId(username).then((data) => {
-        setMedicalID(data);
-    });
-
     const [result, setResult] = useState<any>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');

@@ -5,7 +5,7 @@ import {Card, Input, Divider, Button} from 'antd';
 import styles from '../assets/css/AuthorizationList.module.css'
 import MockSearch from '../api/MockSearch.json'
 
-const SearchByKeyWord = () => {
+const SearchByKeyword = () => {
     const [keyword, setKeyword] = useState<any>();
     const [result, setResult] = useState<any>();
 
@@ -80,4 +80,4 @@ const SearchByKeyWord = () => {
 
 }
 
-export default SearchByKeyWord;
+export default SearchByKeyword;
