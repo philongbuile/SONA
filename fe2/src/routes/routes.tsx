@@ -10,7 +10,6 @@ import { LoginLayout } from '../pages/LoginLayout';
 import { Register } from '../pages/Register';
 import Login from '../pages/Login';
 import Landingpage from '../pages/Landingpage';
-import Examination from '../pages/Examination';
 import AuthorizationList from '../pages/CaseDetail';
 import CaseForm from '../components/forms/CaseForm';
 import ExaminationForm from '../components/forms/ExaminationForm';
@@ -23,6 +22,7 @@ import AnotherProfile from '../pages/AnotherProfile';
 import CaseTable from '../components/CaseTable';
 import SearchByKeyWord from '../pages/SearchByKeyword';
 import ResearcherProfile from '../pages/ResearcherProfile';
+import CaseResult from '../pages/CaseResult';
 
 
 export default function AppRoute() {
@@ -49,7 +49,6 @@ export default function AppRoute() {
           <Route path="/user/*">
             <Route element={<UserLayout />}>
               <Route path="patient/profile/:username/:medical_id" element={<UserProfile />} />
-              <Route path="patient/examination/:username/:medicalinforID" element={<Examination />} />
               <Route path="operator/profile/:username" element={<DoctorProfile />} />
               <Route path="operator/patient/info/:username/:medical_id" element={<AnotherProfile />} />
               <Route path="patient/case/:medical_id/:case_id" element={<CaseDetail/>} />
@@ -63,7 +62,7 @@ export default function AppRoute() {
           <Route path="/operator/appendcase/:doctor_username" element={<ExaminationForm />} />
           <Route path="/operator/patient/list" element={<PatientList/>} />
           <Route path="/operator/search/" element={<SearchByKeyWord/>} />
-          <Route path="/operator/search/medicalinfo/table/:medical_id" element={<CaseTable/>} />
+          <Route path="/operator/search/medicalinfo/table/:medical_id" element={<CaseResult/>} />
           {/* 404 Not Found */}
           <Route path="*" element={<NotFound404 />} />
         </Routes>

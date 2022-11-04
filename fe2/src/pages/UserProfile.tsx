@@ -58,7 +58,15 @@ function UserProfile() {
     await fetch(`http://localhost:8080/patient/revoke_doctor/${username}/${doctor_username}`,
       {
         })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("success");
+          window.location.reload();
+        }
+        else {
+          console.log("500 server error");
+        }
+      })
       .then((data) => {
         console.log(data);
       }).

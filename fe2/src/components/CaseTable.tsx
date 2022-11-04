@@ -58,7 +58,12 @@ const CaseTable = () => {
 
     
     return (
-        <div style={{ padding: 25, background: '#fff', minHeight: '360'}}>
+        <div style={{ 
+            padding: 25, 
+            background: '#fff', 
+            minHeight: '360',
+            width: '80%',
+        }}>
         <span>
           <Table columns={columns} dataSource={
                 result?.map((items: any) => {

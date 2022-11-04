@@ -110,6 +110,8 @@ export const medinfoApi = {
       .then((res) => {
         if (res.ok) {
           return res.json();
+        } else {
+          alert('Permission denied. You are no longer authorized leu leu');
         }
 
         throw new Error('Network response was not ok.');
