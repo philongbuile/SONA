@@ -1,15 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import MedicalInfoCard from '../components/TableList/MedicalInfoCard';
+import MedicalInfoCard from '../../components/ProfileCard/MedicalInfoCard';
 import {Card, Input, Divider, Button} from 'antd';
-import styles from '../assets/css/AuthorizationList.module.css'
-import MockSearch from '../api/MockSearch.json'
+import styles from '../../assets/css/AuthorizationList.module.css'
+import { useParams } from 'react-router-dom';
 
 const SearchByKeyword = () => {
     const [keyword, setKeyword] = useState<any>();
     const [result, setResult] = useState<any>();
     const [loading, setLoading] = useState<boolean>(false);
     
+    const doctor_username = useParams<any>();
 
     function getKWArrayJson(keywords: string) {
 

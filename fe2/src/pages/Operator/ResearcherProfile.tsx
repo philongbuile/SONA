@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import UserProfileCard from '../components/UserFrofile/UserProfileCard';
+import UserProfileCard from '../../components/ProfileCard/UserProfileCard';
 import {Divider, Typography, Row, Col } from 'antd';
-import { useParams } from 'react-router-dom';
 import {Link} from 'react-router-dom';
-import { Button } from '../components/Button/index2';
-import {Operator} from '../models/Operator';
+import { Button } from '../../components/Button/index2';
 
 const { Title } = Typography;
 

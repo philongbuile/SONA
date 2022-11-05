@@ -1,11 +1,11 @@
-import DoctorCard from "../components/TableList/DoctorCard";
+import DoctorCard from "../../components/ProfileCard/DoctorCard";
 import {Card, Divider, Typography, Input, Button} from 'antd'
-import styles from '../assets/css/AuthorizationList.module.css'
+import styles from '../../assets/css/AuthorizationList.module.css'
 import {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import { useParams } from "react-router-dom";
 
-const FindDoctor = () => {
+const UserAuthorizeDoctor = () => {
     const navigate = useNavigate();
 
     const {username} = useParams<any>();
@@ -77,4 +77,4 @@ const FindDoctor = () => {
     )
 }
 
-export default FindDoctor;
+export default UserAuthorizeDoctor;

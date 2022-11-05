@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
-import UserProfileCard from '../components/UserFrofile/UserProfileCard';
-import styles from '../assets/css/UserProfilePage.module.css';
+import UserProfileCard from '../../components/ProfileCard/UserProfileCard';
+import styles from '../../assets/css/UserProfilePage.module.css';
 import {Divider, Typography } from 'antd';
 import { useParams } from 'react-router-dom';
-import { User } from '../models/User';
+import { User } from '../../models/User';
 import {Link} from 'react-router-dom';
-import CaseTable from '../components/CaseTable';
-import ScrollToTop from '../models/ScrollToTop';
+import CaseTableOperator from '../../components/Table/CaseTableOperator';
+import ScrollToTop from '../../models/ScrollToTop';
 
 const { Title } = Typography;
 
+// Profile of user for doctor to access without seeing usage racord
 function AnotherProfile() {
   type userParams = {
     username: string;
@@ -19,7 +20,8 @@ function AnotherProfile() {
     medical_id: string;
   }
   const {username} = useParams<userParams>()
-    const {medical_id} = useParams<medicalParams>()
+  const {medical_id} = useParams<medicalParams>()
+  const {doctor_username} = useParams<any>()
     
   const [user, setUser] = useState<User>();
 
@@ -86,7 +88,7 @@ function AnotherProfile() {
               <Link to={`/medical-info/${user?.MedicalInfo_ID}`}>Medical ID: {user?.MedicalInfo_ID}</Link>
             </p>
             <div style={{ marginLeft: '100px', fontWeight: 'Roboto' }}>
-              <CaseTable/>
+              <CaseTableOperator/>
             </div>
           </div>
         </div>

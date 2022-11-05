@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import Landingpage from './pages/Landingpage';
+import Landingpage from './pages/Landing/Landingpage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

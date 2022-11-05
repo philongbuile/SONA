@@ -1,6 +1,6 @@
-import Navbar from "../components/Navbar";
-import CaseCard from "../components/TableList/CaseCard";
-import styles from '../assets/css/AuthorizationList.module.css'
+import Navbar from "../../components/Navbar";
+import CaseCard from "../../components/ProfileCard/CaseCard";
+import styles from '../../assets/css/AuthorizationList.module.css'
 import {Card, Divider, Typography} from 'antd'
 import {useState, useEffect} from 'react'
 import {useNavigate, useParams} from 'react-router-dom'

@@ -1,14 +1,14 @@
-import { User } from '../models/User';
+import { User } from '../../models/User';
 import { Table, Button, Popconfirm, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import {MedicalInfo} from '../models/MedicalInfo';
-import {userApi} from '../api/userApi';
+import {MedicalInfo} from '../../models/MedicalInfo';
+import {userApi} from '../../api/userApi';
 
 
-const CaseTable = () => {
+const CaseTableOperator = () => {
 
-    const {username} = useParams<any>();
+    const {doctor_username} = useParams<any>();
     const {medical_id} = useParams<any>();
     interface caseParams {
         Case_ID: string;
@@ -19,7 +19,7 @@ const CaseTable = () => {
     const [error, setError] = useState<string>('');
 
     useEffect(() => {
-        fetch(`http://localhost:8080/medinfo/patient_query_medicalinfo/${medical_id}`, {
+        fetch(`http://localhost:8080/medinfo/operator_query_medicalinfo/${medical_id}/${doctor_username}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -78,4 +78,4 @@ const CaseTable = () => {
 
 }
 
-export default CaseTable;
+export default CaseTableOperator;

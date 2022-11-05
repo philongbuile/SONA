@@ -1,9 +1,10 @@
-import Header from "../components/Header/Index";
-import CaseTable from "../components/CaseTable";
+import Header from "../../components/Header/Index";
+import CaseTableOperator from "../../components/Table/CaseTableOperator";
 import {useState} from "react";
 import {Divider, Typography, Row, Col } from 'antd';
-import UserLayout from "./Layout/UserLayout";
-import styles from '../assets/css/UserProfile.module.css';
+import UserLayout from "../Layout/UserLayout";
+import styles from '../../assets/css/UserProfile.module.css';
+import { useParams } from "react-router-dom";
 
 const CaseResult = () => {
     const [loading, setLoading] = useState<boolean>(true);
@@ -26,7 +27,7 @@ const CaseResult = () => {
             >
             Your desire result here:
             </Divider>
-            <CaseTable/>
+            <CaseTableOperator />
             </div>
         </div>
     )

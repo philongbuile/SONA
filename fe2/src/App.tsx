@@ -4,8 +4,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import AppRoute from './routes/routes';
 import AppNavbar from './components/Navbar';
-import AuthorizationList from './pages/CaseDetail';
-import Landingpage from './pages/Landingpage';
+import AuthorizationList from './pages/Case/CaseDetail';
+import Landingpage from './pages/Landing/Landingpage';
 import CaseForm from './components/forms/CaseForm';
 
 
