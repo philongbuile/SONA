@@ -1,39 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import UserProfileCard from '../components/UserFrofile/UserProfileCard';
-import styles from '../assets/css/UserProfilePage.module.css';
+import UserProfileCard from '../../components/ProfileCard/UserProfileCard';
+import styles from '../../assets/css/UserProfilePage.module.css';
 import {Divider, Typography, Row, Col } from 'antd';
 import { useParams } from 'react-router-dom';
-import { UsageRecord } from '../models/UsageRecord';
-import { User } from '../models/User';
+import { User } from '../../models/User';
 import {Link} from 'react-router-dom';
-import { Button } from '../components/Button/index2';
-import CaseTable from '../components/CaseTable';
-import UsageRecordTable from '../components/UsageRecordTable';
-import ScrollToTop from '../models/ScrollToTop';
-import {Operator} from '../models/Operator';
-import PatientTable from '../components/PatientTable';
+import { Button } from '../../components/Button/index2';
+import {Operator} from '../../models/Operator';
+import PatientTable from '../../components/Table/PatientTable';
 
 const { Title } = Typography;
 
 function DoctorProfile() {
-  type userParams = {
-    username: string;
-  };
+  const {doctor_username} = useParams<any>()
+  const {medical_id} = useParams<any>()
 
-  type medicalParams = {
-    medical_id: string;
-  }
-
-
-  const {username} = useParams<userParams>()
-  const {medical_id} = useParams<medicalParams>()
-
-  const [user, setUser] = useState<User>();
   const [operator, setOperator] = useState<Operator>();
 
 
   const getPersonalInfo = () => {
-    fetch(`http://localhost:8080/operator/query/${username}`,
+    fetch(`http://localhost:8080/operator/query/${doctor_username}`,
     {
       method: 'GET',
       headers: {
@@ -96,7 +82,7 @@ function DoctorProfile() {
                 <Link to={"/operator/appendcase/" + operator?.Username}>Add Case</Link>
             </Button>
             <Button>
-                <Link to="/operator/search/">Search Med Info</Link>
+                <Link to={"/operator/search/" + doctor_username}>Search Med Info</Link>
             </Button>
           </div>
 

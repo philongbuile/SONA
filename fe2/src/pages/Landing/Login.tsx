@@ -2,12 +2,11 @@ import { lazy } from 'react';
 import { Form, Layout, Button, Input, Divider } from 'antd';
 // import logo from '../../assets/logo-1.svg';
 import { useEffect, useState } from 'react';
-import { authApi } from '../api/authApi';
+import { authApi } from '../../api/authApi';
 import { useNavigate } from 'react-router-dom';
-import { roleFunc } from '../utils/Roles';
+import { roleFunc } from '../../utils/Roles';
 import './Login.css';
-import MockUser from '../api/MockUser.json';
-import MockSearch from '../api/MockSearch.json';
+import MockUser from '../../api/MockUser.json';
 
 const Login = () => {
   const [username, setUsername] = useState('');

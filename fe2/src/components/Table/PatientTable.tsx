@@ -1,13 +1,10 @@
-import { User } from '../models/User';
+import { User } from '../../models/User';
 import { Table, Button, Popconfirm, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import { patientApi } from '../api/patientApi';
+import { patientApi } from '../../api/patientApi';
 
 const PatientTable = () => {
-    type userParams = {
-        username: string;
-    }
 
     interface Params 
     {
@@ -16,12 +13,12 @@ const PatientTable = () => {
     }
 
     const navigate = useNavigate();
-    const {username} = useParams<userParams>()
+    const {doctor_username} = useParams<any>()
 
     const [users, setUsers] = useState<User[]>([] as User[]);
 
     const getPatient = async() => {
-        const response = await patientApi.getPatientsofDoctor(username);
+        const response = await patientApi.getPatientsofDoctor(doctor_username);
         setUsers(response);
     }
 
@@ -46,7 +43,7 @@ const PatientTable = () => {
         render: (text: string, record: Params) => (
             <Space size="middle">
             <Button onClick={() => {
-                navigate(`/user/operator/patient/info/${record.username}/${record.medical_id}`)
+                navigate(`/user/operator/patient/info/${record.username}/${doctor_username}/${record.medical_id}`)
             }}>Visit them online</Button>
             </Space>
         ),

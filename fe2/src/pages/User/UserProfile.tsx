@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import UserProfileCard from '../components/UserFrofile/UserProfileCard';
-import styles from '../assets/css/UserProfilePage.module.css';
+import UserProfileCard from '../../components/ProfileCard/UserProfileCard';
+import styles from '../../assets/css/UserProfilePage.module.css';
 import {Divider, Typography, Row, Col } from 'antd';
-import { userApi } from '../api/userApi';
+import { userApi } from '../../api/userApi';
 import { useParams, useNavigate } from 'react-router-dom';
-import { UsageRecord } from '../models/UsageRecord';
-import { User } from '../models/User';
-import {Case} from '../models/MedicalInfo';
+import { UsageRecord } from '../../models/UsageRecord';
+import { User } from '../../models/User';
+import {Case} from '../../models/MedicalInfo';
 import {Link} from 'react-router-dom';
-import { Button } from '../components/Button/index2';
-import CaseTable from '../components/CaseTable';
-import UsageRecordTable from '../components/UsageRecordTable';
-import ScrollToTop from '../models/ScrollToTop';
-import DoctorTable from '../components/DoctorTable';
+import { Button } from '../../components/Button/index2';
+import CaseTable from '../../components/Table/CaseTable';
+import UsageRecordTable from '../../components/Table/UsageRecordTable';
+import ScrollToTop from '../../models/ScrollToTop';
+import DoctorTable from '../../components/Table/DoctorTable';
 
 const { Title } = Typography;
 
@@ -58,7 +58,15 @@ function UserProfile() {
     await fetch(`http://localhost:8080/patient/revoke_doctor/${username}/${doctor_username}`,
       {
         })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("success");
+          window.location.reload();
+        }
+        else {
+          console.log("500 server error");
+        }
+      })
       .then((data) => {
         console.log(data);
       }).
@@ -147,7 +155,7 @@ function UserProfile() {
                           marginTop: '10px',
                           textDecoration: 'none',
                         }
-                      } to={`/doctor/${doctor}`}>username: {doctor}</Link>
+                      } to={`/user/operator/profile/${doctor}`}>username: {doctor}</Link>
                     </Col>
                     <Col span={12}>
                       <Button

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import UserProfileCard from '../components/UserFrofile/UserProfileCard';
+import UserProfileCard from '../../components/ProfileCard/UserProfileCard';
 import {Divider, Typography, Row, Col } from 'antd';
-import { useParams } from 'react-router-dom';
 import {Link} from 'react-router-dom';
-import { Button } from '../components/Button/index2';
-import {Operator} from '../models/Operator';
+import { Button } from '../../components/Button/index2';
+import { useParams } from 'react-router-dom';
 
 const { Title } = Typography;
 
 const ResearcherProfile = () => {
+  const doctor_username = useParams<any>();
   return (
     <div
       style={{
@@ -44,7 +44,7 @@ const ResearcherProfile = () => {
                 marginTop: '50px',
             }}>
             <Button>
-                <Link to="/operator/search/">Search Med Info</Link>
+                <Link to={"/operator/search/" + doctor_username}>Search Med Info</Link>
             </Button>
           </div>
         </div>

@@ -1,8 +1,8 @@
 import { Table, Button, Popconfirm, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { userApi } from '../api/userApi';
+import { userApi } from '../../api/userApi';
 import { useParams } from 'react-router-dom';
-import {UsageRecord} from '../models/UsageRecord';
+import {UsageRecord} from '../../models/UsageRecord';
 
 const UsageRecordTable = () => {
 

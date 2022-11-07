@@ -3,26 +3,25 @@ import { GuardEC } from '../models/Guard';
 import { CookiesProvider } from 'react-cookie';
 import UserLayout from '../pages/Layout/UserLayout';
 import Guard from '../guards/AuthGuard';
-import NotFound404 from '../pages/NotFound404';
-import UserProfile from '../pages/UserProfile';
+import NotFound404 from '../pages/Landing/NotFound404';
+import UserProfile from '../pages/User/UserProfile';
 import { AdminEC, StudentEC } from '../models/Guard';
-import { LoginLayout } from '../pages/LoginLayout';
-import { Register } from '../pages/Register';
-import Login from '../pages/Login';
-import Landingpage from '../pages/Landingpage';
-import Examination from '../pages/Examination';
-import AuthorizationList from '../pages/CaseDetail';
+import { LoginLayout } from '../pages/Layout/LoginLayout';
+import { Register } from '../pages/Landing/Register';
+import Login from '../pages/Landing/Login';
+import Landingpage from '../pages/Landing/Landingpage';
+import AuthorizationList from '../pages/Case/CaseDetail';
 import CaseForm from '../components/forms/CaseForm';
 import ExaminationForm from '../components/forms/ExaminationForm';
 import Pill from '../components/Pill';
-import PatientList from '../pages/PatientList';
-import CaseDetail from '../pages/CaseDetail';
-import DoctorProfile from '../pages/DoctorProfile';
-import FindDoctor from '../pages/FindDoctor';
-import AnotherProfile from '../pages/AnotherProfile';
-import CaseTable from '../components/CaseTable';
-import SearchByKeyWord from '../pages/SearchByKeyword';
-import ResearcherProfile from '../pages/ResearcherProfile';
+import CaseDetail from '../pages/Case/CaseDetail';
+import DoctorProfile from '../pages/Operator/DoctorProfile';
+import UserAuthorizeDoctor from '../pages/User/UserAuthorizeDoctorPage';
+import AnotherProfile from '../pages/User/AnotherProfile';
+import CaseTable from '../components/Table/CaseTable';
+import SearchByKeyWord from '../pages/Case/SearchByKeyword';
+import ResearcherProfile from '../pages/Operator/ResearcherProfile';
+import CaseResult from '../pages/Case/CaseResult';
 
 
 export default function AppRoute() {
@@ -49,11 +48,10 @@ export default function AppRoute() {
           <Route path="/user/*">
             <Route element={<UserLayout />}>
               <Route path="patient/profile/:username/:medical_id" element={<UserProfile />} />
-              <Route path="patient/examination/:username/:medicalinforID" element={<Examination />} />
-              <Route path="operator/profile/:username" element={<DoctorProfile />} />
-              <Route path="operator/patient/info/:username/:medical_id" element={<AnotherProfile />} />
+              <Route path="operator/profile/:doctor_username" element={<DoctorProfile />} />
+              <Route path="operator/patient/info/:username/:doctor_username/:medical_id" element={<AnotherProfile />} />
               <Route path="patient/case/:medical_id/:case_id" element={<CaseDetail/>} />
-              <Route path="patient/authorize/:username/:medical_id" element={<FindDoctor />} />
+              <Route path="patient/authorize/:username/:medical_id" element={<UserAuthorizeDoctor />} />
               <Route path="researcher/" element={<ResearcherProfile />} />
 
             </Route>
@@ -61,9 +59,8 @@ export default function AppRoute() {
           </Route>
           <Route path="/operator/addcase/:doctor_username" element={<CaseForm />} />
           <Route path="/operator/appendcase/:doctor_username" element={<ExaminationForm />} />
-          <Route path="/operator/patient/list" element={<PatientList/>} />
-          <Route path="/operator/search/" element={<SearchByKeyWord/>} />
-          <Route path="/operator/search/medicalinfo/table/:medical_id" element={<CaseTable/>} />
+          <Route path="/operator/search/:doctor_username" element={<SearchByKeyWord/>} />
+          <Route path="/operator/search/:doctor_username/medicalinfo/table/:medical_id" element={<CaseResult/>} />
           {/* 404 Not Found */}
           <Route path="*" element={<NotFound404 />} />
         </Routes>

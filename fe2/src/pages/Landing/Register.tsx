@@ -1,6 +1,6 @@
 import { Divider, Form, Input } from 'antd';
 import React, { useState } from 'react';
-import { authApi } from '../api/authApi';
+import { authApi } from '../../api/authApi';
 import { Button, notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
