@@ -5,7 +5,7 @@
 
 ## Our team
 
-- Bui Le Phi Long (team lead)
+- Bui Le Phi Long (team leader)
 - Truong Canh Thanh Vinh (dev)
 - Huynh Cam Tu (dev)
 - Nguyen Quoc Trung (dev, UI/UX designer)
