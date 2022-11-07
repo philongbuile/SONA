@@ -11,7 +11,6 @@ import { Register } from '../pages/Register';
 import Login from '../pages/Login';
 import Landingpage from '../pages/Landingpage';
 import Examination from '../pages/Examination';
-import ResearchBoard from '../pages/ResearchBoard';
 import AuthorizationList from '../pages/CaseDetail';
 import CaseForm from '../components/forms/CaseForm';
 import ExaminationForm from '../components/forms/ExaminationForm';
@@ -23,7 +22,7 @@ import FindDoctor from '../pages/FindDoctor';
 import AnotherProfile from '../pages/AnotherProfile';
 import CaseTable from '../components/CaseTable';
 import SearchByKeyWord from '../pages/SearchByKeyword';
-
+import ResearcherProfile from '../pages/ResearcherProfile';
 
 
 export default function AppRoute() {
@@ -55,6 +54,7 @@ export default function AppRoute() {
               <Route path="operator/patient/info/:username/:medical_id" element={<AnotherProfile />} />
               <Route path="patient/case/:medical_id/:case_id" element={<CaseDetail/>} />
               <Route path="patient/authorize/:username/:medical_id" element={<FindDoctor />} />
+              <Route path="researcher/" element={<ResearcherProfile />} />
 
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />

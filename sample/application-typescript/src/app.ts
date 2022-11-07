@@ -89,7 +89,7 @@ async function main() {
         const gatewayOpts: GatewayOptions = {
             wallet,
             identity: org1UserId,
-            discovery: { enabled: true, asLocalhost: false }, // using asLocalhost as this gateway is using a fabric network deployed locally
+            discovery: { enabled: true, asLocalhost: true }, // using asLocalhost as this gateway is using a fabric network deployed locally
         };
 
         try {
@@ -117,85 +117,22 @@ async function main() {
             await medical.submitTransaction('InitLedger');
             await usage.submitTransaction('InitLedger');
 
-            console.log('*** Result: committed');
-
-            const k1 = JSON.stringify(['diabete', 'cancer']);
-            const k2 = JSON.stringify(['diabete']);
-            const doctors = JSON.stringify(['Doctor1']);
-
-            let result;
 
 
-            // console.log('\n--> Evaluate Transaction: Create patient 32562 ');
-            // result = await patient.submitTransaction('CreatePatient', 'tu cam', 'tucam525', 'medid362', '2463','cat street', '44/3', 'female', 'Doctor1');
-            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+        const operatorquery_result = await medical.submitTransaction('addCase',uuidv4(),'58ac5bd0-5670-11ed-81f7-057484e78b65','testresult', 'positive with covid', 'medicine in 10 days','Doctor1','peter123',uuidv4(),new Date().toLocaleString())
 
-            
-    
+
+        // console.log('successfully init operators');
+        // const patientqueryMed_result = await medicalInfoContract.submitTransaction('patientQueryMedicalInfo','medical2');
+        // console.log(`Result of patientqueryMed_result: ${prettyJSONString(patientqueryMed_result.toString())}`);
+        // const operatorquery_result = await medicalInfoContract.submitTransaction('operatorQueryMedicalInfo','medical1','Doctor1',uuidv4(),new Date().toLocaleString());
+        // console.log(`Transaction evaluated, result of query medical info of med1 from operator Doctor 1: ${prettyJSONString(operatorquery_result.toString())}`);
+
+        // result =await usageRecordContract.submitTransaction('QueryRecords','medical1');
+        // console.log(`Transaction evaluated, result of query record of med1: ${prettyJSONString(result.toString())}`);
 
             
 
-            console.log('\n--> Evaluate Transaction: Authorized Doctor2 for username tucam525');
-            result = await patient.submitTransaction('AuthorizeOperator', 'tucam525', 'Doctor1');
-            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
-
-            console.log('\n--> Evaluate Transaction: Authorized Doctor2 for username tucam525');
-            result = await patient.evaluateTransaction('patientQuery', 'tucam525');
-            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
-
-
-            console.log('\n--> Evaluate Transaction: Revoke Authorized Doctor2 for username tucam525');
-            result = await patient.submitTransaction('RevokeOperator', 'tucam525', 'Doctor1');
-            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
-
-            console.log('\n--> Evaluate Transaction: Authorized Doctor2 for username tucam525');
-            result = await patient.evaluateTransaction('patientQuery', 'tucam525');
-            console.log(`*** Result: ${prettyJSONString(result.toString())}`);
-
-            
-        const patientContract = network.getContract('fabcar','PatientContract')
-        const medicalOperatorContract = network.getContract('fabcar','OperatorContract');
-        const usageRecordContract = network.getContract('fabcar','UsageRecordContract');
-        const medicalInfoContract = network.getContract('fabcar','MedicalInfoContract');
-
-    
-
-         await patientContract.submitTransaction('InitLedger');
-         console.log(`Transaction: InitLedger has been submitted`);
-         const query_result = await patientContract.submitTransaction('patientQuery','philong123');
-         console.log(`Transaction evaluated, result of patient query: ${prettyJSONString(query_result.toString())}`);
-        await medicalOperatorContract.submitTransaction('InitLedger');
-        console.log(`Transaction: InitOperator has been submitted`);
-        
-        await medicalInfoContract.submitTransaction('InitLedger');
-        console.log('successfully init operators');
-        const patientqueryMed_result = await medicalInfoContract.submitTransaction('patientQueryMedicalInfo','medical2');
-        console.log(`Result of patientqueryMed_result: ${prettyJSONString(patientqueryMed_result.toString())}`);
-        const operatorquery_result = await medicalInfoContract.submitTransaction('operatorQueryMedicalInfo','medical1','Doctor1',uuidv4(),new Date().toLocaleString());
-        console.log(`Transaction evaluated, result of query medical info of med1 from operator Doctor 1: ${prettyJSONString(operatorquery_result.toString())}`);
-
-        result =await usageRecordContract.submitTransaction('QueryRecords','medical1');
-        console.log(`Transaction evaluated, result of query record of med1: ${prettyJSONString(result.toString())}`);
-
-            
-
-           
-
-            // console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');
-            // result = await medical.evaluateTransaction('GetAll');
-            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
-
-            // console.log('\n--> Evaluate Transaction: Query MedicalInfos have diabete and cancer');
-            // result = await medical.evaluateTransaction('QueryByKeyWord', k1 );
-            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
-
-            // console.log('\n--> Evaluate Transaction: Query MedicalInfos have diabete');
-            // result = await medical.evaluateTransaction('QueryByKeyWord', k2 );
-            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
-
-            // console.log('\n--> Evaluate Transaction: Query all usage record of medical1');
-            // result = await usage.evaluateTransaction('GetAll');
-            // console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
 
         } finally {

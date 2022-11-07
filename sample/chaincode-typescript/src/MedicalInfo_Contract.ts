@@ -182,7 +182,7 @@ export class MedicalInfoContract extends Contract {
     public async AddCase(ctx: Context,case_id:string ,info_id: string, test_result: string, diagnosis: string, treatment: string, operator_username: string, patient_username: string,record_id: string, time: string): Promise<void> {
 
 
-        const isAuthorized = new PatientContract().IsAuthorized(ctx, patient_username, operator_username);
+        const isAuthorized = await new PatientContract().IsAuthorized(ctx, patient_username, operator_username);
 
         if (!isAuthorized) {
             throw Error('Permission Denied');
@@ -206,7 +206,7 @@ export class MedicalInfoContract extends Contract {
     public async AppendCase(ctx: Context, info_id: string, case_id: string, test_result: string, diagnosis: string, treatment: string,  operator_username: string, patient_username: string,record_id: string, time: string): Promise<void> {
 
         // check if the operator has right to append to case
-        const isAuthorized = new PatientContract().IsAuthorized(ctx, patient_username, operator_username);
+        const isAuthorized = await new PatientContract().IsAuthorized(ctx, patient_username, operator_username);
 
         if (!isAuthorized) {
             throw Error('Permission Denied');
