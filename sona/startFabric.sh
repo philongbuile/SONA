@@ -21,6 +21,11 @@ elif [ "$CC_SRC_LANGUAGE" = "java" ]; then
 	CC_SRC_PATH="../sample/chaincode/fabcar/java"
 elif [ "$CC_SRC_LANGUAGE" = "typescript" ]; then
 	CC_SRC_PATH="../chaincode-typescript/"
+<<<<<<< HEAD:sona/startFabric.sh
+=======
+elif [ "$CC_SRC_LANGUAGE" = "sona" ]; then
+	CC_SRC_PATH="../chaincode-typescript/"  
+>>>>>>> main:fabcar/startFabric.sh
 else
 	echo The chaincode language ${CC_SRC_LANGUAGE} is not supported by this script
 	echo Supported chaincode languages are: go, java, javascript, and typescript

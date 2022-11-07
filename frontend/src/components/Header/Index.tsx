@@ -52,7 +52,7 @@ const Header = () => {
           onClick={() => navigate('/register')}
         >
           <Span>
-            <ButtonNor> {'Sign up'} </ButtonNor>
+            <ButtonNor> {'Notification'} </ButtonNor>
           </Span>
         </CustomNavLinkSmall>
         <CustomNavLinkSmall
