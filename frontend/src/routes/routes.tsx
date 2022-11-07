@@ -14,6 +14,16 @@ import AuthorizationList from '../pages/Case/CaseDetail';
 import CaseForm from '../components/forms/CaseForm';
 import ExaminationForm from '../components/forms/ExaminationForm';
 import Pill from '../components/Pill';
+<<<<<<< HEAD:frontend/src/routes/routes.tsx
+import PatientList from '../pages/PatientList';
+import CaseDetail from '../pages/CaseDetail';
+import DoctorProfile from '../pages/DoctorProfile';
+import FindDoctor from '../pages/FindDoctor';
+import AnotherProfile from '../pages/AnotherProfile';
+import CaseTable from '../components/CaseTable';
+import ResearcherProfile from '../pages/ResearcherProfile';
+import SearchByKeyWord from '../pages/SearchByKeyWord';
+=======
 import CaseDetail from '../pages/Case/CaseDetail';
 import DoctorProfile from '../pages/Operator/DoctorProfile';
 import UserAuthorizeDoctor from '../pages/User/UserAuthorizeDoctorPage';
@@ -22,6 +32,7 @@ import CaseTable from '../components/Table/CaseTable';
 import SearchByKeyWord from '../pages/Case/SearchByKeyword';
 import ResearcherProfile from '../pages/Operator/ResearcherProfile';
 import CaseResult from '../pages/Case/CaseResult';
+>>>>>>> main:fe2/src/routes/routes.tsx
 
 
 export default function AppRoute() {
