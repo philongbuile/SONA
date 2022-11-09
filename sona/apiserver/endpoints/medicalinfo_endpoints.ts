@@ -12,7 +12,7 @@ const { v4: uuidv4 } = require("uuid"); // for record_id
 const { v1: uuidv1 } = require("uuid"); // for case_id
 
 // const userID = "camtu123";
-const asLocalhost = false;
+const asLocalhost = true;
 
 
 export async function queryMedicalInfo(req, res){

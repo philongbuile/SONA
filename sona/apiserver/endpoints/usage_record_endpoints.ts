@@ -10,7 +10,7 @@ const path = require("path");
 const { time } = require("console");
 
 // const userID = "camtu123";
-const asLocalhost = false;
+const asLocalhost = true;
 
 
 export async function queryAll(req, res) {

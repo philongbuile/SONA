@@ -8,7 +8,7 @@ const ccpPath = path.resolve(__dirname, '..', '..', '..','fabric','test-network'
 
 let ccp = JSON.parse(fs.readFileSync(ccpPath, "utf8"));
 const userID = "camtu123";
-const asLocalhost = false;
+const asLocalhost = true;
 
 export async function getWallet(): Promise<Wallet> {
     // Create a new file system based wallet for managing identities.

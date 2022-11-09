@@ -30,7 +30,7 @@ async function main() {
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: userid, discovery: { enabled: true, asLocalhost: false } });
+        await gateway.connect(ccp, { wallet, identity: userid, discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -47,6 +47,7 @@ async function main() {
         await medicalContract.submitTransaction('InitLedger');
         await usageRecordContract.submitTransaction('InitLedger');
         await patientContract.submitTransaction('InitLedger');
+        console.log('init ledger sucessfully');
 
 
         // await patientContract.submitTransaction('RevokeOperator', 'philong123', 'Doctor1', )

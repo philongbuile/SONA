@@ -41,11 +41,16 @@ async function main() {
 
         // build a user object for authenticating with the CA
        const provider = wallet.getProviderRegistry().getProvider(adminIdentity.type);
+       console.log(provider);
        const adminUser = await provider.getUserContext(adminIdentity, 'admin');
+       console.log(adminUser);
 
         // Register the user, enroll the user, and import the new identity into the wallet.
         console.log('registering user...')
-        const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: userID, role: 'client' }, adminUser);
+        const secret = await ca.register({
+            enrollmentID: userID, role: 'client',
+            affiliation: ''
+        }, adminUser);
         console.log('enrolling user...')
         const enrollment = await ca.enroll({ enrollmentID: userID, enrollmentSecret: secret });
         const x509Identity: X509Identity = {

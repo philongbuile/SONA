@@ -12,7 +12,7 @@ const { time } = require("console");
 const {registerUser} = require('../utils/registerUser');
 
 // const userID = "camtu123";
-const asLocalhost = false;
+const asLocalhost = true;
 
 export async function queryOperator(req, res): Promise<void> {
     try {

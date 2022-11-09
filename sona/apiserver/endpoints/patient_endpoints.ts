@@ -12,7 +12,7 @@ const { time } = require("console");
 
 const chaincodename='sona';
 // const userID = "camtu123";
-const asLocalhost = false;
+const asLocalhost = true;
 const {registerUser} = require('../utils/registerUser');
 
 
