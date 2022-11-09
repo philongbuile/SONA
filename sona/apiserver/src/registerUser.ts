@@ -12,7 +12,7 @@ const userID = 'camtu123';
 async function main() {
     try {
         // load the network configuration
-        const ccpPath = path.resolve(__dirname,'..', '..', '..','connection','connection-org1.json');
+        const ccpPath = path.resolve(__dirname, '..', '..', '..','fabric','test-network','organizations','peerOrganizations','org1.example.com', 'connection-org1.json');
         let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
         // Create a new CA client for interacting with the CA.
@@ -44,7 +44,9 @@ async function main() {
        const adminUser = await provider.getUserContext(adminIdentity, 'admin');
 
         // Register the user, enroll the user, and import the new identity into the wallet.
+        console.log('registering user...')
         const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: userID, role: 'client' }, adminUser);
+        console.log('enrolling user...')
         const enrollment = await ca.enroll({ enrollmentID: userID, enrollmentSecret: secret });
         const x509Identity: X509Identity = {
             credentials: {
