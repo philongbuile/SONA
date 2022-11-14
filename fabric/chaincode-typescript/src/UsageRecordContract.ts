@@ -13,7 +13,7 @@ import { OperatorContract } from './MedicalOperator_Contract';
 // import {AssetTransferContract} from './assetTransfer'
 
 @Info({title: 'UsageRecordContract', description: 'Smart contract for creating Usage Record'})
-export class SecuredUsageRecordContract extends Contract {
+export class UsageRecordContract extends Contract {
 
     col_name = 'UsageRecordData';
 
@@ -47,7 +47,7 @@ export class SecuredUsageRecordContract extends Contract {
         const operator = await operatorContract.QueryOperator(ctx,operator_username)
 
         const record ={
-            docType: 'secured_usageRecord',
+            docType: 'UsageRecord',
             Case_ID: case_id,
             MedicalInfo_ID: medicalinfo_id,
             Record_ID: record_id,
@@ -88,8 +88,7 @@ export class SecuredUsageRecordContract extends Contract {
         // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
         let selector = {
             selector:  {
-                //MedicalInfo_ID:  { "$eq": "medical1" },
-                docType: {"$eq":'secured_usageRecord'}
+                docType: {"$eq":'UsageRecord'}
             }
         };
 
@@ -115,7 +114,7 @@ export class SecuredUsageRecordContract extends Contract {
         return JSON.stringify(allResults);
     }
 
-    @Transaction()
+    @Transaction(false)
     public async QueryRecords(ctx:Context, medical_info_id: string) : Promise<string>{
         // query all the usage records of the medical_info specified
         const allResults = [];
@@ -123,7 +122,7 @@ export class SecuredUsageRecordContract extends Contract {
         let selector = {
             selector:  {
                 MedicalInfo_ID:  { "$eq": medical_info_id },
-                docType: {"$eq":'secured_usageRecord'}
+                docType: {"$eq":'UsageRecord'}
             }
         };
 

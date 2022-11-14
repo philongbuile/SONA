@@ -93,7 +93,6 @@ export async function doctorQuery(req, res) {
       date
     );
 
-    console.log(result);
     console.log(
       `Transaction has been evaluated, result is: ${result.toString()}`
     );
@@ -120,6 +119,7 @@ export async function createPatient(req ,res) {
     const patientContract = network.getContract(chaincodename, 'PatientContract');
     let medicalinfo_id = uuidv1();
     // await patientContract.submitTransaction('InitLedger');
+
 
     const result = await patientContract.submitTransaction('CreatePatient', req.body.fullname
                                                                             , req.body.username
@@ -155,6 +155,9 @@ export async function authorizeDoctor(req , res){
     // Get the contract from the network.
     const patientContract = network.getContract(chaincodename, "PatientContract");
 
+    patientContract.addDiscoveryInterest({name: 'sona', collectionNames: ['PateintIdentifiableData']});
+
+
     const result = await patientContract.submitTransaction(
       "AuthorizeOperator",
       req.params.patient_username,
@@ -168,7 +171,6 @@ export async function authorizeDoctor(req , res){
       .json({
         response: `Authorize successfully operator: ${req.params.operator_username}`,
       });
-
     //res.send(result)
 
     // Disconnect from the gateway.
@@ -189,6 +191,9 @@ export async function revokeOperator(req, res) {
 
     // Get the contract from the network.
     const patientContract = network.getContract(chaincodename, "PatientContract");
+
+    patientContract.addDiscoveryInterest({name: 'sona', collectionNames: ['PateintIdentifiableData']});
+
 
     const result = await patientContract.submitTransaction(
       "RevokeOperator",

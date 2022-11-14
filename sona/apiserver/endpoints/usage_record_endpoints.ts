@@ -37,7 +37,6 @@ export async function queryAll(req, res) {
       } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
         res.status(500).json({ error: error });
-        process.exit(1);
       }
 }
 
@@ -53,6 +52,8 @@ export async function queryMedIdUsage(req, res){
           chaincodename,
           "UsageRecordContract"
         );
+
+
     
         const result = await usageRecordContract.submitTransaction(
           "QueryRecords",
@@ -68,7 +69,6 @@ export async function queryMedIdUsage(req, res){
       } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
         res.status(500).json({ error: error });
-        process.exit(1);
       }
 }
 

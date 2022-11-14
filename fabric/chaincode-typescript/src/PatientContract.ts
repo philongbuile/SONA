@@ -9,9 +9,9 @@ import {Patient, MedicalInfo} from './asset';
 import {Case} from './asset';
 import { MedicalInfoContract } from './MedicalInfo_Contract';
 import { OperatorContract } from './MedicalOperator_Contract';
-import { SecuredUsageRecordContract } from './secured_record_contract';
+import { UsageRecordContract } from './UsageRecordContract';
 @Info({title: 'AssetTransfer', description: 'Smart contract for trading assets'})
-export class SecuredPatientContract extends Contract {
+export class PatientContract extends Contract {
     // col_name = '_implicit_org_Org1MSP';
     col_name = 'PateintIdentifiableData';
 
@@ -20,12 +20,6 @@ export class SecuredPatientContract extends Contract {
 
 
         console.log('calling init function of patient contract')
-        // first creat the medicalInfo for that patient 
-        // then add it to the patient info
-        // const medical1 = await new MedicalInfoContract().CreateMedicalInfo(ctx , 'patient1000');
-        // const medical2 = await new MedicalInfoContract().CreateMedicalInfo(ctx, 'patient1001');
-
-
 
         const patients: Patient[] = [
             {
@@ -60,15 +54,15 @@ export class SecuredPatientContract extends Contract {
             }
         ];
 
-        // for (const patient of patients) {
-        //     patient.docType = 'secured_patient';
-        //     // example of how to write to world state deterministically
-        //     // use convetion of alphabetic order
-        //     // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-        //     // when retrieving data, in any lang, the order of data will be the same and consequently also the corresonding hash
-        //     await ctx.stub.putPrivateData( this.col_name, patient.Username, Buffer.from(stringify(sortKeysRecursive(patient))));
-        //     console.info(`Patient ${patient.Username} initialized`);
-        // }
+        for (const patient of patients) {
+            patient.docType = 'patient';
+            // example of how to write to world state deterministically
+            // use convetion of alphabetic order
+            // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
+            // when retrieving data, in any lang, the order of data will be the same and consequently also the corresonding hash
+            await ctx.stub.putPrivateData( this.col_name, patient.Username, Buffer.from(stringify(sortKeysRecursive(patient))));
+            console.info(`Patient ${patient.Username} initialized`);
+        }
     }
 
     // CreateAsset issues a new asset to the world state with given details.
@@ -82,7 +76,7 @@ export class SecuredPatientContract extends Contract {
         await new MedicalInfoContract().CreateMedicalInfo(ctx, medinfo_id);
 
         const patient = {
-            docType: 'secured_patient',
+            docType: 'patient',
             FullName: fullname,
             Username: username,
             Phone: phone,
@@ -169,7 +163,7 @@ export class SecuredPatientContract extends Contract {
         
 
         // create usage record
-        let recordContract = new SecuredUsageRecordContract();
+        let recordContract = new UsageRecordContract();
         await recordContract.CreateRecord(ctx, record_id ,undefined, patient_obj.MedicalInfo_ID, 'read patient\'s data', doctor_username, time);
 
         return patient;    
@@ -227,12 +221,10 @@ export class SecuredPatientContract extends Contract {
         // check if the doctor is already authorized
         const doctors = patient_obj.AuthorizedDoctors;
 
-        const doctor_authorized_exists = doctors.some(name => {
-            if (name === operator_username) {
-                throw new Error(`The doctor ${operator_username} already authorized`); 
-            }
-        });
-        //
+        const doctor_authorized_exists = doctors.some(name => name === operator_username);
+
+        if (doctor_authorized_exists)   throw new Error(`The doctor ${operator_username} already authorized`);
+
 
         // add operator username to authorizedDoctorss
 
@@ -253,11 +245,19 @@ export class SecuredPatientContract extends Contract {
         let isExists = await this.OperatorExists(ctx, operator_username);
 
         if (!isExists) {
-            throw Error(`username ${operator_username} does not exist on authorization list`);
+            throw Error(`username ${operator_username} does not exist`);
         }
+
         // retriev patient info
         let patient = await this.ReadPatient(ctx, patient_username);
         let patient_obj = JSON.parse(patient);
+
+        const doctors = patient_obj.AuthorizedDoctors;
+
+        // check if operator is on authorized_list
+        const doctor_authorized_exists = doctors.some(name => name === operator_username);
+
+        if (!doctor_authorized_exists)   throw new Error(`The doctor ${operator_username} does not exist in authorization list`);
 
 
         // remove operator username to authorizedDoctorss

@@ -89,6 +89,9 @@ export async function queryByKeywords(req, res){
           "MedicalInfoContract"
         );
 
+        medInfoContract.addDiscoveryInterest({name: 'sona', collectionNames: ['PateintIdentifiableData']});
+
+
         const result = await medInfoContract.submitTransaction(
           "QueryByKeyWord",
           req.params.keywords.toLowerCase()
@@ -117,6 +120,9 @@ export async function addCase(req, res){
           chaincodename,
           "MedicalInfoContract"
         );
+
+        medInfoContract.addDiscoveryInterest({name: 'sona', collectionNames: ['PateintIdentifiableData']});
+
         const case_id = uuidv1();
   
         await medInfoContract.submitTransaction(
@@ -153,6 +159,9 @@ export async function appendCase(req, res){
           chaincodename,
           "MedicalInfoContract"
         );
+
+        medInfoContract.addDiscoveryInterest({name: 'sona', collectionNames: ['PateintIdentifiableData']});
+
   
         await medInfoContract.submitTransaction(
           "AppendCase",

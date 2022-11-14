@@ -15,6 +15,28 @@
 
 ## Setup
 
+# bring up test network with sona chaincode
+- cd into fabric/
+    - run ./startFabric.sh typescript
+
+# run apiserver to connect to fabric network 
+- cd into sona/apiserver
+    - run npm install
+    - run apiserver.ts
+
+# initledger to initialize data for sona network
+- cd into sona/apiserver/src
+    # install dependencies
+        - run npm install
+    # enroll admin
+        - run enrollAdmin.ts
+    # register user
+        - run registerUser.ts
+    # initialize data
+        - run invoke.ts
+
+
+
 
 ## Routes:
 - POST /patient/create/ 
