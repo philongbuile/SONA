@@ -22,12 +22,15 @@ export async function queryMedicalInfo(req, res){
         const network = await utils.getNetwork(gateway, wallet);
   
         // Get the contract from the network.
-        const medInfoContract = network.getContract(
+        const OperatorContract = network.getContract(
           chaincodename,
-          "MedicalInfoContract"
+          "OperatorContract"
         );
-        const result = await medInfoContract.submitTransaction(
-          "operatorQueryMedicalInfo",
+
+        OperatorContract.addDiscoveryInterest({name: 'sona', collectionNames: [ 'UsageRecordData']});
+
+        const result = await OperatorContract.submitTransaction(
+          "QueryMedicalInfo",
           req.params.medicalinfo_id,
           req.params.operator_username,
           uuidv4(),
@@ -54,13 +57,16 @@ export async function patientQuery(req, res) {
         const gateway = await utils.getGateway(wallet, asLocalhost);
         const network = await utils.getNetwork(gateway, wallet);
         // Get the contract from the network.
-        const medInfoContract = network.getContract(
+        const patientContract = network.getContract(
           chaincodename,
-          "MedicalInfoContract"
+          "PatientContract"
         );
+
+        patientContract.addDiscoveryInterest({name: 'sona', collectionNames: [ 'UsageRecordData']});
+
   
-        const result = await medInfoContract.submitTransaction(
-          "patientQueryMedicalInfo",
+        const result = await patientContract.submitTransaction(
+          "QueryMedicalInfo",
           req.params.medicalinfo_id
         );
         console.log(
@@ -88,6 +94,8 @@ export async function queryByKeywords(req, res){
           chaincodename,
           "MedicalInfoContract"
         );
+
+
 
         const result = await medInfoContract.submitTransaction(
           "QueryByKeyWord",
@@ -117,6 +125,9 @@ export async function addCase(req, res){
           chaincodename,
           "MedicalInfoContract"
         );
+
+        medInfoContract.addDiscoveryInterest({name: 'sona', collectionNames: ['PateintIdentifiableData', 'UsageRecordData']});
+
         const case_id = uuidv1();
   
         await medInfoContract.submitTransaction(
@@ -153,6 +164,9 @@ export async function appendCase(req, res){
           chaincodename,
           "MedicalInfoContract"
         );
+
+        medInfoContract.addDiscoveryInterest({name: 'sona', collectionNames: ['PateintIdentifiableData', 'UsageRecordData']});
+
   
         await medInfoContract.submitTransaction(
           "AppendCase",

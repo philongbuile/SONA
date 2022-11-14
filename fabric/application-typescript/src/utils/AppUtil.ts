@@ -12,7 +12,7 @@ const buildCCPOrg1 = (): Record<string, any> => {
     // load the common connection configuration file
     // const ccpPath = path.resolve(__dirname, '..', '..', '..', '..', 'connection','connection-org1.json');
 
-    const ccpPath = '/home/tu/Documents/fabric/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/connection-org1.json';
+    const ccpPath = path.resolve(__dirname, '..', '..','..','test-network','organizations','peerOrganizations','org1.example.com', 'connection-org1.json');
     //'test-network/organizations/peerOrganizations/org1.example.com/connection-org1.json'
     const fileExists = fs.existsSync(ccpPath);
     if (!fileExists) {

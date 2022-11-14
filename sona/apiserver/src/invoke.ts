@@ -45,22 +45,29 @@ async function main() {
 
     
         await medicalContract.submitTransaction('InitLedger');
-        await usageRecordContract.submitTransaction('InitLedger');
+        await medicalOperatorContract.submitTransaction('InitLedger');
+
+        patientContract.addDiscoveryInterest({name: 'sona', collectionNames: ['PateintIdentifiableData']});
+
         await patientContract.submitTransaction('InitLedger');
         console.log('init ledger sucessfully');
 
+        const examination = {
+            testresult: "new test",
+            diagnosis: "new diagnosis",
+            treatment: 'Medicine'
+        };
 
-        // await patientContract.submitTransaction('RevokeOperator', 'philong123', 'Doctor1', )
-        // console.log(`Transaction: InitLedger has been submitted`);
-        // await medicalContract.submitTransaction('AddCase', 'case1' , 'medical2', 'new test', 'new diag', 'new treatment', 'Doctor2', 'philong123', 'record1', '11/4/2022');
+        const payload = {
+            infoID: 'medical1',
+            examination: examination,
+            operator_username: 'Doctor1',
+            patient_username: 'camtu123'
+        };
 
-         
 
-        // await medicalOperatorContract.submitTransaction('InitOperator');
-        // console.log(`Transaction: InitOperator has been submitted`);
-        // await medicalOperatorContract.submitTransaction('CreateCase','philong123','Doctor1','Success','Flu','Use medicine');
-        // console.log(`Transaction: OperatorCreateCase has been submitted`);
-        // await usageRecordContract.submitTransaction('ReadRecord','philong123');
+
+        
 
 
 
