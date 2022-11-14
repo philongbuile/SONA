@@ -7,7 +7,7 @@ import * as FabricCAServices from 'fabric-ca-client';
 import * as path from 'path';
 import * as fs from 'fs';
 
-const userID = 'Doctor2';
+const userID = 'Doctor1';
 
 async function main() {
     try {
@@ -32,7 +32,7 @@ async function main() {
         }
 
 
-        const adminWalletPath = path.join(process.cwd(),'..', 'wallets', 'admin');
+        const adminWalletPath = path.join(process.cwd(), '..', 'wallets', 'admin');
         const admin_wallet = await Wallets.newFileSystemWallet(adminWalletPath);
         console.log(`Wallet path: ${adminWalletPath}`);
 
