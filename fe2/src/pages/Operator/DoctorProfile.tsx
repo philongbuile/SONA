@@ -60,12 +60,12 @@ function DoctorProfile() {
         </Divider>
         <div>
           <UserProfileCard
-            fullname= {operator?.Role + " Co Giao Thao" as string}
+            fullname= {"Dr David" as string}
             username={operator?.Username as string}
             phone={"0911111111" as string}
             gender={"male" as string}
             dob={"1/1/2001" as string}
-            address={"1 Bui Vien" as string}
+            address={"1 Frankfurter Strasse" as string}
             avatar={undefined}
           />
           <div 
@@ -75,7 +75,8 @@ function DoctorProfile() {
                 marginTop: '50px',
             }}
           >
-            <Button>
+            <Button
+            >
                 <Link to={"/operator/addcase/" + operator?.Username}>Create Case</Link>
             </Button>
             <Button>
@@ -89,7 +90,7 @@ function DoctorProfile() {
           <div className={styles.userinfo}>
             <Title
               level={4}
-              style={{ marginLeft: '260px', textDecoration: 'underline', marginTop: '55px' }}
+              style={{ marginLeft: '360px', textDecoration: 'underline', marginTop: '55px' }}
             >
               My patient list
             </Title>

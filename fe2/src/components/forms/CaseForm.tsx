@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Divider, Card} from 'antd'
 import { useParams } from 'react-router-dom';
+import {toast} from 'react-toastify';
 
 const {TextArea} = Input;
 
@@ -36,23 +37,21 @@ const CaseForm = () => {
                 }
         console.log(examination);
         medinfoApi.addCase(examination, doctor_username, username, medical_id);
+        toast('Successful create case! Redirecting to profile...');
         navigate('/user/operator/profile/' + doctor_username);
 
     };
 
 
     return ( 
-        
+        <div className={styles.cover}>
+            <div>
+            <Divider orientation="center"style={{fontSize: 40, fontWeight: "Bold", color: "#72c6d5"}}>Create Case</Divider> 
+            </div>
 
-        <Card className={styles.cover}>
+        <div className={styles.case_form}>
 
-        <Divider orientation="left"style={{fontSize: 40}}>Create Case</Divider> 
-
-        <Form 
-            className={styles.case_form}
-            onFinish={onFinish}
-
-        >
+        <Form>
             <Form.Item>
                 <TextArea 
                     rows={5}
@@ -107,17 +106,34 @@ const CaseForm = () => {
 
                     />
             </Form.Item>
-
-            <Form.Item >
-                <Button 
-                    type="primary"
-                    htmlType="submit"
-                >
-                    Add New Case
-                </Button>
-            </Form.Item >
         </Form>
-        </Card>
+        <div>
+            <Button 
+            onClick={() => {
+                navigate('/user/operator/profile/' + doctor_username);
+            }}
+            style={{
+                backgroundColor: "#72c6d5",
+                color: "white",
+                fontWeight: "Bold",
+                border: "2px solid white"
+            }}>
+                Back
+            </Button>
+            <Button 
+                type="primary"
+                onClick={onFinish}
+                style={{
+                    backgroundColor: '#72c6d5',
+                    fontWeight: "Bold",
+                    border: "2px solid white"
+                }}
+            >
+                Add New Case
+            </Button>
+        </div>
+        </div>
+        </div>
     )
 }
 

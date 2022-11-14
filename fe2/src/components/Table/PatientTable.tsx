@@ -3,6 +3,7 @@ import { Table, Button, Popconfirm, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import { patientApi } from '../../api/patientApi';
+import {Link } from 'react-router-dom';
 
 const PatientTable = () => {
 
@@ -43,23 +44,36 @@ const PatientTable = () => {
         render: (text: string, record: Params) => (
             <Space size="middle">
             <Button onClick={() => {
-                navigate(`/user/operator/patient/info/${record.username}/${doctor_username}/${record.medical_id}`)
-            }}>Visit them online</Button>
+                navigate(`/operator/addcase/${doctor_username}`)
+            }}>Create New Case</Button>
             </Space>
         ),
         },
+        {
+        render: (text: string, record: Params) => (
+            <Space size="middle">
+            <Button onClick={() => {
+                navigate(`/operator/appendcase/${doctor_username}`)
+            }}> Add Case</Button>
+            </Space>
+        ),
+        }
     ];
 
     
     return (
         <div style={{ padding: 25, background: '#fff', minHeight: '360'}}>
         <span>
-          <Table columns={columns} dataSource={
-            users?.map((user: any) => ({
-                medical_id: user.MedicalInfo_ID,
-                username: user.Username,
-            }))
-          }></Table>
+          <Table columns={columns} dataSource=
+        
+            {
+                users?.map((user: any) => ({
+                    medical_id: user.MedicalInfo_ID,
+                    username: user.Username,
+                }))
+            }
+          >
+          </Table>
         </span>
       </div>
     );

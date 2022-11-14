@@ -22,6 +22,7 @@ import CaseTable from '../components/Table/CaseTable';
 import SearchByKeyWord from '../pages/Case/SearchByKeyword';
 import ResearcherProfile from '../pages/Operator/ResearcherProfile';
 import CaseResult from '../pages/Case/CaseResult';
+import CreateCasePage from '../pages/Case/CreateCasePage';
 
 
 export default function AppRoute() {
@@ -57,7 +58,7 @@ export default function AppRoute() {
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
-          <Route path="/operator/addcase/:doctor_username" element={<CaseForm />} />
+          <Route path="/operator/addcase/:doctor_username" element={<CreateCasePage />} />
           <Route path="/operator/appendcase/:doctor_username" element={<ExaminationForm />} />
           <Route path="/operator/search/:doctor_username" element={<SearchByKeyWord/>} />
           <Route path="/operator/search/:doctor_username/medicalinfo/table/:medical_id" element={<CaseResult/>} />
