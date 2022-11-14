@@ -1,3 +1,5 @@
+import { buildCCPOrg1, buildCCPOrg2 } from "../utils/AppUtil";
+
 const utils = require("../utils/utils.ts");
 const queryOperatorRoute = "/operator/query/:username";
 const createOperatorRoute = "/operator/create/:username/:role";
@@ -11,15 +13,18 @@ const { time } = require("console");
 const { v4: uuidv4 } = require("uuid"); // for record_id
 const { v1: uuidv1 } = require("uuid"); // for case_id
 
-// const userID = "camtu123";
+const userID = "camtu123";
 const asLocalhost = true;
-
+const ccp1 = buildCCPOrg1();
+const ccp2 = buildCCPOrg2();
 
 export async function queryMedicalInfo(req, res){
     try {
-        const wallet = await utils.getWallet();
-        const gateway = await utils.getGateway(wallet, asLocalhost);
-        const network = await utils.getNetwork(gateway, wallet);
+      const userID = req.params.operator_username;
+      console.log(`${userID} in api`);
+      const wallet = await utils.getWallet(userID);
+        const gateway = await utils.getGateway(wallet,userID, ccp1);
+        const network = await utils.getNetwork(gateway, wallet, userID);
   
         // Get the contract from the network.
         const OperatorContract = network.getContract(
@@ -53,9 +58,9 @@ export async function queryMedicalInfo(req, res){
 
 export async function patientQuery(req, res) {
     try {
-        const wallet = await utils.getWallet();
-        const gateway = await utils.getGateway(wallet, asLocalhost);
-        const network = await utils.getNetwork(gateway, wallet);
+      const wallet = await utils.getWallet(userID);
+        const gateway = await utils.getGateway(wallet,userID, ccp1);
+        const network = await utils.getNetwork(gateway, wallet, userID);
         // Get the contract from the network.
         const patientContract = network.getContract(
           chaincodename,
@@ -86,9 +91,9 @@ export async function patientQuery(req, res) {
 
 export async function queryByKeywords(req, res){
     try {
-        const wallet = await utils.getWallet();
-        const gateway = await utils.getGateway(wallet, asLocalhost);
-        const network = await utils.getNetwork(gateway, wallet);
+      const wallet = await utils.getWallet(userID);
+      const gateway = await utils.getGateway(wallet,userID, ccp1);
+      const network = await utils.getNetwork(gateway, wallet, userID);
         // Get the contract from the network.
         const medInfoContract = network.getContract(
           chaincodename,
@@ -117,9 +122,9 @@ export async function queryByKeywords(req, res){
 
 export async function addCase(req, res){
     try {
-        const wallet = await utils.getWallet();
-        const gateway = await utils.getGateway(wallet, asLocalhost);
-        const network = await utils.getNetwork(gateway, wallet);
+      const wallet = await utils.getWallet(userID);
+      const gateway = await utils.getGateway(wallet,ccp1, userID);
+      const network = await utils.getNetwork(gateway, wallet, userID);
         // Get the contract from the network.
         const medInfoContract = network.getContract(
           chaincodename,
@@ -156,9 +161,9 @@ export async function addCase(req, res){
 
 export async function appendCase(req, res){
     try {
-        const wallet = await utils.getWallet();
-        const gateway = await utils.getGateway(wallet, asLocalhost);
-        const network = await utils.getNetwork(gateway, wallet);
+      const wallet = await utils.getWallet(userID);
+      const gateway = await utils.getGateway(wallet,ccp1, userID);
+      const network = await utils.getNetwork(gateway, wallet, userID);
         // Get the contract from the network.
         const medInfoContract = network.getContract(
           chaincodename,
