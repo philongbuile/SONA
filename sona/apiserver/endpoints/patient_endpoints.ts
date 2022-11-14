@@ -1,4 +1,5 @@
 import { buildCCPOrg1, buildCCPOrg2 } from "../utils/AppUtil";
+import { registerUserOrg1 } from "../utils/utils";
 
 const utils = require("../utils/utils.ts");
 const queryOperatorRoute = "/operator/query/:username";
@@ -138,9 +139,12 @@ export async function createPatient(req ,res) {
                                                                             , req.body.authorize_doctor);
 
   // register an identity for new user
-    // console.log(result)
-    // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+  const new_userID = req.body.username;
+    registerUserOrg1(new_userID);
+    
     res.status(200).json(`${req.params.fullname}`);
+
+
 
     // Disconnect from the gateway.
     await gateway.disconnect();
