@@ -31,6 +31,7 @@
     # enroll admin
         - run enrollAdmin.ts
     # register user
+        - open file registerUser.ts, change the content of userID variable to the userID you want to register
         - run registerUser.ts
     # initialize data
         - run invoke.ts
