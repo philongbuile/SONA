@@ -22,7 +22,6 @@ const patient = require("./endpoints/patient_endpoints.ts");
 const record = require("./endpoints/usage_record_endpoints.ts");
 const medical = require("./endpoints/medicalinfo_endpoints.ts");
 const utils = require("./utils/utils.ts");
-const wallet = require("./utils/registerUser.ts");
 // const wallet = require("./utils/registerUser.ts")
 ////////////////////////////////////////////////////////////
 ////////// register the user to the network

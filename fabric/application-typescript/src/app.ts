@@ -108,67 +108,6 @@ async function main() {
             const usage = network.getContract(chaincodeName, 'UsageRecordContract');
             const patient = network.getContract(chaincodeName, 'PatientContract');
 
-            const u1 = uuidv4();
-            const u2 = uuidv4();
-            const time = new Date().toLocaleString();
-            let result;
-        // const operatorquery_result = await medical.submitTransaction('AddCase',u1,'medical2','testresult', 'positive with covid', 'medicine in 10 days','Doctor1','philong123',u2, time);
-
-        
-        // await medical.submitTransaction(
-        //     "AppendCase",
-        //     'medical1',
-        //     'case1',
-        //     'new test',
-        //     'new diagonis',
-        //     'new sick',
-        //     'Doctor1',
-        //     'camtu123',
-        //     uuidv4(),
-        //     new Date().toLocaleString()
-        //   );
-
-        await medical.submitTransaction(
-            "AddCase",
-            'case1',
-            'medical1',
-            'new test',
-            'new diagonis',
-            'new sick',
-            'Doctor1',
-            'camtu123',
-            'record1',
-           'new time'
-          );
-          console.log(`Transaction has been submitted`);
-
-        // const result = await medical.submitTransaction(
-        //     "QueryByKeyWord",
-        //     '["new sick"]'
-        //   );
-        //   console.log(
-        //     `Transaction has been evaluated, result is: ${result.toString()}`
-        //   );
-
-        // let result = await patient.evaluateTransaction(
-        //     "patientQuery",
-        //     'camtu123'
-        //   );
-        //   console.log(
-        //     `Transaction has been evaluated, result is: ${result.toString()}`
-        //   );
-
-         result = await patient.submitTransaction(
-            "doctorQuery",
-            'philong123',
-            'Doctor1',
-            'medical1',
-            'new time'
-          );
-      
-          console.log(
-            `Transaction has been evaluated, result is: ${result.toString()}`
-          );
 
         } finally {
             // Disconnect from the gateway when the application is closing
