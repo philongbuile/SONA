@@ -1,11 +1,11 @@
 # Sona Healthcare System
 
-> SONA (**S**tuttgart **O**nline **N**etwork he**A**lthcare) is an application for Electric Healthcare Record Storage (EHRS)  with blockchain support. We apply Hyperledger Fabric to complete our solution in blockchain. With that being said, it can become more secure, lightweight and convenient for data access, management, and security.
+> SONA is an application system for Electric Healthcare Record (EHR) Management with permissioned blockchain support. We apply Hyperledger Fabric to complete our solution in blockchain. With that being said, it can become more secure, lightweight and convenient for data access, management, and security.
 > 
 
 ## Our team
 
-- Bui Le Phi Long (team lead)
+- Bui Le Phi Long (team leader)
 - Truong Canh Thanh Vinh (dev)
 - Huynh Cam Tu (dev)
 - Nguyen Quoc Trung (dev, UI/UX designer)
