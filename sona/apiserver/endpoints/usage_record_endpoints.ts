@@ -25,6 +25,9 @@ export async function queryAll(req, res) {
           chaincodename,
           "UsageRecordContract"
         );
+
+        usageRecordContract.addDiscoveryInterest({name: 'sona', collectionNames: [ 'UsageRecordData']});
+
     
         const result = await usageRecordContract.submitTransaction("GetAll");
         console.log(

@@ -8,7 +8,7 @@ import sortKeysRecursive from 'sort-keys-recursive';
 import {Patient, MedicalInfo} from './asset';
 import {Case} from './asset';
 import { MedicalInfoContract } from './MedicalInfo_Contract';
-import { OperatorContract } from './MedicalOperator_Contract';
+import { OperatorContract } from './Operator_Contract';
 import { UsageRecordContract } from './UsageRecordContract';
 @Info({title: 'AssetTransfer', description: 'Smart contract for trading assets'})
 export class PatientContract extends Contract {
@@ -122,6 +122,17 @@ export class PatientContract extends Contract {
 
 
     @Transaction(false)
+    @Returns('string')
+    public async GetMedicalInfoID(ctx: Context, patient_username: string): Promise<string>{
+
+        const patientString = await this.ReadPatient(ctx, patient_username);
+        const patient = JSON.parse(patientString);
+
+        return patient.MedicalInfo_ID;
+    }
+
+
+    @Transaction(false)
     @Returns('boolean')
     public async IsAuthorized(ctx: Context, patient_username: string, doctor_username: string): Promise<boolean> {
 
@@ -178,6 +189,15 @@ export class PatientContract extends Contract {
         return assetJSON.toString();
     }
 
+
+    @Transaction()
+    public async QueryMedicalInfo(ctx: Context, id: string): Promise<string> {
+
+        const medinfo = await new MedicalInfoContract().QueryMedicalInfo(ctx, id);
+        return medinfo;
+    }
+
+
     @Transaction(false)
     @Returns('string')
     public async GetAll(ctx: Context): Promise<string> {
@@ -185,7 +205,6 @@ export class PatientContract extends Contract {
         // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
         let response = await ctx.stub.getPrivateDataByRange(this.col_name, '', '');
 
-        console.log(`response in secured getall ${response}`);
         let iterator = response.iterator;
         let result = await iterator.next();
         while (!result.done) {

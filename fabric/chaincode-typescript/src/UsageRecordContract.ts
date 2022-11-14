@@ -8,7 +8,7 @@ import stringify from 'json-stringify-deterministic';
 import sortKeysRecursive from 'sort-keys-recursive';
 
 import {Patient, Case, UsageRecord, Operator} from './asset';
-import { OperatorContract } from './MedicalOperator_Contract';
+import { OperatorContract } from './Operator_Contract';
 
 // import {AssetTransferContract} from './assetTransfer'
 
@@ -145,8 +145,6 @@ export class UsageRecordContract extends Contract {
             result = await iterator.next();
         }
         return JSON.stringify(allResults);
-
-        return '';
     }
 
 }

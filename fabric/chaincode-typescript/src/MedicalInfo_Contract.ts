@@ -9,7 +9,7 @@ import {Case, Examination, MedicalInfo} from './asset';
 
 import { CaseContract } from './caseUtils';
 import { PatientContract } from './PatientContract';
-import { OperatorContract } from './MedicalOperator_Contract';
+import { OperatorContract } from './Operator_Contract';
 import { UsageRecordContract } from './UsageRecordContract';
 
 
@@ -128,24 +128,8 @@ export class MedicalInfoContract extends Contract {
     }
 
 
-    
     @Transaction(false)
-    public async operatorQueryMedicalInfo(ctx: Context, id: string, operator_username: string,record_id: string, time: string): Promise<string> {
-
-        const MedicalInfoJSON = await ctx.stub.getState(id); // get the MedicalInfo from chaincode state
-        if (!MedicalInfoJSON || MedicalInfoJSON.length === 0) {
-            throw new Error(`The MedicalInfo ${id} does not exist`);
-        }
-
-         // create usage record
-         let recordContract = new UsageRecordContract();
-         await recordContract.CreateRecord(ctx, record_id,undefined , id, 'read', operator_username,  time);
-
-
-        return MedicalInfoJSON.toString();
-    }
-    @Transaction()
-    public async patientQueryMedicalInfo(ctx: Context, id: string): Promise<string> {
+    public async QueryMedicalInfo(ctx: Context, id: string): Promise<string> {
 
         const MedicalInfoJSON = await ctx.stub.getState(id); // get the MedicalInfo from chaincode state
         if (!MedicalInfoJSON || MedicalInfoJSON.length === 0) {
@@ -187,18 +171,24 @@ export class MedicalInfoContract extends Contract {
         if (!isAuthorized) {
             throw Error('Permission Denied');
         }
-        const current_info_Uint8 = await ctx.stub.getState(info_id);
+
+        // get medID from patient object
+
+        const medID = await new PatientContract().GetMedicalInfoID(ctx, patient_username);
+
+
+        const current_info_Uint8 = await ctx.stub.getState(medID);
         const current_info_jsonstring = Buffer.from(current_info_Uint8).toString('utf8');
         let  infoObject = JSON.parse(current_info_jsonstring);
         
         let new_case = new CaseContract().CreateCase(case_id, test_result,diagnosis,treatment);
         infoObject.Cases.push(new_case);
 
-        await ctx.stub.putState(info_id, Buffer.from(stringify(sortKeysRecursive(infoObject))));
+        await ctx.stub.putState(medID, Buffer.from(stringify(sortKeysRecursive(infoObject))));
 
         // create usage record
         let recordContract = new UsageRecordContract();
-        await recordContract.CreateRecord(ctx,record_id ,new_case.Case_ID, info_id, 'write', operator_username,time);
+        await recordContract.CreateRecord(ctx,record_id ,new_case.Case_ID, medID, 'write', operator_username,time);
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
     }
 
@@ -211,14 +201,17 @@ export class MedicalInfoContract extends Contract {
         if (!isAuthorized) {
             throw Error('Permission Denied');
         }
+
+        const medID = await new PatientContract().GetMedicalInfoID(ctx, patient_username);
+
         
         // Call contract update case to add the examination to the case
-        await new CaseContract().UpdateCase(ctx, info_id,case_id,test_result, diagnosis, treatment);
+        await new CaseContract().UpdateCase(ctx, medID,case_id,test_result, diagnosis, treatment);
    
 
         // create usage record
         let recordContract = new UsageRecordContract();
-        await recordContract.CreateRecord(ctx,record_id ,case_id, info_id, 'write', operator_username,time);
+        await recordContract.CreateRecord(ctx,record_id ,case_id, medID, 'write', operator_username,time);
          }
 
 
@@ -283,7 +276,7 @@ export class MedicalInfoContract extends Contract {
             let keywords_array = JSON.parse(keywords);
             // check if the medical info string contains keyword
             let flag = false;
-            let ret = keywords_array.filter((keyword) => strValue.includes(keyword));
+            let ret = keywords_array.filter((keyword) => strValue.toLowerCase().includes(keyword));
             if (ret.length == keywords_array.length) flag = true;
 
             if (flag) {
