@@ -87,8 +87,8 @@ export class OperatorContract extends Contract {
         // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
         let selector = {
             selector:  {
-                docType:  { "$eq": 'operators' },
-                role: {"$eq": 'doctor'}
+                docType:  { "$eq": 'operator' },
+                Role: {"$eq": 'doctor'}
             }
         };
 
