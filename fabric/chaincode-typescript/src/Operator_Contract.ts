@@ -82,10 +82,17 @@ export class OperatorContract extends Contract {
 
 
     @Returns('string')
-    public async GetAll(ctx: Context): Promise<string> {
+    public async GetAllDoctors(ctx: Context): Promise<string> {
         const allResults = [];
         // range query with empty string for startKey and endKey does an open-ended query of all MedicalInfos in the chaincode namespace.
-        let iterator = await ctx.stub.getStateByRange('', '');
+        let selector = {
+            selector:  {
+                docType:  { "$eq": 'operators' },
+                role: {"$eq": 'doctor'}
+            }
+        };
+
+        let iterator = await ctx.stub.getQueryResult(JSON.stringify(selector));
 
         let result = await iterator.next();
         while (!result.done) {
