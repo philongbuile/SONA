@@ -74,3 +74,29 @@ export async function createOperator(req, res) {
     res.status(500).json({ error: error });
   }
 }
+
+export async function queryAll(req, res) {
+  try {
+    const wallet = await utils.getWallet(userID);
+    const gateway = await utils.getGateway(wallet,userID, ccp1);
+    const network = await utils.getNetwork(gateway, wallet, userID);
+
+      // Get the contract from the network.
+      const patientContract = network.getContract(chaincodename, "OperatorContract");
+
+
+      const result = await patientContract.evaluateTransaction("GetAll");
+
+
+      console.log(
+        `Transaction has been evaluated, result is: ${result.toString()}`
+      );
+      res.status(200).json({ response: JSON.parse(result.toString("utf8")) });
+  
+      // Disconnect from the gateway.
+      await gateway.disconnect();
+    } catch (error) {
+      console.error(`Failed to evaluate transaction: ${error}`);
+      res.status(500).json({ error: error });
+    }
+}
