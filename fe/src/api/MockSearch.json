@@ -1,0 +1,31 @@
+{
+    "Case_ID": "74f65340-59e0-11ed-a681-43b5da6416ff",
+    "Examinations": [
+        {
+            "Diagnosis": "cancer",
+            "TestResult": "MRI Scan",
+            "Treatment": "medicine"
+        },
+        {
+            "Diagnosis": "Lymphoma",
+            "TestResult": "MRI Scan No. 2",
+            "Treatment": "Medicine"
+        },
+        {
+            "Diagnosis": "cancer",
+            "TestResult": "sucess",
+            "Treatment": "medicine"
+        },
+        {
+            "Diagnosis": "giang mai",
+            "TestResult": "very success",
+            "Treatment": "thien"
+        },
+        {
+            "Diagnosis": "Negative",
+            "TestResult": "Covid Test Result",
+            "Treatment": ""
+        }
+    ],
+    "docType": "case"
+}

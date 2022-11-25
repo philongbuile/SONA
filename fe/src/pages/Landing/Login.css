@@ -1,0 +1,126 @@
+.login__title {
+  font-size: 56px;
+  font-family: 'Roboto-bold', sans-serif;
+  letter-spacing: 1px;
+  line-height: 1.18;
+  font-weight: 500;
+  color: #8172d5;
+  padding-top: 120px;
+  /* padding-bottom: 8px; */
+  transition: all 0.3s ease;
+
+  @media only screen and (max-width: 890px) {
+    font-size: 36px;
+  }
+
+  @media only screen and (max-width: 414px) {
+    font-size: 32px;
+  }
+}
+
+.signup__title {
+  font-size: 56px;
+  font-family: 'Roboto-bold', sans-serif;
+  letter-spacing: 1px;
+  line-height: 1.18;
+  font-weight: 300;
+  color: #8172d5;
+  padding-top: 120px;
+  /* padding-bottom: 8px; */
+  transition: all 0.3s ease;
+
+  @media only screen and (max-width: 890px) {
+    font-size: 36px;
+  }
+
+  @media only screen and (max-width: 414px) {
+    font-size: 32px;
+  }
+}
+
+.login__body {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+
+  /*
+     Introduced in Internet Explorer 10.
+     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.login__form {
+  width: 380px;
+  height: 459px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 24px;
+  padding-right: 24px;
+  transition: all 0.3s ease;
+}
+
+.temp__form {
+  width: 380px;
+  height: 600px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 24px;
+  padding-right: 24px;
+  transition: all 0.3s ease;
+}
+
+.login__button {
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  background-clip: border-box;
+}
+
+.login__login {
+  background-color: #8172d5;
+  color:#ffffff;
+}
+
+.login__create {
+  background-color: white;
+  color: #8172d5;
+}
+
+.login__login:hover {
+  background-color: #ffffff;
+  border: 2px solid #8172d5;
+  color: #8172d5;
+}
+
+.login__create:hover {
+  background-color: #8172d5;
+  color: white;
+}
+
+.login__button:active {
+  box-shadow: inset 0 0 0 2px white;
+}
+
+@media only screen and (max-width: 600px) {
+  .login__form {
+    height: 450px;
+  }
+  .login__title {
+    font-size: 32px;
+    line-height: 36px;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .login__form {
+    width: 100%;
+  }
+}
