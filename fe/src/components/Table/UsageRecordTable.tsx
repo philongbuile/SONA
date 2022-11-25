@@ -17,7 +17,7 @@ const UsageRecordTable = () => {
     const [error, setError] = useState<string>('');
     
     useEffect(() => {
-        fetch(`http://localhost:8080/record/query/${medical_id}`, {
+        fetch(`http://128.199.203.189:8080/record/query/${medical_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

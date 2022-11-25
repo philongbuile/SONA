@@ -26,7 +26,7 @@ function AnotherProfile() {
   const [user, setUser] = useState<User>();
 
   const getPersonalInfo = () => {
-    fetch(`http://localhost:8080/patient/query/${username}`,
+    fetch(`http://128.199.203.189:8080/patient/query/${username}`,
     {
       method: 'GET',
       headers: {

@@ -19,7 +19,7 @@ const Login = () => {
 
 
   const handleLogin = async() => {
-    await fetch(`http://localhost:8080/patient/query/${username}`, {
+    await fetch(`http://128.199.203.189:8080/patient/query/${username}`, {
       method: 'GET'
       })
       .then((response) => 

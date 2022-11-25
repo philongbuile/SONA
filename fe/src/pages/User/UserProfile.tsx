@@ -34,12 +34,13 @@ function UserProfile() {
   const [cases, setCase] = useState<Case>();
 
   const getPersonalInfo = () => {
-    fetch(`http://localhost:8080/patient/query/${username}`,
+    fetch(`http://128.199.203.189:8080/patient/query/${username}`,
     {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         },
+      mode: 'cors',
         })
     .then((response) => response.json()
     .then((data) => {
@@ -55,7 +56,7 @@ function UserProfile() {
   }, []);
 
   const handleRevoke = async(doctor_username) => {
-    await fetch(`http://localhost:8080/patient/revoke_doctor/${username}/${doctor_username}`,
+    await fetch(`http://128.199.203.189:8080/patient/revoke_doctor/${username}/${doctor_username}`,
       {
         })
       .then((response) => {

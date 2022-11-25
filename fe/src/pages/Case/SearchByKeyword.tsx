@@ -26,7 +26,7 @@ const SearchByKeyword = () => {
         setLoading(true);
         const kw = getKWArrayJson(keyword);
         console.log(kw);
-        await fetch(`http://localhost:8080/medinfo/query_by_keyword/${kw}`, {
+        await fetch(`http://128.199.203.189:8080/medinfo/query_by_keyword/${kw}`, {
             method: 'GET'
         })
         .then((response) => response.json())

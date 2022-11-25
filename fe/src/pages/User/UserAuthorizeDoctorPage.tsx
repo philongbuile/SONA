@@ -15,7 +15,7 @@ const UserAuthorizeDoctor = () => {
     const [result, setResult] = useState<any>();
 
     const handleSearch = async() => {
-        await fetch(`http://localhost:8080/operator/queryall`, {
+        await fetch(`http://128.199.203.189:8080/operator/queryall`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

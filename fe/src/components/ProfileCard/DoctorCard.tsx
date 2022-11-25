@@ -20,7 +20,7 @@ const DoctorCard: React.FC<DoctorCardProps> = ({
   const [result, setResult] = useState<any>();
   const [error, setError] = useState<boolean>(false);
   const handleAuthorize = async() => {
-    await fetch(`http://localhost:8080/patient/authorize_doctor/${username}/${doctor_username}`, {
+    await fetch(`http://128.199.203.189:8080/patient/authorize_doctor/${username}/${doctor_username}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

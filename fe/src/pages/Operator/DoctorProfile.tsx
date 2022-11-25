@@ -19,7 +19,7 @@ function DoctorProfile() {
 
 
   const getPersonalInfo = () => {
-    fetch(`http://localhost:8080/operator/query/${doctor_username}`,
+    fetch(`http://128.199.203.189:8080/operator/query/${doctor_username}`,
     {
       method: 'GET',
       headers: {

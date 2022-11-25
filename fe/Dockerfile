@@ -2,7 +2,7 @@ FROM node:16 as build
 ENV NODE_ENV production
 LABEL version="1.0"
 LABEL description="This is the base docker image for prod frontend react app."
-LABEL maintainer = ["nickworkspace189@gmail.com"]
+LABEL maintainer = ["luckyandvinh@gmail.com"]
 
 WORKDIR /app
 
