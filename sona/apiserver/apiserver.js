@@ -22,7 +22,6 @@ const patient = require("./endpoints/patient_endpoints.ts");
 const record = require("./endpoints/usage_record_endpoints.ts");
 const medical = require("./endpoints/medicalinfo_endpoints.ts");
 const utils = require("./utils/utils.ts");
-const wallet = require("./utils/registerUser.ts");
 // const wallet = require("./utils/registerUser.ts")
 ////////////////////////////////////////////////////////////
 ////////// register the user to the network
@@ -76,6 +75,10 @@ app.get(
 ///////////////////////////////////////////////////
 
 // operator query
+
+app.get("/operator/queryall", async (req, res) => {
+  await operator.queryAll(req, res);
+});
 
 app.get("/operator/query/:username", async (req, res) => {
   await operator.queryOperator(req, res);

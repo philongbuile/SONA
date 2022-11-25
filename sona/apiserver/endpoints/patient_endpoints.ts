@@ -1,3 +1,5 @@
+import { buildCCPOrg1, buildCCPOrg2 } from "../utils/AppUtil";
+import { registerUserOrg1 } from "../utils/utils";
 
 const utils = require("../utils/utils.ts");
 const queryOperatorRoute = "/operator/query/:username";
@@ -11,17 +13,17 @@ const path = require("path");
 const { time } = require("console");
 
 const chaincodename='sona';
-// const userID = "camtu123";
 const asLocalhost = true;
-const {registerUser} = require('../utils/registerUser');
+const ccp1 = buildCCPOrg1();
+const ccp2 = buildCCPOrg2();
+const userID = 'camtu123';
 
 
 export async function patientQuery(req, res) {
     try {
-        const wallet = await utils.getWallet();
-        const gateway = await utils.getGateway(wallet, asLocalhost);
-        const network = await utils.getNetwork(gateway, wallet);
-    
+      const wallet = await utils.getWallet(userID);
+      const gateway = await utils.getGateway(wallet,userID, ccp1);
+      const network = await utils.getNetwork(gateway, wallet, userID);
         // Get the contract from the network.
         const patientContract = network.getContract(chaincodename, "PatientContract");
         const result = await patientContract.evaluateTransaction(
@@ -46,13 +48,17 @@ export async function patientQuery(req, res) {
 
 export async function queryAll(req, res) {
     try {
-        const wallet = await utils.getWallet();
-        const gateway = await utils.getGateway(wallet, asLocalhost);
-        const network = await utils.getNetwork(gateway, wallet);
+      const wallet = await utils.getWallet(userID);
+      const gateway = await utils.getGateway(wallet,userID, ccp1);
+      const network = await utils.getNetwork(gateway, wallet, userID);
 
         // Get the contract from the network.
         const patientContract = network.getContract(chaincodename, "PatientContract");
+
+
         const result = await patientContract.evaluateTransaction("GetAll");
+
+
         console.log(
           `Transaction has been evaluated, result is: ${result.toString()}`
         );
@@ -69,9 +75,11 @@ export async function queryAll(req, res) {
 
 export async function doctorQuery(req, res) {
   try {
-    const wallet = await utils.getWallet();
-    const gateway = await utils.getGateway(wallet, asLocalhost);
-    const network = await utils.getNetwork(gateway, wallet);
+    const userID = req.params.doctor_username;
+    console.log(`${userID} in api`);
+    const wallet = await utils.getWallet(userID);
+      const gateway = await utils.getGateway(wallet,userID, ccp1);
+      const network = await utils.getNetwork(gateway, wallet, userID);
 
     // Get the contract from the network.
     const patientContract = network.getContract(chaincodename, "PatientContract");
@@ -93,7 +101,6 @@ export async function doctorQuery(req, res) {
       date
     );
 
-    console.log(result);
     console.log(
       `Transaction has been evaluated, result is: ${result.toString()}`
     );
@@ -112,14 +119,15 @@ export async function doctorQuery(req, res) {
 export async function createPatient(req ,res) {
   try {
 
-    const wallet = await utils.getWallet();
-    const gateway = await utils.getGateway(wallet, asLocalhost);
-    const network = await utils.getNetwork(gateway, wallet);
+    const wallet = await utils.getWallet(userID);
+    const gateway = await utils.getGateway(wallet,userID, ccp1);
+    const network = await utils.getNetwork(gateway, wallet, userID);
 
     // Get the contract from the network.
     const patientContract = network.getContract(chaincodename, 'PatientContract');
     let medicalinfo_id = uuidv1();
     // await patientContract.submitTransaction('InitLedger');
+
 
     const result = await patientContract.submitTransaction('CreatePatient', req.body.fullname
                                                                             , req.body.username
@@ -131,10 +139,12 @@ export async function createPatient(req ,res) {
                                                                             , req.body.authorize_doctor);
 
   // register an identity for new user
-    await registerUser(req.body.username);                                                                        
-    // console.log(result)
-    // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+  const new_userID = req.body.username;
+    registerUserOrg1(new_userID);
+    
     res.status(200).json(`${req.params.fullname}`);
+
+
 
     // Disconnect from the gateway.
     await gateway.disconnect();
@@ -148,12 +158,15 @@ export async function createPatient(req ,res) {
 
 export async function authorizeDoctor(req , res){
   try {
-    const wallet = await utils.getWallet();
-    const gateway = await utils.getGateway(wallet, asLocalhost);
-    const network = await utils.getNetwork(gateway, wallet);
+    const wallet = await utils.getWallet(userID);
+      const gateway = await utils.getGateway(wallet,userID, ccp1);
+      const network = await utils.getNetwork(gateway, wallet, userID);
 
     // Get the contract from the network.
     const patientContract = network.getContract(chaincodename, "PatientContract");
+
+    patientContract.addDiscoveryInterest({name: 'sona', collectionNames: ['PateintIdentifiableData']});
+
 
     const result = await patientContract.submitTransaction(
       "AuthorizeOperator",
@@ -168,7 +181,6 @@ export async function authorizeDoctor(req , res){
       .json({
         response: `Authorize successfully operator: ${req.params.operator_username}`,
       });
-
     //res.send(result)
 
     // Disconnect from the gateway.
@@ -183,12 +195,15 @@ export async function authorizeDoctor(req , res){
 
 export async function revokeOperator(req, res) {
   try {
-    const wallet = await utils.getWallet();
-    const gateway = await utils.getGateway(wallet, asLocalhost);
-    const network = await utils.getNetwork(gateway, wallet);
+    const wallet = await utils.getWallet(userID);
+      const gateway = await utils.getGateway(wallet,userID, ccp1);
+      const network = await utils.getNetwork(gateway, wallet, userID);
 
     // Get the contract from the network.
     const patientContract = network.getContract(chaincodename, "PatientContract");
+
+    patientContract.addDiscoveryInterest({name: 'sona', collectionNames: ['PateintIdentifiableData']});
+
 
     const result = await patientContract.submitTransaction(
       "RevokeOperator",

@@ -37,7 +37,7 @@ rm -rf go/wallet/*
 pushd ../fabric/test-network
 ./network.sh down
 ./network.sh up createChannel -ca -s couchdb
-./network.sh deployCC -ccn sona  -ccv 1 -cci InitLedger -ccl ${CC_SRC_LANGUAGE} -ccp ${CC_SRC_PATH} -cccg ./clinic1-lab1-collections.json
+./network.sh deployCC -ccn sona  -ccv 1 -ccl ${CC_SRC_LANGUAGE} -ccp ${CC_SRC_PATH} -cccg ./clinic1-lab1-collections.json
 popd
 
 cat <<EOF

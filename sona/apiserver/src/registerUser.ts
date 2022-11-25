@@ -7,7 +7,7 @@ import * as FabricCAServices from 'fabric-ca-client';
 import * as path from 'path';
 import * as fs from 'fs';
 
-const userID = 'camtu123';
+const userID = 'Doctor1';
 
 async function main() {
     try {
@@ -20,19 +20,24 @@ async function main() {
         const ca = new FabricCAServices(caURL);
 
         // Create a new file system based wallet for managing identities.
-        const walletPath = path.join(process.cwd(),'..', 'wallet');
-        const wallet = await Wallets.newFileSystemWallet(walletPath);
-        console.log(`Wallet path: ${walletPath}`);
+        const userwalletPath = path.join(process.cwd(),'..', 'wallets', userID);
+        const user_wallet = await Wallets.newFileSystemWallet(userwalletPath);
+        console.log(`Wallet path: ${userwalletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const userIdentity = await wallet.get(userID);
+        const userIdentity = await user_wallet.get(userID);
         if (userIdentity) {
             console.log(`An identity for the user ${userID} already exists in the wallet`);
             return;
         }
 
+
+        const adminWalletPath = path.join(process.cwd(), '..', 'wallets', 'admin');
+        const admin_wallet = await Wallets.newFileSystemWallet(adminWalletPath);
+        console.log(`Wallet path: ${adminWalletPath}`);
+
         // Check to see if we've already enrolled the admin user.
-        const adminIdentity = await wallet.get('admin');
+        const adminIdentity = await admin_wallet.get('admin');
         if (!adminIdentity) {
             console.log('An identity for the admin user "admin" does not exist in the wallet');
             console.log('Run the enrollAdmin.ts application before retrying');
@@ -40,7 +45,7 @@ async function main() {
         }
 
         // build a user object for authenticating with the CA
-       const provider = wallet.getProviderRegistry().getProvider(adminIdentity.type);
+       const provider = user_wallet.getProviderRegistry().getProvider(adminIdentity.type);
        console.log(provider);
        const adminUser = await provider.getUserContext(adminIdentity, 'admin');
        console.log(adminUser);
@@ -61,7 +66,7 @@ async function main() {
             mspId: 'Org1MSP',
             type: 'X.509',
         };
-        await wallet.put(userID, x509Identity);
+        await user_wallet.put(userID, x509Identity);
         console.log(`Successfully registered and enrolled admin user ${userID} and imported it into the wallet`);
 
     } catch (error) {

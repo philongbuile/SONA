@@ -10,10 +10,10 @@ import { buildCAClient, enrollAdmin, registerAndEnrollUser } from './utils/CAUti
 import { v4 as uuidv4 } from 'uuid';
 
 const channelName = 'mychannel';
-const chaincodeName = 'fabcar';
+const chaincodeName = 'sona';
 const mspOrg1 = 'Org1MSP';
 const walletPath = path.join(__dirname, 'wallet');
-const org1UserId = 'appUser';
+const org1UserId = 'camtu123';
 
 // pre-requisites:
 // - fabric-sample two organization test-network setup with two peers, ordering service,
@@ -79,7 +79,7 @@ async function main() {
 
         // in a real application this would be done only when a new user was required to be added
         // and would be part of an administrative flow
-        await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+        await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, '');
 
         // Create a new gateway instance for interacting with the fabric network.
         // In a real application this would be done as the backend server session is setup for
@@ -107,32 +107,6 @@ async function main() {
             const medical = network.getContract(chaincodeName, 'MedicalInfoContract');
             const usage = network.getContract(chaincodeName, 'UsageRecordContract');
             const patient = network.getContract(chaincodeName, 'PatientContract');
-
-            // Initialize a set of asset data on the channel using the cshaincode 'InitLedger' function.
-            // This type of transaction would only be run once by an application the first time it was started after it
-            // deployed the first time. Any updates to the chaincode deployed later would likely not need to run
-            // an "init" type function.
-            console.log('\n--> Submit Transaction: InitLedger, function creates the initial set of assets on the ledger');
-            await operator.submitTransaction('InitLedger');
-            await medical.submitTransaction('InitLedger');
-            await usage.submitTransaction('InitLedger');
-
-
-
-        const operatorquery_result = await medical.submitTransaction('addCase',uuidv4(),'58ac5bd0-5670-11ed-81f7-057484e78b65','testresult', 'positive with covid', 'medicine in 10 days','Doctor1','peter123',uuidv4(),new Date().toLocaleString())
-
-
-        // console.log('successfully init operators');
-        // const patientqueryMed_result = await medicalInfoContract.submitTransaction('patientQueryMedicalInfo','medical2');
-        // console.log(`Result of patientqueryMed_result: ${prettyJSONString(patientqueryMed_result.toString())}`);
-        // const operatorquery_result = await medicalInfoContract.submitTransaction('operatorQueryMedicalInfo','medical1','Doctor1',uuidv4(),new Date().toLocaleString());
-        // console.log(`Transaction evaluated, result of query medical info of med1 from operator Doctor 1: ${prettyJSONString(operatorquery_result.toString())}`);
-
-        // result =await usageRecordContract.submitTransaction('QueryRecords','medical1');
-        // console.log(`Transaction evaluated, result of query record of med1: ${prettyJSONString(result.toString())}`);
-
-            
-
 
 
         } finally {
