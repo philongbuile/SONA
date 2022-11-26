@@ -6,6 +6,10 @@ import { Gateway, Wallets } from 'fabric-network';
 import * as path from 'path';
 import * as fs from 'fs';
 import {v4 as uuid} from 'uuid';
+import { registerUserOrg1, registerUserOrg2 } from "../utils/utils";
+import { buildCCPOrg1, buildCCPOrg2 } from "../utils/AppUtil";
+
+
 
 const userid = 'camtu123'
 
@@ -52,18 +56,16 @@ async function main() {
         await patientContract.submitTransaction('InitLedger');
         console.log('init ledger sucessfully');
 
-        const examination = {
-            testresult: "new test",
-            diagnosis: "new diagnosis",
-            treatment: 'Medicine'
-        };
+        registerUserOrg1('camtu123');
+        registerUserOrg1('philong123');
+        registerUserOrg1('minhleduc0210');        
+        registerUserOrg1('Doctor1');
+        registerUserOrg1('Doctor2');
+        registerUserOrg2('Researcher1');
 
-        const payload = {
-            infoID: 'medical1',
-            examination: examination,
-            operator_username: 'Doctor1',
-            patient_username: 'camtu123'
-        };
+
+
+        
 
 
 
