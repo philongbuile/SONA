@@ -63,6 +63,8 @@ async function main() {
         registerUserOrg1('Doctor2');
         registerUserOrg2('Researcher1');
 
+        console.log('regiser users sucessfully')
+
 
 
         

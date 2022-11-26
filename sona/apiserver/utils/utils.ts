@@ -2,7 +2,7 @@
 import { Wallets, Wallet, Gateway, Network } from 'fabric-network';
 import * as fs from 'fs';
 import * as path from 'path';
-import { buildCCPOrg1, buildWallet } from './AppUtil';
+import { buildCCPOrg1,buildCCPOrg2, buildWallet } from './AppUtil';
 import { buildCAClient, enrollAdmin, registerAndEnrollUser } from './CAUtil';
 
 console.log(__dirname);
@@ -60,7 +60,7 @@ export async function registerUserOrg1(userID: string): Promise<void> {
   const ccp = buildCCPOrg1();
 
         const mspOrg1 = 'Org1MSP';
-        const walletPath = path.join(process.cwd(), 'wallets', userID);
+        const walletPath = path.join(process.cwd(), '..', 'wallets', userID);
 
         console.log(walletPath);
         // build an instance of the fabric ca services client based on
@@ -81,9 +81,9 @@ export async function registerUserOrg1(userID: string): Promise<void> {
 
 
 export async function registerUserOrg2(userID: string): Promise<void> {
-  const ccp = buildCCPOrg1();
+  const ccp = buildCCPOrg2();
 
-  const walletPath = path.join(process.cwd(), 'wallets', userID);
+  const walletPath = path.join(process.cwd(),'..', 'wallets', userID);
 
         // build an instance of the fabric ca services client based on
         // the information in the network configuration
