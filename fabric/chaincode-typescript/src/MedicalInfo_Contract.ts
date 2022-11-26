@@ -129,34 +129,26 @@ export class MedicalInfoContract extends Contract {
 
 
     @Transaction(false)
-    public async QueryMedicalInfo(ctx: Context, id: string): Promise<string> {
+    public async patientQueryMedicalInfo(ctx: Context, id: string): Promise<string> {
 
-        const MedicalInfoJSON = await ctx.stub.getState(id); // get the MedicalInfo from chaincode state
-        if (!MedicalInfoJSON || MedicalInfoJSON.length === 0) {
-            throw new Error(`The MedicalInfo ${id} does not exist`);
-        }
+        const result = await this.ReadMedicalInfo(ctx, id);
 
-        //do not create usage record
+        return result;
+    }
 
-        return MedicalInfoJSON.toString();
+
+    @Transaction(false)
+    public async operatorQueryMedicalInfo(ctx: Context, id: string, operator_username: string,record_id: string, time: string): Promise<string> {
+        const medinfo = await this.ReadMedicalInfo(ctx, id);
+
+         // create usage record
+         let recordContract = new UsageRecordContract();
+         await recordContract.CreateRecord(ctx, record_id,undefined , id, 'read', operator_username,  time);
+        return medinfo;
     }
 
 
 
-
-    private CreateCase(case_id: string,testresult: string, diagnosis: string, treatment: string): Case {
-        const new_examination : Examination = {
-            TestResult: testresult,
-            Diagnosis: diagnosis,
-            Treatment: treatment
-        };
-        const Case_object : Case = {
-            docType:'case',
-            Case_ID: case_id,
-            Examinations :[new_examination],
-        };
-        return Case_object;
-    }
 
 
     // UpdateMedicalInfo updates an existing MedicalInfo in the world state with provided parameters.

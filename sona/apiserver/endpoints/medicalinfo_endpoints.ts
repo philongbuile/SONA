@@ -29,13 +29,13 @@ export async function queryMedicalInfo(req, res){
         // Get the contract from the network.
         const OperatorContract = network.getContract(
           chaincodename,
-          "OperatorContract"
+          "MedicalInfoContract"
         );
 
         OperatorContract.addDiscoveryInterest({name: 'sona', collectionNames: [ 'UsageRecordData']});
 
         const result = await OperatorContract.submitTransaction(
-          "QueryMedicalInfo",
+          "patientQueryMedicalInfo",
           req.params.medicalinfo_id,
           req.params.operator_username,
           uuidv4(),
@@ -64,14 +64,14 @@ export async function patientQuery(req, res) {
         // Get the contract from the network.
         const patientContract = network.getContract(
           chaincodename,
-          "PatientContract"
+          "MedicalInfoContract"
         );
 
         patientContract.addDiscoveryInterest({name: 'sona', collectionNames: [ 'UsageRecordData']});
 
   
         const result = await patientContract.submitTransaction(
-          "QueryMedicalInfo",
+          "patientQueryMedicalInfo",
           req.params.medicalinfo_id
         );
         console.log(

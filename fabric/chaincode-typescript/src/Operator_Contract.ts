@@ -51,15 +51,7 @@ export class OperatorContract extends Contract {
         await ctx.stub.putState(username, Buffer.from(stringify(sortKeysRecursive(operator))));
     }
 
-    @Transaction(false)
-    public async QueryMedicalInfo(ctx: Context, id: string, operator_username: string,record_id: string, time: string): Promise<string> {
-        const medinfo = await new MedicalInfoContract().QueryMedicalInfo(ctx, id);
 
-         // create usage record
-         let recordContract = new UsageRecordContract();
-         await recordContract.CreateRecord(ctx, record_id,undefined , id, 'read', operator_username,  time);
-        return medinfo;
-    }
 
 
     @Transaction()

@@ -190,14 +190,6 @@ export class PatientContract extends Contract {
     }
 
 
-    @Transaction()
-    public async QueryMedicalInfo(ctx: Context, id: string): Promise<string> {
-
-        const medinfo = await new MedicalInfoContract().QueryMedicalInfo(ctx, id);
-        return medinfo;
-    }
-
-
     @Transaction(false)
     @Returns('string')
     public async GetAll(ctx: Context): Promise<string> {
