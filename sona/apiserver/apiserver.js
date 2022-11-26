@@ -76,6 +76,10 @@ app.get(
 
 // operator query
 
+app.get("/operator/queryall", async (req, res) => {
+  await operator.queryAll(req, res);
+});
+
 app.get("/operator/query/:username", async (req, res) => {
   await operator.queryOperator(req, res);
 });

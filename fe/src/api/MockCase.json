@@ -1,0 +1,15 @@
+{
+    "Case_ID": "case2",
+    "Examinations": [
+        {
+            "Diagnosis": "diabete type 2",
+            "TestResult": "",
+            "Treatment": "medicine"
+        },
+        {
+            "Diagnosis": "diabete type 3",
+            "TestResult": "",
+            "Treatment": "medicine"
+        }
+    ]
+}
