@@ -35,7 +35,7 @@ export async function queryMedicalInfo(req, res){
         OperatorContract.addDiscoveryInterest({name: 'sona', collectionNames: [ 'UsageRecordData']});
 
         const result = await OperatorContract.submitTransaction(
-          "patientQueryMedicalInfo",
+          "operatorQueryMedicalInfo",
           req.params.medicalinfo_id,
           req.params.operator_username,
           uuidv4(),
