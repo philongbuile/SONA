@@ -66,9 +66,6 @@ export async function patientQuery(req, res) {
           chaincodename,
           "MedicalInfoContract"
         );
-
-        patientContract.addDiscoveryInterest({name: 'sona', collectionNames: [ 'UsageRecordData']});
-
   
         const result = await patientContract.submitTransaction(
           "patientQueryMedicalInfo",

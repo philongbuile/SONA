@@ -30,6 +30,8 @@ export async function patientQuery(req, res) {
           "patientQuery",
           req.params.username
         );
+        patientContract.addDiscoveryInterest({name: 'sona', collectionNames: ['PateintIdentifiableData']});
+
         console.log(
           `Transaction has been evaluated, result is: ${result.toString()}`
         );
@@ -55,6 +57,7 @@ export async function queryAll(req, res) {
         // Get the contract from the network.
         const patientContract = network.getContract(chaincodename, "PatientContract");
 
+        patientContract.addDiscoveryInterest({name: 'sona', collectionNames: ['PateintIdentifiableData']});
 
         const result = await patientContract.evaluateTransaction("GetAll");
 
@@ -83,6 +86,8 @@ export async function doctorQuery(req, res) {
 
     // Get the contract from the network.
     const patientContract = network.getContract(chaincodename, "PatientContract");
+    patientContract.addDiscoveryInterest({name: 'sona', collectionNames: ['PateintIdentifiableData']});
+
     // const medicalOperatorContract = network.getContract('fabcar', 'OperatorContract')
     // const usageRecordContract = network.getContract('fabcar', 'UsageRecordContract');
 
@@ -125,8 +130,11 @@ export async function createPatient(req ,res) {
 
     // Get the contract from the network.
     const patientContract = network.getContract(chaincodename, 'PatientContract');
+
     let medicalinfo_id = uuidv1();
     // await patientContract.submitTransaction('InitLedger');
+    patientContract.addDiscoveryInterest({name: 'sona', collectionNames: ['PateintIdentifiableData']});
+
 
 
     const result = await patientContract.submitTransaction('CreatePatient', req.body.fullname
