@@ -29,11 +29,7 @@ export const patientApi = {
         throw new Error('Network response was not ok.');
       })
       .then((data) => {
-        const patients = data.response.filter( (obj) => {
-            return obj.docType === "patient";
-        });
-
-        const authorized_patients = patients.filter((patient) => patient.AuthorizedDoctors.includes(doctor_username));
+        const authorized_patients = data.response.filter((patient) => patient.AuthorizedDoctors.includes(doctor_username));
         console.log(authorized_patients)
         return authorized_patients;
       })

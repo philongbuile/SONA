@@ -64,8 +64,7 @@ const PatientTable = () => {
     return (
         <div style={{ padding: 25, background: '#fff', minHeight: '360'}}>
         <span>
-          <Table columns={columns} dataSource=
-        
+          <Table columns={columns} dataSource=  
             {
                 users?.map((user: any) => ({
                     medical_id: user.MedicalInfo_ID,
