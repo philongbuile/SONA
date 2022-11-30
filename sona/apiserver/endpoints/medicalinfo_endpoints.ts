@@ -120,7 +120,7 @@ export async function queryByKeywords(req, res){
 export async function addCase(req, res){
     try {
       const wallet = await utils.getWallet(userID);
-      const gateway = await utils.getGateway(wallet,ccp1, userID);
+      const gateway = await utils.getGateway(wallet,userID, ccp1);
       const network = await utils.getNetwork(gateway, wallet, userID);
         // Get the contract from the network.
         const medInfoContract = network.getContract(
@@ -159,7 +159,7 @@ export async function addCase(req, res){
 export async function appendCase(req, res){
     try {
       const wallet = await utils.getWallet(userID);
-      const gateway = await utils.getGateway(wallet,ccp1, userID);
+      const gateway = await utils.getGateway(wallet,userID, ccp1);
       const network = await utils.getNetwork(gateway, wallet, userID);
         // Get the contract from the network.
         const medInfoContract = network.getContract(
