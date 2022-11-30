@@ -82,10 +82,10 @@ export async function queryAll(req, res) {
     const network = await utils.getNetwork(gateway, wallet, userID);
 
       // Get the contract from the network.
-      const patientContract = network.getContract(chaincodename, "OperatorContract");
+      const operatorContract = network.getContract(chaincodename, "OperatorContract");
 
 
-      const result = await patientContract.evaluateTransaction("GetAll");
+      const result = await operatorContract.evaluateTransaction("GetAllDoctors");
 
 
       console.log(
