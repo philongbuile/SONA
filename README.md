@@ -1,191 +1,88 @@
 # Sona Healthcare System
 
-> SONA is an application system for Electric Healthcare Record (EHR) Management with permissioned blockchain support. We apply Hyperledger Fabric to complete our solution in blockchain. With that being said, it can become more secure, lightweight and convenient for data access, management, and security.
+> SONA (**S**tuttgart **O**nline **N**etwork he**A**lthcare) is an application for Electric Healthcare Store (EHR) with blockchain support. We apply Hyperledger Fabric to complete our solution in blockchain. With that being said, it can become more secure, lightweight and convenient for data access, management, and security.
 > 
 
 ## Our team
 
-- Bui Le Phi Long (team leader)
+- Bui Le Phi Long: (team lead)
 - Truong Canh Thanh Vinh (dev)
 - Huynh Cam Tu (dev)
 - Nguyen Quoc Trung (dev, UI/UX designer)
 - Le Duc Minh (dev)
+- Instructor: Prof. Martin Kapples
 
-## Architecture and Design
+## Tech specs
 
-## Setup
+- Backend: Mongo + Typescript + Express
+- Blockchain: Hyperledger Fabric + CouchDB + Typescript
+- Frontend: ReactJS + Redux + Typescript + TailwindCSS
 
-# bring up test network with sona chaincode
-- cd into fabric/
-    - run ./startFabric.sh typescript
+## Documentation
 
-# run apiserver to connect to fabric network 
-- cd into sona/apiserver
-    - run npm install
-    - run apiserver.ts
+- Full report:
+- API Docs:
 
-# initledger to initialize data for sona network
-- cd into sona/apiserver/src
-    # install dependencies
-        - run npm install
-    # enroll admin
-        - run enrollAdmin.ts
-    # register user
-        - open file registerUser.ts, change the content of userID variable to the userID you want to register
-        - run registerUser.ts
-    # initialize data
-        - run invoke.ts
+## Sona Test Network
 
+The first most important part of this project is the blockchain network. The test network is being introduced in Fabric v2.0 as the long term replacement for the `first-network`sample. By ultilizing and customising the network for our application, we make a startFabric script in order for you to feel free to test the network within one command line.
 
+Before you can start the test network, you need to follow the instructions to [Install the Samples, Binaries and Docker Images](https://hyperledger-fabric.readthedocs.io/en/latest/install.html) in the Hyperledger Fabric documentation. Because the “bin” folder can be different for mac user / window user / linux user. 
 
+## Running on your local machine
 
-## Routes:
-- POST /patient/create/ 
-    req.body: fullname, username, address, phone, dob, gender, authorized_doctor
-    [Doctor]
+In fact, our application provide you full support of the docker images and all you need is to set up bin file depend on your operating system first (this can be optional),
 
+```bash
+// read the full version in
+// https://hyperledger-fabric.readthedocs.io/en/release-2.5/install.html
+./install-fabric.sh --fabric-version 2.2.1 binary
+```
 
-- GET /patient/query/:username 
-    patient = {
-            docType: 'patient',
-            FullName: fullname,
-            Username: username,
-            Phone: phone,
-            Address: address,
-            DoB: dob,
-            Gender: gender,
-            MedicalInfo: medinfo_id,
-            AuthorizedDoctors: [operator_username]
-        };
-    [Patient]
+then run to bring up the test network: 
 
-- get /patient/doctorQuery/:patient_username/:doctor_username
-    patient = {
-            docType: 'patient',
-            FullName: fullname,
-            Username: username,
-            Phone: phone,
-            Address: address,
-            DoB: dob,
-            Gender: gender,
-            MedicalInfo: medinfo_id,
-            AuthorizedDoctors: [operator_username]
-        };
-    [Doctor]
+```makefile
+make test-network
+```
 
-- GET /patient/authorize_doctor/:patient_username/:operator_username
-    patient = {
-            docType: 'patient',
-            FullName: fullname,
-            Username: username,
-            Phone: phone,
-            Address: address,
-            DoB: dob,
-            Gender: gender,
-            MedicalInfo: medinfo_id,
-            AuthorizedDoctors: [operator_username]
-        }
-    [Patient]
+then run API server of the blockchain 
 
-- GET /patient/revoke_doctor/:patient_username/:operator_username
-    [Patient]
+```makefile
+make apiserver
+```
 
-- GET/operator/query/:username
-     operator = {
-            docType: 'operator',
-            Username: username,
-            Role: role
-        }
-    [User]
-- POST /operator/create/
-    req.body: username, role
-    [Admin] -> create doctor or researcher
+Then you can access to the backend now on [https://locahost:8080](https://locahost:8080) 
 
-- GET /record/query/:medinfo_id
-    - return array of usage-records of that medinfo_id
-    [
-        {
-                Case_ID: 'case2',
-                MedicalInfo_ID: 'medical1',
-                Record_ID: 'record',
-                Operation: 'read',
-                Roles: 'doctor',
-                OperatorName: 'Doctor1',
-                Time : '22/03/2010'
-        },
-        {
-                Case_ID: 'case1',
-                MedicalInfo_ID: 'medical1',
-                Record_ID: 'record1',
-                Operation: 'read',
-                Roles: 'doctor',
-                OperatorName: 'Doctor1',
-                Time: '22/03/2010'
-        },
-    ]
+and finally, install and run the frontend, in cas you need to see the full version of the application
 
-    [Patient], [Researcher]
+```makefile
+make install
+make localrun
+```
 
+Now it’s online on [https://locahost:3000](https://locahost:3000)
 
-- GET medinfo/operator_query_medicalinfo/:medicalinfo_id/:operator_username
-    - return 1 medicalinfo object
+## Running without network needed (if you don’t want to care about the network)
 
-    {
-        ID: 'medical1',
-        Cases: [
-            {
-            Case_ID: 'case1',
-            Examinations: [
-                {
-                    TestResult : 'Success',
-                    Diagnosis: 'Allergic Rhinitis',
-                    Treatment: 'Use medicine'
+However, the network now is hosted on our virtual machine in digital ocean. Therefore, the good news is no need to care about the network. Just simply run the frontend, and it will automatically work like magic. 
 
-                }
-        ]}]
-    },
-    [Patient], [Doctor], [Researcher] -> get medical info by id
+```makefile
+make install
+make run
+```
 
-- GET /medinfo/patient_query_medicalinfo/:medicalinfo_id/
-    - return 1 medicalinfo object
-    {
-        ID: 'medical1',
-        Cases: [
-            {
-            Case_ID: 'case1',
-            Examinations: [
-                {
-                    TestResult : 'Success',
-                    Diagnosis: 'Allergic Rhinitis',
-                    Treatment: 'Use medicine'
+# 📚 Contribution
 
-                }
-        ]}]
-    },
-    [Patient] -> get medical info by id
+The main purpose of this repository is to continue evolving our project not only in university but also in the industry, making it faster and easier to use. We are always grateful to the community for contributing bugfixes and improvements. 
 
-- POST /medinfo/query_by_keyword/
-    - req.body.keywords = ['keyword1', 'keyword2']
-    - return array of medicalinfo's containing the keywords
-    [Researcher]
+## Contribution Guide
 
-- POST /medinfo/addcase/ 
-    req.body.info_id,
-    req.body.test_result,
-    req.body.diagnosis,
-    req.body.treatment,
-    req.body.operator_username,
-    req.body.patient_username,
+1. Fork the repo.
+2. Clone the repo.
+3. Fix bugs, add function, test on your local machine.
+4. Create a new branch and open a pull request to us.
+5. You can also create a thread, so that we can discuss more about the repo.
 
-    [Doctor] [Researcher]
+## Thank You!
 
-- POST /medinfo/appendcase/
-    req.body.info_id,
-    req.body.case_id,
-    req.body.test_result,
-    req.body.diagnosis,
-    req.body.treatment,
-    req.body.operator_username,
-    req.body.patient_username,
-
-    [Doctor] [Researcher]
+Thank you to all people who have dedicated their time and talent to contribute to this project!
