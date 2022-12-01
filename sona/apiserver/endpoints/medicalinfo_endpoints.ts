@@ -135,7 +135,7 @@ export async function addCase(req, res){
         await medInfoContract.submitTransaction(
           "AddCase",
           case_id,
-          req.body.infoID,
+          'medical',
           req.body.examination.testresult,
           req.body.examination.diagnosis,
           req.body.examination.treatment,
@@ -172,7 +172,7 @@ export async function appendCase(req, res){
   
         await medInfoContract.submitTransaction(
           "AppendCase",
-          req.body.infoID,
+          'medical',
           req.body.caseID,
           req.body.examination.testresult,
           req.body.examination.diagnosis,

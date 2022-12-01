@@ -33,7 +33,7 @@ const ExaminationForm = () => {
         }
 
         console.log(examination);
-        medinfoApi.updateCase(examination, doctor_username, username , medical_id, case_id);
+        medinfoApi.updateCase(examination, doctor_username, username ,case_id);
         navigate(`/user/operator/profile/${doctor_username}`);
     };
 
@@ -59,7 +59,7 @@ const ExaminationForm = () => {
 
             />
             </Form.Item>
-            <Form.Item>
+            {/* <Form.Item>
             <TextArea 
                 rows={5}
                 placeholder="medical infor id" 
@@ -68,7 +68,7 @@ const ExaminationForm = () => {
                 onChange={(e) => setMedicalId(e.target.value)}
 
             />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item>
                 <TextArea 
                     rows={5}

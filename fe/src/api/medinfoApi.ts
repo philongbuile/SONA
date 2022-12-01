@@ -46,14 +46,15 @@ export const medinfoApi = {
 
   },
 
+  //updateCase: async (examination: any, operator: any, patient: string, infoID: string, caseID: string) => {
 
-  updateCase: async (examination: any, operator: any, patient: string, infoID: string, caseID: string) => {
+  updateCase: async (examination: any, operator: any, patient: string, caseID: string) => {
 
     const payload = {
       examination: examination,
       operator_username : operator,
       patient_username: patient,
-      infoID : infoID,
+      // infoID : infoID,
       caseID : caseID
     }
 
@@ -89,13 +90,12 @@ export const medinfoApi = {
     return response;
   },
 
-  addCase: async (examination: any, operator: any, patient: string, infoID: string) => {
+  addCase: async (examination: any, operator: any, patient: string) => {
 
     const payload = {
       examination: examination,
       operator_username : operator,
       patient_username: patient,
-      infoID : infoID
     }
 
     console.log(`${apiUrl}/addCase/`);

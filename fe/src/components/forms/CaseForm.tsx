@@ -21,7 +21,7 @@ const CaseForm = () => {
     const [testresult, setTestresult] = useState('');
     const [diagnosis, setDiagnosis] = useState('');
     const [treatment, setTreatment] = useState('');
-    const [medical_id, setMedicationId] = useState('');
+    // const [medical_id, setMedicationId] = useState('');
     const [username, setUsername] = useState('');
 
     const navigate = useNavigate();
@@ -36,7 +36,7 @@ const CaseForm = () => {
                     treatment: treatment,
                 }
         console.log(examination);
-        medinfoApi.addCase(examination, doctor_username, username, medical_id);
+        medinfoApi.addCase(examination, doctor_username, username);
         toast('Successful create case! Redirecting to profile...');
         navigate('/user/operator/profile/' + doctor_username);
 
@@ -63,7 +63,7 @@ const CaseForm = () => {
                 />
             </Form.Item>
 
-            <Form.Item>
+            {/* <Form.Item>
                 <TextArea 
                     rows={5}
                     placeholder="medical infor" 
@@ -72,7 +72,7 @@ const CaseForm = () => {
                     onChange={(e) => setMedicationId(e.target.value)}
 
                 />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item>
                 <TextArea 
                     rows={5}
