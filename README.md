@@ -10,7 +10,7 @@
 - Huynh Cam Tu (dev)
 - Nguyen Quoc Trung (dev, UI/UX designer)
 - Le Duc Minh (dev)
-- Instructor: Prof. Martin Kapples
+- Instructor: Prof. Martin Kappes
 
 ## Tech specs
 
@@ -64,7 +64,10 @@ Now it’s online on [https://locahost:3000](https://locahost:3000)
 
 ## Running without network needed (if you don’t want to care about the network)
 
-However, the network now is hosted on our virtual machine in digital ocean. Therefore, the good news is no need to care about the network. Just simply run the frontend, and it will automatically work like magic. 
+However, the network now is hosted on our virtual machine in digital ocean. Therefore, the good news is no need to care about the network. Just simply run the frontend, and it will automatically run.
+
+**IMPORTANT**: The Server incharge for feature on Digital Ocean is turned off since 03th December 2022 due to financial problems, if you want to use this feature,
+please contact us via e-mail: 16619@student.vgu.edu.vn. Thank you.
 
 ```makefile
 make install
