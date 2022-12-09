@@ -7,7 +7,7 @@ import * as FabricCAServices from 'fabric-ca-client';
 import * as path from 'path';
 import * as fs from 'fs';
 
-const userID = 'Doctor1';
+const userID = 'camtu123';
 
 async function main() {
     try {
