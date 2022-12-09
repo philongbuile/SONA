@@ -10,7 +10,7 @@
 - Huynh Cam Tu (dev)
 - Nguyen Quoc Trung (dev, UI/UX designer)
 - Le Duc Minh (dev)
-- Instructor: Prof. Martin Kapples
+- Instructor: Prof. Martin Kappes
 
 ## Tech specs
 
