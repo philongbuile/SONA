@@ -70,6 +70,7 @@ However, the network now is hosted on our virtual machine in digital ocean. Ther
 please contact us via e-mail: 16619@student.vgu.edu.vn. Thank you.
 
 ```makefile
+make env
 make install
 make run
 ```

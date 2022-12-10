@@ -6,7 +6,7 @@ import { Operator } from '../models/Operator';
 import { stringify } from 'querystring';
 
 // const BASE_API = process.env.REACT_APP_BASE_API || 'http://localhost:8080';
-const BASE_API = '128.199.203.189:8080';
+const BASE_API = process.env.URL || 'localhost:8080';
 
 // const apiUrl = `${BASE_API}/api/`;
 const apiUrl = `${BASE_API}/patient`;
@@ -20,7 +20,7 @@ export const patientApi = {
 // return arrays of patients of that doctor
 
   getPatientsofDoctor: async (doctor_username: any) => {
-    const response = await fetch(`${apiUrl}/queryall/`)
+    const response = await fetch(`http://${apiUrl}/queryall/`)
       .then((res) => {
         if (res.ok) {
           return res.json();

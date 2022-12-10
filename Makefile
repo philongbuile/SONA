@@ -9,3 +9,5 @@ install:
 
 run:
 	cd fe && npm start
+env:
+	cd fe && echo "URL=128.199.203.189:8080" >> .env

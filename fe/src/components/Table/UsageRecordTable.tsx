@@ -4,8 +4,9 @@ import { userApi } from '../../api/userApi';
 import { useParams } from 'react-router-dom';
 import {UsageRecord} from '../../models/UsageRecord';
 
-const UsageRecordTable = () => {
+const BASE_URL = "128.199.203.189:8080" || "localhost:8080"
 
+const UsageRecordTable = () => {
     type medicalParams = {
         medical_id: string;
     }
@@ -17,7 +18,7 @@ const UsageRecordTable = () => {
     const [error, setError] = useState<string>('');
     
     useEffect(() => {
-        fetch(`http://128.199.203.189:8080/record/query/${medical_id}`, {
+        fetch(`http://${BASE_URL}/record/query/${medical_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

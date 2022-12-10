@@ -5,6 +5,9 @@ import {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import { useParams } from "react-router-dom";
 
+
+const BASE_URL = process.env.URL || 'localhost:8080';
+
 const UserAuthorizeDoctor = () => {
     const navigate = useNavigate();
 
@@ -15,7 +18,7 @@ const UserAuthorizeDoctor = () => {
     const [result, setResult] = useState<any>();
 
     const handleSearch = async() => {
-        await fetch(`http://128.199.203.189:8080/operator/queryall`, {
+        await fetch(`http://${BASE_URL}/operator/queryall`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

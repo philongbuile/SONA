@@ -6,7 +6,7 @@ import { Operator } from '../models/Operator';
 import { stringify } from 'querystring';
 
 // const BASE_API = process.env.REACT_APP_BASE_API || 'http://localhost:8080';
-const BASE_API = 'http://128.199.203.189:8080';
+const BASE_API = process.env.URL || 'localhost:8080';
 
 // const apiUrl = `${BASE_API}/api/`;
 const apiUrl = `${BASE_API}/medinfo`;
@@ -18,7 +18,7 @@ const apiUrl = `${BASE_API}/medinfo`;
 export const medinfoApi = {
 
   queryCase: async(medical_id) => {
-    const response = await fetch(`${apiUrl}/patient_query/${medical_id}/operator1`, {
+    const response = await fetch(`http://${apiUrl}/patient_query/${medical_id}/operator1`, {
       method: 'GET',
     })
       .then((res) => {

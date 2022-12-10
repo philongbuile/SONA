@@ -8,6 +8,8 @@ import { roleFunc } from '../../utils/Roles';
 import './Login.css';
 import MockUser from '../../api/MockUser.json';
 
+const BASE_URL = process.env.URL || "localhost:8080"
+
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -19,7 +21,7 @@ const Login = () => {
 
 
   const handleLogin = async() => {
-    await fetch(`http://128.199.203.189:8080/patient/query/${username}`, {
+    await fetch(`http://${BASE_URL}/patient/query/${username}`, {
       method: 'GET'
       })
       .then((response) => 

@@ -6,6 +6,8 @@ import {useState, useEffect} from 'react'
 import {useNavigate, useParams} from 'react-router-dom'
 const { Title } = Typography;
 
+const BASE_API = process.env.URL || 'localhost:8080';
+
 const CaseDetail = () => {
     type medicalParams = {
         medical_id: string;
@@ -19,7 +21,7 @@ const CaseDetail = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
     useEffect(() => {
-        fetch(`http://128.199.203.189:8080/medinfo/patient_query_medicalinfo/${medical_id}`, {
+        fetch(`http://${BASE_API}/medinfo/patient_query_medicalinfo/${medical_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

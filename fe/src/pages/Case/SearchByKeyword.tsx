@@ -5,6 +5,8 @@ import {Card, Input, Divider, Button} from 'antd';
 import styles from '../../assets/css/AuthorizationList.module.css'
 import { useParams } from 'react-router-dom';
 
+const BASE_API = process.env.URL || 'localhost:8080';
+
 const SearchByKeyword = () => {
     const [keyword, setKeyword] = useState<any>();
     const [result, setResult] = useState<any>();
@@ -26,7 +28,7 @@ const SearchByKeyword = () => {
         setLoading(true);
         const kw = getKWArrayJson(keyword);
         console.log(kw);
-        await fetch(`http://128.199.203.189:8080/medinfo/query_by_keyword/${kw}`, {
+        await fetch(`http://${BASE_API}/medinfo/query_by_keyword/${kw}`, {
             method: 'GET'
         })
         .then((response) => response.json())

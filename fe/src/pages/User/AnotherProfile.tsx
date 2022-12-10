@@ -10,6 +10,7 @@ import ScrollToTop from '../../models/ScrollToTop';
 
 const { Title } = Typography;
 
+const BASE_URL = process.env.URL || 'localhost:8080';
 // Profile of user for doctor to access without seeing usage racord
 function AnotherProfile() {
   type userParams = {
@@ -26,7 +27,7 @@ function AnotherProfile() {
   const [user, setUser] = useState<User>();
 
   const getPersonalInfo = () => {
-    fetch(`http://128.199.203.189:8080/patient/query/${username}`,
+    fetch(`http://${BASE_URL}/patient/query/${username}`,
     {
       method: 'GET',
       headers: {

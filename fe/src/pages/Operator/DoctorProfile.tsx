@@ -11,6 +11,8 @@ import PatientTable from '../../components/Table/PatientTable';
 
 const { Title } = Typography;
 
+const BASE_URL = process.env.URL || 'localhost:8080';
+
 function DoctorProfile() {
   const {doctor_username} = useParams<any>()
   const {medical_id} = useParams<any>()
@@ -19,7 +21,7 @@ function DoctorProfile() {
 
 
   const getPersonalInfo = () => {
-    fetch(`http://128.199.203.189:8080/operator/query/${doctor_username}`,
+    fetch(`http://${BASE_URL}/operator/query/${doctor_username}`,
     {
       method: 'GET',
       headers: {

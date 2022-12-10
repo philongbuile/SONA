@@ -6,8 +6,9 @@ import {MedicalInfo} from '../../models/MedicalInfo';
 import {userApi} from '../../api/userApi';
 
 
-const CaseTableOperator = () => {
+const BASE_URL = "128.199.203.189:8080" || "localhost:8080"
 
+const CaseTableOperator = () => {
     const {doctor_username} = useParams<any>();
     const {medical_id} = useParams<any>();
     interface caseParams {
@@ -19,7 +20,7 @@ const CaseTableOperator = () => {
     const [error, setError] = useState<string>('');
 
     useEffect(() => {
-        fetch(`http://128.199.203.189:8080/medinfo/operator_query_medicalinfo/${medical_id}/${doctor_username}`, {
+        fetch(`http://${BASE_URL}/medinfo/operator_query_medicalinfo/${medical_id}/${doctor_username}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

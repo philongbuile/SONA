@@ -12,9 +12,10 @@ import { Button } from '../../components/Button/index2';
 import CaseTable from '../../components/Table/CaseTable';
 import UsageRecordTable from '../../components/Table/UsageRecordTable';
 import ScrollToTop from '../../models/ScrollToTop';
-import DoctorTable from '../../components/Table/DoctorTable';
 
 const { Title } = Typography;
+
+const BASE_URL = process.env.URL || 'localhost:8080';
 
 function UserProfile() {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ function UserProfile() {
   const [cases, setCase] = useState<Case>();
 
   const getPersonalInfo = () => {
-    fetch(`http://128.199.203.189:8080/patient/query/${username}`,
+    fetch(`http://${BASE_URL}/patient/query/${username}`,
     {
       method: 'GET',
       headers: {
@@ -56,7 +57,7 @@ function UserProfile() {
   }, []);
 
   const handleRevoke = async(doctor_username) => {
-    await fetch(`http://128.199.203.189:8080/patient/revoke_doctor/${username}/${doctor_username}`,
+    await fetch(`http://${BASE_URL}/patient/revoke_doctor/${username}/${doctor_username}`,
       {
         })
       .then((response) => {
