@@ -66,8 +66,7 @@ Now it’s online on [https://locahost:3000](https://locahost:3000)
 
 However, the network now is hosted on our virtual machine in digital ocean. Therefore, the good news is no need to care about the network. Just simply run the frontend, and it will automatically run.
 
-**IMPORTANT**: The Server incharge for feature on Digital Ocean is turned off since 03th December 2022 due to financial problems, if you want to use this feature,
-please contact us via e-mail: 16619@student.vgu.edu.vn. Thank you.
+**IMPORTANT**: The Server incharge for feature on Digital Ocean is turned off since 03th December 2022 Thank you.
 
 ```makefile
 make env
